@@ -13,6 +13,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     private LoginRepository loginRepository;
 
+    private LoginRepository.OnFinishedListener listener;
+
     public LoginViewModel(@NonNull Application application) {
         super(application);
         loginRepository = new LoginRepository(application);
@@ -23,11 +25,13 @@ public class LoginViewModel extends AndroidViewModel {
         loginRepository.insertLogin(login);
     }
 
-    public void findLoginUser(String username, String password) {
-        loginRepository.findLogin(username, password);
+    public void setOnFinishedListener(LoginRepository.OnFinishedListener listener) {
+        this.listener = listener;
     }
 
+
     public void findCountUser(String username, String password) {
+        loginRepository.setOnFinishedListener(listener);
         loginRepository.findCountUser(username, password);
     }
 }

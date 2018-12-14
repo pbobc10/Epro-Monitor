@@ -14,4 +14,21 @@
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
 
+    <!-- Menu -->
+    <string name="nav_contact_fragment">Contact</string>
+    <string name="nav_gh_fragment">GH</string>
+    <string name="nav_recommandation_fragment">Recommandation</string>
+    <string name="nav_telechargement_fragment">Telechargement</string>
+    <string name="nav_nettoyage_fragment">Nettoyage</string>
+    <string name="nav_configuration">Configuration</string>
+    <string name="nav_authentification_mobile">Authentification Mobile</string>
+    <string name="nav_authentification_agent">Authentification Agent</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Drawer -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
 </resources>

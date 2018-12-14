@@ -9,14 +9,22 @@ import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
 import com.example.cbpierre.epromonitor.models.Login;
 
-public class LoginRepository implements AsyncResult {
+public class LoginRepository {
     private LoginDao loginDao;
-    public boolean mbol;
+    private static OnFinishedListener listener;
+
+    public interface OnFinishedListener {
+        void OnFinished(int count);
+    }
 
     //constructor
     public LoginRepository(Application application) {
         EproMonitorRoomDatabase db = EproMonitorRoomDatabase.getDatabase(application);
         loginDao = db.loginDao();
+    }
+
+    public void setOnFinishedListener(OnFinishedListener listener) {
+        LoginRepository.listener = listener;
     }
 
 
@@ -26,34 +34,21 @@ public class LoginRepository implements AsyncResult {
 
     public void findLogin(String name, String pass) {
         LoginAsyncTask task = new LoginAsyncTask(loginDao);
-        task.delegate = this;
+        //task.delegate = this;
         task.execute(name, pass);
     }
 
     public void findCountUser(String name, String pass) {
         CountAsyncTask task = new CountAsyncTask(loginDao);
-        task.delegate = this;
+        //task.delegate = this;
         task.execute(name, pass);
+      /*  while(task.getStatus().equals(AsyncTask.Status.FINISHED)){
+            System.out.println(task.getStatus().toString());
+
+        }*/
+
     }
 
-    @Override
-    public void asyncFinished(Login login) {
-        mbol = false;
-        if (login != null) {
-            mbol = true;
-            Log.d("TEST", "LOGIN");
-        }
-    }
-
-    @Override
-    public void asyncUserCount(Integer count) {
-        int c = count;
-        if (c>0){
-            Log.d("TEST", "LOGIN");
-        }else {
-            Log.d("TEST", "FAILED LOGIN");
-        }
-    }
 
     //****************************** ASYNC CLASS*******************************************
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
@@ -72,7 +67,7 @@ public class LoginRepository implements AsyncResult {
         }
     }
 
-// insert user to table
+    // insert user to table
     private static class insertAsyncTask extends AsyncTask<Login, Void, Void> {
 
         private LoginDao mAsyncTask;
@@ -88,7 +83,7 @@ public class LoginRepository implements AsyncResult {
         }
     }
 
-//select user from table
+    //select user from table
     private static class LoginAsyncTask extends AsyncTask<String, Void, Login> {
         private LoginDao mLoginTask;
         public AsyncResult delegate = null;
@@ -128,8 +123,11 @@ public class LoginRepository implements AsyncResult {
         @Override
         protected void onPostExecute(Integer count) {
             super.onPostExecute(count);
-            delegate.asyncUserCount(count);
-
+            System.out.println("====================OnpostExecute" + count);
+            //countUser = count;
+            //delegate.asyncUserCount(count);
+            if(listener != null)
+                listener.OnFinished(count);
         }
     }
 }

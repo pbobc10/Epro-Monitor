@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_contact_fragment"
+            android:icon="@drawable/ic_one"
+            android:title="@string/nav_contact_fragment" />
+        <item
+            android:id="@+id/nav_gh_fragment"
+            android:icon="@drawable/ic_one"
+            android:title="@string/nav_gh_fragment" />
+        <item
+            android:id="@+id/nav_recommandation_fragment"
+            android:icon="@drawable/ic_one"
+            android:title="@string/nav_recommandation_fragment" />
+        <item
+            android:id="@+id/nav_telechargement_fragment"
+            android:icon="@drawable/ic_one"
+            android:title="@string/nav_telechargement_fragment" />
+        <item
+            android:id="@+id/nav_nettoyage_fragment"
+            android:icon="@drawable/ic_one"
+            android:title="@string/nav_nettoyage_fragment" />
+
+
+        <item android:title="@string/nav_configuration">
+            <menu>
+                <item
+                    android:icon="@drawable/ic_one"
+                    android:title="@string/nav_authentification_mobile" />
+                <item
+                    android:icon="@drawable/ic_one"
+                    android:title="@string/nav_authentification_agent" />
+
+            </menu>
+        </item>
+
+
+    </group>
+</menu>
