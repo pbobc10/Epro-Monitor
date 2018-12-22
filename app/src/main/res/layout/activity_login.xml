@@ -6,23 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/colorPrimary"
+    android:background="@color/bg_lightPrimary"
     tools:context=".LoginActivity"
     android:padding="10dp"
     android:paddingStart="20dp"
     android:paddingEnd="20dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Epro-Monitor"
+        android:textColor="#196AFF"
+        android:textSize="60sp"
+        android:layout_marginBottom="72dp"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="normal|italic"/>
 
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="30dp"
         android:padding="10dp"
         android:hint="@string/hint_username"
         android:ems="10"
         android:inputType="textPersonName"
-        android:background="@color/white"
+        android:background="@drawable/border"
         android:textColor="@color/input_login"
         android:textColorHint="@color/input_login_hint"
         android:drawableStart="@drawable/ic_person"
@@ -33,12 +43,12 @@
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="30dp"
         android:padding="10dp"
         android:hint="@string/login_pass_hint"
         android:ems="10"
         android:inputType="textPassword"
-        android:background="@color/white"
+        android:background="@drawable/border"
         android:textColor="@color/input_login"
         android:textColorHint="@color/input_login_hint"
         android:drawableStart="@drawable/ic_lock"
@@ -51,8 +61,8 @@
         android:layout_height="wrap_content"
         android:text="@string/btn_login"
         android:layout_marginTop="30dp"
-        android:background="@color/btn_login_bg"
-        android:textColor="@color/bg_login"
+        android:background="#196AFF"
+        android:textColor="@color/bg_lightPrimary"
         />
 
 </LinearLayout>

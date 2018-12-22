@@ -1,6 +1,7 @@
 package com.example.cbpierre.epromonitor.dao;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -21,5 +22,8 @@ public interface LoginDao {
 
     @Query("SELECT count(*) FROM login_table  WHERE username = :user and password = :pass ")
     int findCountUser(String user, String pass);
+
+    @Query("Select * from login_table order by username asc")
+    LiveData<List<Login>> getAllUusers();
 
 }

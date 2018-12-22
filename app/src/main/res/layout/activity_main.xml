@@ -36,8 +36,9 @@
         android:layout_gravity="start"
         android:background="@android:color/white"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_view"
-        app:itemTextColor="@color/colorPrimary"
-        app:itemIconTint="@color/colorPrimary"/>
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_view"/>
+       <!--app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimary"-->/>
 
 </android.support.v4.widget.DrawerLayout>

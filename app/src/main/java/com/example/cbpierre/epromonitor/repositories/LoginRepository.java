@@ -1,6 +1,7 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -9,9 +10,12 @@ import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
 import com.example.cbpierre.epromonitor.models.Login;
 
+import java.util.List;
+
 public class LoginRepository {
     private LoginDao loginDao;
     private static OnFinishedListener listener;
+    private LiveData<List<Login>> mAllUsers;
 
     public interface OnFinishedListener {
         void OnFinished(int count);
@@ -21,12 +25,14 @@ public class LoginRepository {
     public LoginRepository(Application application) {
         EproMonitorRoomDatabase db = EproMonitorRoomDatabase.getDatabase(application);
         loginDao = db.loginDao();
+        mAllUsers =loginDao.getAllUusers();
     }
 
     public void setOnFinishedListener(OnFinishedListener listener) {
         LoginRepository.listener = listener;
     }
 
+    public LiveData<List<Login>> getmAllUsers(){return mAllUsers;}
 
     public void insertLogin(Login newLogin) {
         new insertAsyncTask(loginDao).execute(newLogin);
@@ -34,18 +40,12 @@ public class LoginRepository {
 
     public void findLogin(String name, String pass) {
         LoginAsyncTask task = new LoginAsyncTask(loginDao);
-        //task.delegate = this;
         task.execute(name, pass);
     }
 
     public void findCountUser(String name, String pass) {
         CountAsyncTask task = new CountAsyncTask(loginDao);
-        //task.delegate = this;
         task.execute(name, pass);
-      /*  while(task.getStatus().equals(AsyncTask.Status.FINISHED)){
-            System.out.println(task.getStatus().toString());
-
-        }*/
 
     }
 

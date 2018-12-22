@@ -24,10 +24,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.cbpierre.epromonitor.repositories.LoginRepository;
 import com.example.cbpierre.epromonitor.viewModels.LoginViewModel;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText edtUsername;
     private EditText edtPassword;
@@ -36,12 +37,18 @@ public class LoginActivity extends AppCompatActivity  {
 
     // Declaration ViewModel variable
     LoginViewModel mLoginViewModel;
-    LoginRepository loginRepository;
+    UserSessionPreferences userSession;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //user session
+        userSession = new UserSessionPreferences(getApplicationContext());
+        //log in check
+        if (userSession.checkLogin()) finish();
 
         edtUsername = findViewById(R.id.etUsername);
         edtPassword = findViewById(R.id.etPassword);
@@ -55,7 +62,9 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 if (checkNetworkConnection()) {
-                    loginFromNetWork();
+                    if (isOnline()) {
+                        loginFromNetWork();
+                    }
                 } else {
                     loginFromLocal();
                 }
@@ -67,16 +76,23 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void OnFinished(int count) {
                 if (count == 1) {
+
+                    //Create login session
+                    userSession.createUserLoginSession(edtUsername.getText().toString());
+
+                    // Start MainActivity
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
+                    finish();
+                    // Clear inputs
+                    /*edtUsername.setText("");
+                    edtPassword.setText("");*/
                 } else {
                     Toast.makeText(getApplicationContext(), " Invalid User", Toast.LENGTH_LONG).show();
                 }
             }
         });
-        // Login login =new Login("bob","bob123");
-        //  mLoginViewModel.insertLogin(login);
-        //  loginRepository.populateLogin();
+
     }
 
     public void loginFromNetWork() {
@@ -133,11 +149,10 @@ public class LoginActivity extends AppCompatActivity  {
         //mLoginViewModel.findLoginUser(username, password);
 
 
-
         if (!(TextUtils.isEmpty(username) && TextUtils.isEmpty(password))) {
             mLoginViewModel.findCountUser(username, password);
-        }else {
-            Toast.makeText(getApplicationContext(),"Please enter your Username and Password ",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please enter your Username and Password ", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -146,6 +161,20 @@ public class LoginActivity extends AppCompatActivity  {
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void showDialog() {
