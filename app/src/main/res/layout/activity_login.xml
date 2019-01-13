@@ -4,65 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/bg_lightPrimary"
-    tools:context=".LoginActivity"
+    android:gravity="center"
+    android:orientation="vertical"
     android:padding="10dp"
     android:paddingStart="20dp"
-    android:paddingEnd="20dp">
+    android:paddingEnd="20dp"
+    tools:context=".LoginActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Epro-Monitor"
-        android:textColor="#196AFF"
-        android:textSize="60sp"
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="180dp"
         android:layout_marginBottom="72dp"
-        android:textAlignment="center"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="normal|italic"/>
+        android:src="@drawable/epro"
+        android:layout_gravity="center_horizontal"/>
 
-    <EditText
-        android:id="@+id/etUsername"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:padding="10dp"
-        android:hint="@string/hint_username"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:background="@drawable/border"
-        android:textColor="@color/input_login"
-        android:textColorHint="@color/input_login_hint"
-        android:drawableStart="@drawable/ic_person"
-        android:drawablePadding="5dp"
-        />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
-    <EditText
-        android:id="@+id/etPassword"
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/hint_username"
+            android:inputType="textPersonName"
+            android:textColor="@color/input_login"
+            android:textColorHint="@color/colorPrimary" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:padding="10dp"
-        android:hint="@string/login_pass_hint"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:background="@drawable/border"
-        android:textColor="@color/input_login"
-        android:textColorHint="@color/input_login_hint"
-        android:drawableStart="@drawable/ic_lock"
-        android:drawablePadding="5dp"
-        />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/login_pass_hint"
+            android:inputType="textPassword"
+            android:textColor="@color/input_login"
+            android:textColorHint="@color/colorPrimary" />
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorPrimary"
         android:text="@string/btn_login"
-        android:layout_marginTop="30dp"
-        android:background="#196AFF"
         android:textColor="@color/bg_lightPrimary"
-        />
+        android:textStyle="bold"
+        android:padding="12dp"/>
 
 </LinearLayout>

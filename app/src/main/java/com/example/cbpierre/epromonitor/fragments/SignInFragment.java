@@ -150,7 +150,7 @@ public class SignInFragment extends Fragment {
         String mPassword = password.getText().toString().trim();
         String mConfirmPass = confirmPass.getText().toString().trim();
 
-        if (!(TextUtils.isEmpty(mUsername) && TextUtils.isEmpty(mPassword) && TextUtils.isEmpty(mConfirmPass))) {
+        if (!(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword) || TextUtils.isEmpty(mConfirmPass))) {
             if (!mPassword.equals(mConfirmPass)) {
 
                 Toast.makeText(getContext(), " The Confirmation Password doesn't match the Password, Please try again !!! ", Toast.LENGTH_LONG).show();

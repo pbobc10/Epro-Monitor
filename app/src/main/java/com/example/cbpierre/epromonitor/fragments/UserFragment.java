@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +33,7 @@ import java.util.List;
  */
 public class UserFragment extends Fragment {
     private LoginViewModel loginViewModel;
+    private FloatingActionButton fabButton;
 
     public UserFragment() {
         // Required empty public constructor
@@ -53,6 +55,7 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rvUsers);
+        //menu
         setHasOptionsMenu(true);
         final LoginAdapter loginAdapter = new LoginAdapter(this.getContext());
         recyclerView.setAdapter(loginAdapter);
@@ -62,6 +65,16 @@ public class UserFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<Login> logins) {
                 loginAdapter.setUser(logins);
+            }
+        });
+
+        //fab
+        fabButton = view.findViewById(R.id.fabUsers);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new SignInFragment();
+                replaceFragment(fragment);
             }
         });
 
@@ -89,7 +102,7 @@ public class UserFragment extends Fragment {
     }
 
     public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.flContent, fragment);
         transaction.addToBackStack(null);

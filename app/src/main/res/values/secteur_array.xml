@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="secteur_array">
+       <item>SELECTIONNER UN SECTEUR...</item>
+        <item>DETAILLANT</item>
+        <item>DISTRIBUTION</item>
+        <item>PHARMACIE D HOPITAL</item>
+        <item>PHARMACIE DE SUPERMARCHÉ</item>
+        <item>NON APLLICABLE</item>
+        <item>PHARMACIE</item>
+        <item>PHARMACIE DE POLYCINIQUE</item>
+    </string-array>
+</resources>

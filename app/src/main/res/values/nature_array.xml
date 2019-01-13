@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nature_array">
+        <item>SELECTIONNER UNE NATURE...</item>
+        <item>COMMERCANT</item>
+        <item>COMMERCANT ET PRESCRIPTEUR</item>
+        <item>INSTITUTION COMMERCIALE</item>
+        <item>INSTITUTION CHARITATIVE</item>
+        <item>INSTITUTION ETATIQUE</item>
+        <item>INSTITUTION PROMOTIONNELLE</item>
+        <item>PRESCRIPTEUR</item>
+    </string-array>
+</resources>

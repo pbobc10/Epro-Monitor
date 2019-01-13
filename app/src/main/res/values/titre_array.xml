@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="titre_array">
+        <item>SELECTIONNER UN TITRE...</item>
+        <item>Dr</item>
+        <item>Fr</item>
+        <item>Ing</item>
+        <item>M.</item>
+        <item>Me</item>
+        <item>Mgr</item>
+        <item>Mme</item>
+        <item>NA</item>
+        <item>Past.</item>
+        <item>Pere</item>
+        <item>Prof.</item>
+        <item>Rév.</item>
+        <item>Sr</item>
+    </string-array>
+</resources>

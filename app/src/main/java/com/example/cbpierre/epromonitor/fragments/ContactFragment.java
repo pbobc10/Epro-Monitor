@@ -1,14 +1,32 @@
 package com.example.cbpierre.epromonitor.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.adapters.ContactAdapter;
+import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +42,15 @@ public class ContactFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private ContactViewModel contactViewModel;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private FloatingActionButton fabButton;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -59,6 +81,9 @@ public class ContactFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // ViewModelProviders
+        contactViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+
     }
 
     @Override
@@ -66,6 +91,62 @@ public class ContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contact, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //menu
+        setHasOptionsMenu(true);
+        RecyclerView contactRecyclerView = view.findViewById(R.id.rvContacts);
+        final ContactAdapter contactAdapter = new ContactAdapter(this.getContext());
+        contactRecyclerView.setAdapter(contactAdapter);
+        contactRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        contactViewModel.getAllContacts().observe(this, new Observer<List<Contact>>() {
+            @Override
+            public void onChanged(@Nullable List<Contact> contacts) {
+                contactAdapter.setContact(contacts);
+            }
+        });
+
+        //fab
+        fabButton = view.findViewById(R.id.fabContact);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Fragment  fragment = new ContactRegisterFragment();
+              replaceFragment(fragment);
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_menu_contact, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Fragment fragment = null;
+        switch (item.getItemId()) {
+            case R.id.insert_contact_menu:
+                fragment = new ContactRegisterFragment();
+                replaceFragment(fragment);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flContent, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

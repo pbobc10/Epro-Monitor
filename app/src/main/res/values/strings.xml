@@ -7,7 +7,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_name">Fullname</string>
     <string name="btn_login">LOGIN</string>
-    <string name="btn_register">REGISTER</string>
+
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>
     <string name="welcome">Welcome</string>
@@ -37,5 +37,26 @@
     <!-- Drawer -->
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
+    <!-- Contact -->
+    <string name="contact_nom">Dr. Epro Monitor</string>
+    <string name="contact_specialite">MEDECINE GENERALE</string>
+    <string name="contact_nature">PRESCRIPTEUR</string>
+    <string name="contact_secteur">NON APLLICABLE</string>
+    <string name="contact_tel">Tel:(509)</string>
+    <string name="contact_email">email@yourmail.com</string>
+    <string name="contact_nouveau">Nouveau Contact</string>
+    <string name="hint_nom">Nom</string>
+    <string name="hint_prenom">Prenom</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_tel">Tel: (509)</string>
+    <string name="register_btn">Soumettre</string>
+
+    <!-- Spinner Prompt-->
+    <string name="prompt_force">Force</string>
+    <string name="prompt_nature">Nature</string>
+    <string name="prompt_secteur">Secteur</string>
+    <string name="prompt_specialite">Specialite</string>
+    <string name="prompt_titre">Titre</string>
 
 </resources>

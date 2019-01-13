@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="specialite_array">
+        <item>SELECTIONNER UNE SPECIALITE...</item>
+        <item>NOM_SPECIALITE</item>
+        <item>NON APPLICABLE</item>
+        <item>CARDIOLOGIE</item>
+        <item>CHIRURGIE</item>
+        <item>DERMATOLOGIE</item>
+        <item>MEDECINE INTERNE</item>
+        <item>GYNECOLOGIE</item>
+        <item>GYNECO-OBSTETRICOLOGIE</item>
+        <item>OPHTALMOLOGIE</item>
+        <item> OTO-RHINO-LARYNGOLOGIE</item>
+        <item>ORTHOPEDIE</item>
+        <item>PEDIATRIE</item>
+        <item>UROLOGIE</item>
+    </string-array>
+</resources>

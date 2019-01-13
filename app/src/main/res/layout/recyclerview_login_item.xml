@@ -24,7 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="55dp"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/bg_main"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

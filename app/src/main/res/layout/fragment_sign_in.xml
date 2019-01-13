@@ -15,72 +15,85 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Epro-Monitor ID"
-        android:textColor="#196AFF"
-        android:textSize="48sp"
         android:layout_marginBottom="10dp"
-        android:fontFamily="sans-serif-condensed"/>
+        android:fontFamily="sans-serif-condensed"
+        android:text="Epro-Monitor ID"
+        android:textColor="@color/input_login"
+        android:textSize="48sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_sign_in"
-        android:textColor="#7EACFF"
-        android:textSize="36sp"
         android:layout_marginBottom="96dp"
-        android:fontFamily="sans-serif-condensed"/>
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/border"
-        android:drawableStart="@drawable/ic_person"
-        android:drawablePadding="5dp"
-        android:ems="10"
-        android:hint="@string/hint_username"
-        android:inputType="textPersonName"
-        android:padding="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/btn_sign_in"
         android:textColor="@color/input_login"
-        android:textColorHint="@color/input_login_hint" />
+        android:textSize="36sp" />
 
-    <EditText
-        android:id="@+id/etPassword"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/border"
-        android:drawableStart="@drawable/ic_lock"
-        android:drawablePadding="5dp"
-        android:ems="10"
-        android:hint="@string/login_pass_hint"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColor="@color/input_login"
-        android:textColorHint="@color/input_login_hint" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
-    <EditText
-        android:id="@+id/etConfirmPassword"
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_username"
+            android:inputType="textPersonName"
+            android:textColor="@color/input_login"
+            android:textColorHint="@color/input_login_hint" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/border"
-        android:drawableStart="@drawable/ic_lock"
-        android:drawablePadding="5dp"
-        android:ems="10"
-        android:hint="@string/login_confirm_pass_hint"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColor="@color/input_login"
-        android:textColorHint="@color/input_login_hint" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/login_pass_hint"
+            android:inputType="textPassword"
+            android:textColor="@color/input_login"
+            android:textColorHint="@color/input_login_hint" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <EditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/login_confirm_pass_hint"
+            android:inputType="textPassword"
+            android:textColor="@color/input_login"
+            android:textColorHint="@color/input_login_hint" />
+
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:background="#196AFF"
+        android:layout_marginTop="36dp"
+        android:background="@color/colorPrimary"
         android:text="@string/btn_sign_in"
+        android:textStyle="bold"
         android:textColor="@color/bg_lightPrimary" />
 
-
+    <requestFocus />
 </LinearLayout>
