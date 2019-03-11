@@ -16,7 +16,9 @@
 
     <!-- Login Sign in -->
     <string name="login_confirm_pass_hint">Retype Password</string>
-    <string name="btn_sign_in">Sign In</string>
+    <string name="code_mob">Code Mobile</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_validate">Validate</string>
     <string name="insert_user">Insert User</string>
 
     <!-- Menu -->

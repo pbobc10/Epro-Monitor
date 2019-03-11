@@ -12,17 +12,20 @@ import android.util.Log;
 
 import com.example.cbpierre.epromonitor.dao.ContactDao;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
+import com.example.cbpierre.epromonitor.dao.PostLoginDao;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.Login;
+import com.example.cbpierre.epromonitor.models.PostLogin;
 
 
-@Database(entities = {Login.class, Contact.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
     public abstract LoginDao loginDao();
-
     public abstract ContactDao contactDao();
+    public abstract PostLoginDao postLoginDao();
+
 
     private static volatile EproMonitorRoomDatabase INSTANCE;
 
@@ -41,7 +44,6 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
         return INSTANCE;
 
     }
-
 
     // To repopulate the database whenever the app is started
 
@@ -70,7 +72,7 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Login login = new Login("epro", "epro123");
+            Login login = new Login("Test ePM", "testepm","SAM-004","4837489328734890","");
             loginDao.insert(login);
             Log.d("test", "room4");
             return null;

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PostDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b2dfdb"
+            android:elevation="4dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:id="@+id/txtPostUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Test ePM"
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtPostCodeMob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtPostUsername"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="SAM-004"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:id="@+id/txtLabelCieId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="15dp"
+                android:labelFor="@+id/txtContactNature"
+                android:text="CieId"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line1"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelCieId" />
+
+            <TextView
+                android:id="@+id/txtPostCieId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line1"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="30"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/txtLabelNomCie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPostCieId"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtPostNomCie"
+                android:text="Nom Cie"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line2"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelNomCie" />
+
+
+            <TextView
+                android:id="@+id/txtPostNomCie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line2"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="TEST EPROMONITOR"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelTypePromo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPostNomCie"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtPostTypePromo"
+                android:text="Type Promo "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line3"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelTypePromo" />
+
+
+            <TextView
+                android:id="@+id/txtPostTypePromo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line3"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="VM"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelUserId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPostTypePromo"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtPostUserId"
+                android:text="User Id"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line4"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelUserId" />
+
+            <TextView
+                android:id="@+id/txtPostUserId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line4"
+                android:layout_alignParentStart="true"
+                android:fontFamily="sans-serif-condensed"
+                android:text="4a7135b5-48fa-45a3-9133-098e4b0aa448"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelMobId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPostUserId"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtPostMobId"
+                android:text="Mobile Id "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line5"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelMobId" />
+
+            <TextView
+                android:id="@+id/txtPostMobId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line5"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="4"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtLabelCleMob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPostMobId"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtPostCleMob"
+                android:text="Clé Mobile"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line6"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelCleMob" />
+
+            <TextView
+                android:id="@+id/txtPostCleMob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line6"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:text="1AB247AB-C4A4-407D-B838-3B02781C12D1"
+                android:textColor="#000"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

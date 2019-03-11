@@ -7,23 +7,20 @@
     android:background="@color/bg_lightPrimary"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
+    android:padding="30dp"
     tools:context=".LoginActivity">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="180dp"
-        android:layout_marginBottom="72dp"
-        android:src="@drawable/epro"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_width="380dp"
+        android:layout_height="300dp"
+        android:src="@drawable/logo3" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="48dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:id="@+id/etUsername"
@@ -34,15 +31,15 @@
             android:ems="10"
             android:hint="@string/hint_username"
             android:inputType="textPersonName"
-            android:textColor="@color/input_login"
-            android:textColorHint="@color/colorPrimary" />
+            android:theme="@style/MyEditTextTheme" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:id="@+id/etPassword"
@@ -53,21 +50,27 @@
             android:ems="10"
             android:hint="@string/login_pass_hint"
             android:inputType="textPassword"
-            android:textColor="@color/input_login"
-            android:textColorHint="@color/colorPrimary" />
+            android:theme="@style/MyEditTextTheme" />
     </android.support.design.widget.TextInputLayout>
 
 
     <Button
         android:id="@+id/btnLogin"
+        style="@style/MyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/btn_login"
-        android:textColor="@color/bg_lightPrimary"
-        android:textStyle="bold"
-        android:padding="12dp"/>
+        android:layout_marginTop="60dp"
+        android:background="@drawable/border_login"
+        android:text="@string/btn_login" />
+
+    <Button
+        android:id="@+id/btnSign"
+        style="@style/MyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_sign_up"
+        android:text="@string/btn_validate"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>

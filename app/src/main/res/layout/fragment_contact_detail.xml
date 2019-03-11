@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ContactDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b2dfdb"
+            android:elevation="5dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:id="@+id/txtContactTitre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Dr."
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtContactNom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_toEndOf="@+id/txtContactTitre"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Pierre "
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtContactPrenom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtContactNom"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Bob Charlemagne"
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/txtContactSpecialite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtContactTitre"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="MEDECINE GENERALE"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:id="@+id/txtLabelNature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="15dp"
+                android:labelFor="@+id/txtContactNature"
+                android:text="Nature"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line1"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelNature" />
+
+            <TextView
+                android:id="@+id/txtContactNature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line1"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="PRESCRIPTEUR"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/txtLabelSecteur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtContactNature"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtContactNature"
+                android:text="Secteur"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line2"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelSecteur" />
+
+
+            <TextView
+                android:id="@+id/txtContactSecteur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabelSecteur"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="NON APLLICABLE"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelTel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtContactSecteur"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtContactNature"
+                android:text="Tel "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line3"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelTel" />
+
+
+            <TextView
+                android:id="@+id/txtContactTel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line3"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="(509)"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtContactTel"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtContactNature"
+                android:text="Email "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line4"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelEmail" />
+
+            <TextView
+                android:id="@+id/txtContactEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line4"
+                android:layout_alignParentStart="true"
+                android:fontFamily="sans-serif-condensed"
+                android:text="email@yourmail.com"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtContactEmail"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtContactAddress"
+                android:text="Adresse "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line5"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelAddress" />
+
+            <TextView
+                android:id="@+id/txtContactAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabelAddress"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="NON APLLICABLE"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtCree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtContactAddress"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtCreatedDate"
+                android:text="Créé"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line6"
+                style="@style/view_style"
+                android:layout_below="@id/txtCree" />
+
+            <TextView
+                android:id="@+id/txtCreePar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line6"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:text="Jean Pierre"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtCreatedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtCreePar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="12-Jan-2017"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtModifie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtCreePar"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtModifiedDate"
+                android:text="Modifie"
+                android:textSize="18sp" />
+
+
+            <View
+                android:id="@+id/line7"
+                style="@style/view_style"
+                android:layout_below="@id/txtModifie" />
+
+
+            <TextView
+                android:id="@+id/txtModiePar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line7"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtModifiedDate"
+                android:text="Jude Jean"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtModifiedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtModiePar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="14-Fev-2019"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtValide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtModiePar"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtModifiedDate"
+                android:text="Valide"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line8"
+                style="@style/view_style"
+                android:layout_below="@id/txtValide" />
+
+
+            <TextView
+                android:id="@+id/txtValidePar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line8"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtModifiedDate"
+                android:text="Henry Christophe"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtValidatedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtValidePar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="09-Mar-2019"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

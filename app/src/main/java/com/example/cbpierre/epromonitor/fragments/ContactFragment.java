@@ -1,7 +1,6 @@
 package com.example.cbpierre.epromonitor.fragments;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
@@ -14,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,9 +47,7 @@ public class ContactFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
     private FloatingActionButton fabButton;
 
     public ContactFragment() {
@@ -110,13 +108,27 @@ public class ContactFragment extends Fragment {
             }
         });
 
+
+        contactAdapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
+            @Override
+            public void onContactClick(List<Contact> _contact, int position) {
+                ContactDetailFragment fragment = new ContactDetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("CONTACT", _contact.get(position));
+                fragment.setArguments(bundle);
+                replaceFragment(fragment);
+                Log.d("=====testclick 6", "yes");
+
+            }
+        });
+
         //fab
         fabButton = view.findViewById(R.id.fabContact);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              Fragment  fragment = new ContactRegisterFragment();
-              replaceFragment(fragment);
+                Fragment fragment = new ContactRegisterFragment();
+                replaceFragment(fragment);
             }
         });
     }
@@ -187,4 +199,5 @@ public class ContactFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

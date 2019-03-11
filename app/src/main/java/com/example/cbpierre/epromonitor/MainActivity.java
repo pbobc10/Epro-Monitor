@@ -15,11 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 
+import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
+import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
 import com.example.cbpierre.epromonitor.fragments.UserFragment;
 
-public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnFragmentInteractionListener, PostDetailFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -43,12 +45,10 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.addDrawerListener(drawerToggle);
 
-
         // Find our navigation drawer
         nvDrawer = findViewById(R.id.nvView);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
-
 
     }
 
@@ -91,11 +91,11 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
                 fragmentClass = ContactFragment.class;
                 break;
             case R.id.nav_gh_fragment:
-                fragmentClass = ContactFragment.class;
+                fragmentClass = UserFragment.class;
                 break;
 
             case R.id.nav_user_fragment:
-                fragmentClass = UserFragment.class;
+                fragmentClass = PostDetailFragment.class;
                 break;
 
             case R.id.nav_logout:

@@ -3,11 +3,11 @@
     android:shape="rectangle">
 
     <!-- View background color -->
-    <solid android:color="@color/colorAccent"></solid>
+    <!--<solid android:color="@color/white"></solid>-->
     <!-- View border_sign_in color and width -->
-   <!-- <stroke
-        android:width="1dp"
-        android:color="#196AFF"></stroke>-->
+    <stroke
+        android:width="4dp"
+        android:color="@color/colorPrimary"></stroke>
     <!-- The radius makes the corners rounded -->
     <corners android:radius="50dp"></corners>
 

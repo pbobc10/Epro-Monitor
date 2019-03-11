@@ -1,5 +1,6 @@
 package com.example.cbpierre.epromonitor.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
@@ -7,51 +8,46 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.example.cbpierre.epromonitor.LoginActivity;
 import com.example.cbpierre.epromonitor.R;
-import com.example.cbpierre.epromonitor.models.Login;
+import com.example.cbpierre.epromonitor.UserSessionPreferences;
+import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.viewModels.LoginViewModel;
+import com.example.cbpierre.epromonitor.viewModels.PostViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SignInFragment.OnFragmentInteractionListener} interface
+ * {@link PostDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SignInFragment#newInstance} factory method to
+ * Use the {@link PostDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignInFragment extends Fragment {
+public class PostDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // fragment ui parameters
-    private EditText username;
-    private EditText password;
-    private EditText confirmPass;
-    private Button btnSignIn;
-
-    // Declaration ViewModel variable
-    LoginViewModel mLoginViewModel;
-
+    UserSessionPreferences userSession;
+    private PostViewModel postViewModel;
+    private List<PostLogin> postLogins;
+    private TextView cieId, nomCie, typePromo, userId, mobId, cleMob, username;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public SignInFragment() {
+    public PostDetailFragment() {
         // Required empty public constructor
     }
 
@@ -61,11 +57,11 @@ public class SignInFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SignInFragment.
+     * @return A new instance of fragment PostDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignInFragment newInstance(String param1, String param2) {
-        SignInFragment fragment = new SignInFragment();
+    public static PostDetailFragment newInstance(String param1, String param2) {
+        PostDetailFragment fragment = new PostDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,30 +76,51 @@ public class SignInFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        // ViewModelProviders
-        mLoginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        return inflater.inflate(R.layout.fragment_post_detail, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        username = view.findViewById(R.id.etUsername);
-        password = view.findViewById(R.id.etPassword);
-        confirmPass = view.findViewById(R.id.etConfirmPassword);
-        btnSignIn = view.findViewById(R.id.btnSignIn);
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+
+        cieId = view.findViewById(R.id.txtPostCieId);
+        nomCie = view.findViewById(R.id.txtPostNomCie);
+        typePromo = view.findViewById(R.id.txtPostTypePromo);
+        userId = view.findViewById(R.id.txtPostUserId);
+        mobId = view.findViewById(R.id.txtPostMobId);
+        cleMob = view.findViewById(R.id.txtPostCleMob);
+        username = view.findViewById(R.id.txtPostUsername);
+
+        //user session
+        userSession = new UserSessionPreferences(getContext());
+
+        postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
+        postViewModel.getAllPostLOgin().observe(this, new Observer<List<PostLogin>>() {
             @Override
-            public void onClick(View view) {
-                insertUserToLocal();
+            public void onChanged(@Nullable List<PostLogin> postLogins) {
+                Log.d("postman", "" + postLogins.size());
+                Log.d("postman", "" + postLogins.get(0).getCieId());
+                populateItem(postLogins);
             }
         });
+    }
+
+    // populate
+    public void populateItem(List<PostLogin> postLogins) {
+
+        cieId.setText(postLogins.get(0).getCieId());
+        nomCie.setText(postLogins.get(0).getNomCie());
+        typePromo.setText(postLogins.get(0).getTypePromo());
+        userId.setText(postLogins.get(0).getUserId());
+        mobId.setText(postLogins.get(0).getMobId());
+        cleMob.setText(postLogins.get(0).getCleMob());
+        username.setText(userSession.getUserDetails());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -144,30 +161,4 @@ public class SignInFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-    public void insertUserToLocal() {
-        String mUsername = username.getText().toString().trim();
-        String mPassword = password.getText().toString().trim();
-        String mConfirmPass = confirmPass.getText().toString().trim();
-
-        if (!(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword) || TextUtils.isEmpty(mConfirmPass))) {
-            if (!mPassword.equals(mConfirmPass)) {
-
-                Toast.makeText(getContext(), " The Confirmation Password doesn't match the Password, Please try again !!! ", Toast.LENGTH_LONG).show();
-            } else {
-                mLoginViewModel.insertLogin(new Login(mUsername, mPassword,"","",""));
-                getActivity().getSupportFragmentManager().popBackStack(getActivity().getSupportFragmentManager().getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new UserFragment()).addToBackStack(null).commit();
-                username.setText("");
-                password.setText("");
-                confirmPass.setText("");
-                Toast.makeText(getContext(), "Sign In !!!", Toast.LENGTH_LONG).show();
-            }
-
-
-        } else {
-            Toast.makeText(getContext(), "Please enter your Username , Password and Confirm your Password", Toast.LENGTH_LONG).show();
-        }
-    }
-
 }

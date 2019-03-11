@@ -37,7 +37,6 @@ public class LoginViewModel extends AndroidViewModel {
         this.listener = listener;
     }
 
-
     public void findCountUser(String username, String password) {
         loginRepository.setOnFinishedListener(listener);
         loginRepository.findCountUser(username, password);

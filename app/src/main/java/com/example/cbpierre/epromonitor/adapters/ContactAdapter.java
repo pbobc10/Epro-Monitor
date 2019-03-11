@@ -1,14 +1,21 @@
 package com.example.cbpierre.epromonitor.adapters;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
 import com.example.cbpierre.epromonitor.models.Contact;
 
 import java.util.List;
@@ -17,6 +24,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     private final LayoutInflater mInflater;
     // Cached copy of Contact
     private List<Contact> mContact;
+
+    private OnContactClickListener listener;
+
+    // listener interface
+    public interface OnContactClickListener {
+        void onContactClick(List<Contact> _contact, int position);
+    }
+
+    public void setOnContactClickListener(OnContactClickListener listener) {
+        this.listener = listener;
+    }
 
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtNom;
@@ -27,7 +45,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         private final TextView txtEmail;
 
 
-        public ContactViewHolder(@NonNull View itemView) {
+        public ContactViewHolder(@NonNull final View itemView) {
             super(itemView);
             txtNom = itemView.findViewById(R.id.txtNom);
             txtSpecialite = itemView.findViewById(R.id.txtSpecialite);
@@ -35,7 +53,30 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             txtSecteur = itemView.findViewById(R.id.txtSecteur);
             txtTel = itemView.findViewById(R.id.txtTel);
             txtEmail = itemView.findViewById(R.id.txtEmail);
+
+            // Attach a click listener to the entire row view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("=====testclick 1", "yes");
+
+                    if (listener != null) {
+                        Log.d("=====testclick 2", "yes");
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            Log.d("=====testclick 3", "yes");
+                            listener.onContactClick(mContact, position);
+                            //  Toast.makeText(view.getContext(), "===test " + mContact.get(position).getNom(), Toast.LENGTH_SHORT).show();
+                            Log.d("=====testclick 4", "yes");
+
+                        }
+                    }
+                    Log.d("=====testclick 5", "yes");
+
+                }
+            });
         }
+
     }
 
     public ContactAdapter(Context mContext) {

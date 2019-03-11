@@ -61,7 +61,7 @@ public class LoginRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Login login = new Login("test", "test123");
+            Login login = new Login("test", "test123","","","");
             inLoginDao.insert(login);
             return null;
         }
