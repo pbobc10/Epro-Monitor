@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.models.PostLogin;
+import com.example.cbpierre.epromonitor.repositories.LoginRepository;
 import com.example.cbpierre.epromonitor.viewModels.LoginViewModel;
 import com.example.cbpierre.epromonitor.viewModels.PostViewModel;
 
@@ -37,10 +38,15 @@ public class PostDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     UserSessionPreferences userSession;
+
+    //ViewModel
     private PostViewModel postViewModel;
+    private LoginViewModel loginViewModel;
+
     private List<PostLogin> postLogins;
-    private TextView cieId, nomCie, typePromo, userId, mobId, cleMob, username;
+    private TextView cieId, nomCie, typePromo, userId, mobId, cleMob, username, codeMobil;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -96,11 +102,16 @@ public class PostDetailFragment extends Fragment {
         mobId = view.findViewById(R.id.txtPostMobId);
         cleMob = view.findViewById(R.id.txtPostCleMob);
         username = view.findViewById(R.id.txtPostUsername);
+        codeMobil = view.findViewById(R.id.txtPostCodeMob);
 
         //user session
         userSession = new UserSessionPreferences(getContext());
 
+        //ViewModelProviders
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
+
+        //Get all Post Login
         postViewModel.getAllPostLOgin().observe(this, new Observer<List<PostLogin>>() {
             @Override
             public void onChanged(@Nullable List<PostLogin> postLogins) {
@@ -109,6 +120,14 @@ public class PostDetailFragment extends Fragment {
                 populateItem(postLogins);
             }
         });
+
+        loginViewModel.setOnSearchCodeMobListener(new LoginRepository.OnSearchCodeMobListener() {
+            @Override
+            public void OnSearchCodeMob(String codeMob) {
+                codeMobil.setText(codeMob);
+            }
+        });
+
     }
 
     // populate
@@ -121,6 +140,7 @@ public class PostDetailFragment extends Fragment {
         mobId.setText(postLogins.get(0).getMobId());
         cleMob.setText(postLogins.get(0).getCleMob());
         username.setText(userSession.getUserDetails());
+        loginViewModel.findCodeMobil(userSession.getUserDetails());
     }
 
     // TODO: Rename method, update argument and hook method into UI event

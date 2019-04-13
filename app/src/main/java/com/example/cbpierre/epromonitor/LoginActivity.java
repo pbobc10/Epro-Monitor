@@ -30,6 +30,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        edtUsername = findViewById(R.id.etUsername);
+        edtPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+
         //user session
         userSession = new UserSessionPreferences(getApplicationContext());
         //sign in btn
@@ -38,16 +42,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                edtUsername.setText("");
+                edtPassword.setText("");
                 startActivity(intent);
             }
         });
 
         //log in check
         if (userSession.checkLogin()) finish();
-
-        edtUsername = findViewById(R.id.etUsername);
-        edtPassword = findViewById(R.id.etPassword);
-        btnLogin = findViewById(R.id.btnLogin);
 
         //Progress Dialog
         pDialog = new ProgressDialog(this);

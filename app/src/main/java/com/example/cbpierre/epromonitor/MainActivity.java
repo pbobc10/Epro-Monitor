@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
                 fragmentClass = ContactFragment.class;
                 break;
             case R.id.nav_gh_fragment:
-                fragmentClass = UserFragment.class;
+                fragmentClass = PostDetailFragment.class;
                 break;
 
             case R.id.nav_user_fragment:

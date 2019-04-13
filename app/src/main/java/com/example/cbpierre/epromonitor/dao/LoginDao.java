@@ -26,4 +26,7 @@ public interface LoginDao {
     @Query("Select * from login_table order by username asc")
     LiveData<List<Login>> getAllUusers();
 
+    @Query("Select codeMob from login_table where username=:user")
+    String findCodMob(String user);
+
 }

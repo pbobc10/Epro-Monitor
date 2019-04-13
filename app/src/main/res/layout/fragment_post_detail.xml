@@ -42,7 +42,7 @@
                     android:layout_below="@+id/txtPostUsername"
                     android:layout_marginBottom="6dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="SAM-004"
+                    android:text="SAM-TEST"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 

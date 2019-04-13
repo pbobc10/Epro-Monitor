@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.fragments;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ import com.example.cbpierre.epromonitor.viewModels.LoginViewModel;
  * A simple {@link Fragment} subclass.
  */
 public class ContactRegisterFragment extends Fragment {
+    ContactRepository contactRepository;
     private Spinner spNature;
     private Spinner spTitre;
     private Spinner spSecteur;
@@ -40,7 +42,6 @@ public class ContactRegisterFragment extends Fragment {
     private Button button;
     private String item1, item2, item3, item4, item5;
     private ContactViewModel mContactViewModel;
-    ContactRepository contactRepository;
 
 
     public ContactRegisterFragment() {
@@ -65,11 +66,20 @@ public class ContactRegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        spinnerItem(view);
+        //Spinner
+        spNature = view.findViewById(R.id.spNature);
+        spTitre = view.findViewById(R.id.spTitre);
+        spSecteur = view.findViewById(R.id.spSecteur);
+        spSpecialite = view.findViewById(R.id.spSpecialite);
+        spForce = view.findViewById(R.id.spForce);
+
         mNom = view.findViewById(R.id.etNom);
         mPrenom = view.findViewById(R.id.etPrenom);
         mEmail = view.findViewById(R.id.etEmail);
         mTel = view.findViewById(R.id.etPhone);
+        //populate Spinner
+        spinnerItem(view);
+
         button = view.findViewById(R.id.btnRegister);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,14 +108,15 @@ public class ContactRegisterFragment extends Fragment {
     public void spinnerItem(@NonNull View view) {
 
         // Nature spinner
-        spNature = view.findViewById(R.id.spNature);
         spNature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (view == null)
+                    return;
                 if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE NATURE...")) {
                     //change default item color
                     TextView textView = (TextView) view;
-                    textView.setTextColor(getResources().getColor(R.color.input_login_hint));
+                    textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
                 } else {
                     //on selected a spinner item
                     item1 = adapterView.getItemAtPosition(position).toString();
@@ -121,10 +132,11 @@ public class ContactRegisterFragment extends Fragment {
         });
 
         //Titre spinner
-        spTitre = view.findViewById(R.id.spTitre);
         spTitre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (view == null)
+                    return;
                 if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UN TITRE...")) {
                     //change default item color
                     TextView textView = (TextView) view;
@@ -144,10 +156,11 @@ public class ContactRegisterFragment extends Fragment {
         });
 
         //Secteur spinner
-        spSecteur = view.findViewById(R.id.spSecteur);
         spSecteur.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (view == null)
+                    return;
                 if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UN SECTEUR...")) {
                     //change default item color
                     TextView textView = (TextView) view;
@@ -167,10 +180,11 @@ public class ContactRegisterFragment extends Fragment {
         });
 
         //Specialite spinner
-        spSpecialite = view.findViewById(R.id.spSpecialite);
         spSpecialite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (view == null)
+                    return;
                 if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE SPECIALITE...")) {
                     //change default item color
                     TextView textView = (TextView) view;
@@ -190,10 +204,11 @@ public class ContactRegisterFragment extends Fragment {
         });
 
         //Force spinner
-        spForce = view.findViewById(R.id.spForce);
         spForce.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (view == null)
+                    return;
                 if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE FORCE...")) {
                     //change default item color
                     TextView textView = (TextView) view;

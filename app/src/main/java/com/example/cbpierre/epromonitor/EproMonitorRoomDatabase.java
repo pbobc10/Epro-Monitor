@@ -22,12 +22,20 @@ import com.example.cbpierre.epromonitor.models.PostLogin;
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
-    public abstract LoginDao loginDao();
-    public abstract ContactDao contactDao();
-    public abstract PostLoginDao postLoginDao();
-
-
     private static volatile EproMonitorRoomDatabase INSTANCE;
+    private static RoomDatabase.Callback sRoomDatabaseCallback =
+            new RoomDatabase.Callback() {
+
+                @Override
+                public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                    super.onOpen(db);
+                    // new PopulateDbAsync(INSTANCE).execute();
+                    Log.d("test", "room3");
+
+                    //test to insert contact
+                    // new InsertContactTask(INSTANCE).execute();
+                }
+            };
 
     public static EproMonitorRoomDatabase getDatabase(final Context context) {
         Log.d("test", "room1");
@@ -45,24 +53,16 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
     }
 
+    public abstract LoginDao loginDao();
+
+    public abstract ContactDao contactDao();
+
     // To repopulate the database whenever the app is started
 
-    private static RoomDatabase.Callback sRoomDatabaseCallback =
-            new RoomDatabase.Callback() {
-
-                @Override
-                public void onOpen(@NonNull SupportSQLiteDatabase db) {
-                    super.onOpen(db);
-                    new PopulateDbAsync(INSTANCE).execute();
-                    Log.d("test", "room3");
-
-                    //test to insert contact
-                   // new InsertContactTask(INSTANCE).execute();
-                }
-            };
+    public abstract PostLoginDao postLoginDao();
 
 
-    public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+    /*public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
         private final LoginDao loginDao;
 
@@ -77,7 +77,7 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
             Log.d("test", "room4");
             return null;
         }
-    }
+    }*/
 
     //test to insert contacts
    /* private static class InsertContactTask extends AsyncTask<Void, Void, Void> {

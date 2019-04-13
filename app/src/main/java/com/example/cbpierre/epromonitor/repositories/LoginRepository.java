@@ -3,7 +3,6 @@ package com.example.cbpierre.epromonitor.repositories;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.cbpierre.epromonitor.AsyncResult;
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
@@ -13,26 +12,29 @@ import com.example.cbpierre.epromonitor.models.Login;
 import java.util.List;
 
 public class LoginRepository {
-    private LoginDao loginDao;
     private static OnFinishedListener listener;
+    private static OnSearchCodeMobListener mobListener;
+    private LoginDao loginDao;
     private LiveData<List<Login>> mAllUsers;
-
-    public interface OnFinishedListener {
-        void OnFinished(int count);
-    }
 
     //constructor
     public LoginRepository(Application application) {
         EproMonitorRoomDatabase db = EproMonitorRoomDatabase.getDatabase(application);
         loginDao = db.loginDao();
-        mAllUsers =loginDao.getAllUusers();
+        mAllUsers = loginDao.getAllUusers();
     }
 
     public void setOnFinishedListener(OnFinishedListener listener) {
         LoginRepository.listener = listener;
     }
 
-    public LiveData<List<Login>> getmAllUsers(){return mAllUsers;}
+    public void setOnSearchCodeMobListener(OnSearchCodeMobListener mobListener) {
+        LoginRepository.mobListener = mobListener;
+    }
+
+    public LiveData<List<Login>> getmAllUsers() {
+        return mAllUsers;
+    }
 
     public void insertLogin(Login newLogin) {
         new insertAsyncTask(loginDao).execute(newLogin);
@@ -46,9 +48,20 @@ public class LoginRepository {
     public void findCountUser(String name, String pass) {
         CountAsyncTask task = new CountAsyncTask(loginDao);
         task.execute(name, pass);
-
     }
 
+    public void findCodeMob(String username) {
+        FindCodeMobAsyncTask task = new FindCodeMobAsyncTask(loginDao);
+        task.execute(username);
+    }
+
+    public interface OnFinishedListener {
+        void OnFinished(int count);
+    }
+
+    public interface OnSearchCodeMobListener {
+        void OnSearchCodeMob(String codeMob);
+    }
 
     //****************************** ASYNC CLASS*******************************************
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
@@ -61,7 +74,7 @@ public class LoginRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Login login = new Login("test", "test123","","","");
+            Login login = new Login("test", "test123", "", "", "");
             inLoginDao.insert(login);
             return null;
         }
@@ -85,8 +98,8 @@ public class LoginRepository {
 
     //select user from table
     private static class LoginAsyncTask extends AsyncTask<String, Void, Login> {
-        private LoginDao mLoginTask;
         public AsyncResult delegate = null;
+        private LoginDao mLoginTask;
 
         public LoginAsyncTask(LoginDao loginDao) {
             mLoginTask = loginDao;
@@ -107,8 +120,8 @@ public class LoginRepository {
 
     // count user from table
     private static class CountAsyncTask extends AsyncTask<String, Void, Integer> {
-        private LoginDao mLoginTask;
         public AsyncResult delegate = null;
+        private LoginDao mLoginTask;
 
         public CountAsyncTask(LoginDao loginDao) {
             mLoginTask = loginDao;
@@ -126,8 +139,28 @@ public class LoginRepository {
             System.out.println("====================OnpostExecute" + count);
             //countUser = count;
             //delegate.asyncUserCount(count);
-            if(listener != null)
+            if (listener != null)
                 listener.OnFinished(count);
+        }
+    }
+
+    public static class FindCodeMobAsyncTask extends AsyncTask<String, Void, String> {
+        private LoginDao mLoginTask;
+
+        public FindCodeMobAsyncTask(LoginDao loginDao) {
+            mLoginTask = loginDao;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return mLoginTask.findCodMob(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String codeMob) {
+            super.onPostExecute(codeMob);
+            if (mobListener != null)
+                mobListener.OnSearchCodeMob(codeMob);
         }
     }
 }

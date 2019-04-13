@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -50,6 +52,8 @@ public class SignInActivity extends AppCompatActivity {
     private EditText codMob;
     private Button btnSignIn;
 
+    private String mUsername, mPassword, mCodMob, imei1, imei2;
+
     private UserSessionPreferences userSessionPreferences;
 
     private ProgressDialog pDialog;
@@ -61,7 +65,6 @@ public class SignInActivity extends AppCompatActivity {
 
         //user session
         userSessionPreferences = new UserSessionPreferences(SignInActivity.this);
-
 
         // ViewModelProviders
         mLoginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
@@ -75,36 +78,45 @@ public class SignInActivity extends AppCompatActivity {
         password = findViewById(R.id.etPassword);
         codMob = findViewById(R.id.etCodMob);
         btnSignIn = findViewById(R.id.btnSignIn);
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkNetworkConnection()) {
-                    if (isOnline()) {
-                        insertUserToLocal();
-                        Log.d("networkcheck", "pass2");
+                mUsername = username.getText().toString().trim();
+                mPassword = password.getText().toString().trim();
+                mCodMob = codMob.getText().toString().trim();
+                imei1 = getImeiId();
+                imei2 = "";
+
+                if (!(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword) || TextUtils.isEmpty(mCodMob))) {
+                    //set title of the dialog
+                    pDialog.setTitle("Sign in ...");
+                    //set message of the dialog
+                    pDialog.setMessage("Please wait.");
+                    //show dialog
+                    showDialog();
+
+                    if (checkNetworkConnection()) {
+                        if (isOnline()) {
+                            insertUserToLocal();
+                            Log.d("networkcheck", "pass2");
+                        } else {
+                            Toast.makeText(getApplicationContext(), "You Don't have Network Connection ...", Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(getApplicationContext(), "You Don't have Network Connection ...", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Check if your Data or Wifi is Opened ...", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Check if your Data or Wifi is Opened ...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Please enter your Username or Password or Mobile Code", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
 
     }
 
     public void insertUserToLocal() {
-        //proress Dialog
-        pDialog.setTitle("Sign in ...");
-        pDialog.setMessage("Please wait.");
-        showDialog();
-
-        final String mUsername = username.getText().toString().trim();
-        final String mPassword = password.getText().toString().trim();
-        final String mCodMob = codMob.getText().toString().trim();
-        final String imei1 = getImeiId();
-        String imei2 = "";
-
+        //HashMap param Volley request
         HashMap<String, String> params = new HashMap<>();
         params.put("UserName", mUsername);
         params.put("Password", mPassword);
@@ -113,46 +125,43 @@ public class SignInActivity extends AppCompatActivity {
         params.put("Imei2", imei2);
 
         // Formulate the request and handle the response.
-        if (!(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword) || TextUtils.isEmpty(mCodMob))) {
-            CustomRequest customRequest = new CustomRequest(Request.Method.POST, AppConfig.URL_LOGIN, params, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.d("volleyTest", "pass1");
-                    Log.d("volleyResponse", response.toString());
-                    userSessionPreferences.createUserLoginSession(mUsername);
-                    mLoginViewModel.insertLogin(new Login(mUsername, mPassword, mCodMob, imei1, null));
-                    mPostViewModel.insertPostLogin(new PostLogin(response));
-                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    //Toast.makeText(getApplicationContext(), "JSONOBJECT :" + response.toString(), Toast.LENGTH_LONG).show();
-                    hideDialog();
-                    finish();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("volleyTest", "JSONOBJECT ERROR :" + error.toString());
-                    if (error instanceof AuthFailureError)
-                        Toast.makeText(getApplicationContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
-                    else if (error instanceof NetworkError)
-                        Toast.makeText(getApplicationContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
-                    else if (error instanceof ParseError)
-                        Toast.makeText(getApplicationContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
-                    else if (error instanceof ServerError)
-                        Toast.makeText(getApplicationContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
-                    else if (error instanceof TimeoutError)
-                        Toast.makeText(getApplicationContext(), "Connection or the socket timed out", Toast.LENGTH_LONG).show();
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, AppConfig.URL_LOGIN, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("volleyTest", "pass1");
+                Log.d("volleyResponse", response.toString());
+                userSessionPreferences.createUserLoginSession(mUsername);
+                mLoginViewModel.insertLogin(new Login(mUsername, mPassword, mCodMob, imei1, null));
+                mPostViewModel.insertPostLogin(new PostLogin(response));
 
-                    hideDialog();
-                }
-            });
+                //dismiss dialog
+                hideDialog();
 
-            // customRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            AppVolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(customRequest);
-        } else {
-            Toast.makeText(getApplicationContext(), "Please enter your Username or Password or Mobile Code", Toast.LENGTH_LONG).show();
-            hideDialog();
-        }
+                //start MainActivity
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("volleyTest", "JSONOBJECT ERROR :" + error.toString());
+                if (error instanceof AuthFailureError)
+                    Toast.makeText(getApplicationContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
+                else if (error instanceof NetworkError)
+                    Toast.makeText(getApplicationContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
+                else if (error instanceof ParseError)
+                    Toast.makeText(getApplicationContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
+                else if (error instanceof ServerError)
+                    Toast.makeText(getApplicationContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
+                else if (error instanceof TimeoutError)
+                    Toast.makeText(getApplicationContext(), "Connection or the socket timed out", Toast.LENGTH_LONG).show();
+                //dismiss dialog
+                hideDialog();
+            }
+        });
+        // customRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppVolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(customRequest);
     }
 
     public String getImeiId() {
@@ -198,7 +207,7 @@ public class SignInActivity extends AppCompatActivity {
     public boolean isOnline() {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.4.4");
             Integer exitValue = ipProcess.waitFor();
             Log.d("networkcheck", exitValue.toString());
             return (exitValue == 0);

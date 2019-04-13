@@ -16,6 +16,7 @@ public class LoginViewModel extends AndroidViewModel {
     private LiveData<List<Login>> mAllUsers;
 
     private LoginRepository.OnFinishedListener listener;
+    private LoginRepository.OnSearchCodeMobListener mobListener;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -37,8 +38,17 @@ public class LoginViewModel extends AndroidViewModel {
         this.listener = listener;
     }
 
+    public void setOnSearchCodeMobListener(LoginRepository.OnSearchCodeMobListener mobListener) {
+        this.mobListener = mobListener;
+    }
+
     public void findCountUser(String username, String password) {
         loginRepository.setOnFinishedListener(listener);
         loginRepository.findCountUser(username, password);
+    }
+
+    public void findCodeMobil(String username) {
+        loginRepository.setOnSearchCodeMobListener(mobListener);
+        loginRepository.findCodeMob(username);
     }
 }
