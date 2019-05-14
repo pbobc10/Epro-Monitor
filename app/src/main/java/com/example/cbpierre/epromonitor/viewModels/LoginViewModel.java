@@ -24,7 +24,6 @@ public class LoginViewModel extends AndroidViewModel {
         mAllUsers = loginRepository.getmAllUsers();
     }
 
-
     public LiveData<List<Login>> getAllUsers() {
         return mAllUsers;
     }

@@ -98,11 +98,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         if (mContact != null) {
             // Get the data model based on position
             Contact current = mContact.get(i);
-            contactViewHolder.txtNom.setText(current.getTitre() + " " + current.getNom() + " " + current.getPrenom());
+            contactViewHolder.txtNom.setText(current.getTitre() + ".  " + current.getNom() + " " + current.getPrenom());
             contactViewHolder.txtSpecialite.setText(current.getSpecialite());
             contactViewHolder.txtSecteur.setText(current.getSecteur());
             contactViewHolder.txtNature.setText(current.getNature());
-            contactViewHolder.txtTel.setText("Tel:(509)" + current.getPhone1());
+            contactViewHolder.txtTel.setText("Tel: " + current.getPhone1());
             contactViewHolder.txtEmail.setText(current.getEmail());
         } else {
             // Covers the case of data not being ready yet.

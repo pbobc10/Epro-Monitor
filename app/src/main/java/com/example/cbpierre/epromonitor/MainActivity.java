@@ -19,6 +19,7 @@ import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
 import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
+import com.example.cbpierre.epromonitor.fragments.TelechargementFragment;
 import com.example.cbpierre.epromonitor.fragments.UserFragment;
 
 public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnFragmentInteractionListener, PostDetailFragment.OnFragmentInteractionListener {
@@ -96,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
 
             case R.id.nav_user_fragment:
                 fragmentClass = PostDetailFragment.class;
+                break;
+
+            case R.id.nav_telechargement_fragment:
+                fragmentClass= TelechargementFragment.class;
                 break;
 
             case R.id.nav_logout:

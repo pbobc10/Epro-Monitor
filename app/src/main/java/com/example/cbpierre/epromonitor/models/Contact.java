@@ -2,10 +2,17 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity(tableName = "contact_table")
@@ -15,70 +22,95 @@ public class Contact implements Serializable {
     @ColumnInfo(name = "conId")
     private int conId;
 
+    @Nullable
     @ColumnInfo(name = "titre")
     private String titre;
 
+    @Nullable
     @ColumnInfo(name = "nom")
     private String nom;
 
+    @Nullable
     @ColumnInfo(name = "prenom")
     private String prenom;
 
+    @Nullable
     @ColumnInfo(name = "nature")
     private String nature;
 
+    @Nullable
     @ColumnInfo(name = "secteur")
     private String secteur;
 
+    @Nullable
     @ColumnInfo(name = "specialite")
     private String specialite;
 
+    @Nullable
     @ColumnInfo(name = "force")
     private String force;
 
+    @Nullable
     @ColumnInfo(name = "phone1")
     private String phone1;
 
+    @Nullable
     @ColumnInfo(name = "phone2")
     private String phone2;
 
     @ColumnInfo(name = "phone3")
     private String phone3;
 
+    @Nullable
     @ColumnInfo(name = "email")
     private String email;
 
+    @Nullable
     @ColumnInfo(name = "statut")
     private int statut;
 
+    @Nullable
     @ColumnInfo(name = "transfere_par")
     private String transfere_par;
 
+    @Nullable
     @ColumnInfo(name = "transfere_le")
-    private Date transfere_le;
+    private String transfere_le;
 
+    @Nullable
     @ColumnInfo(name = "cree_par")
     private String cree_par;
 
+    @Nullable
     @ColumnInfo(name = "cree_le")
-    private Date cree_le;
+    private String cree_le;
 
+    @Nullable
     @ColumnInfo(name = "modifie_par")
     private String modifie_par;
+
+    @Nullable
     @ColumnInfo(name = "modifie_le")
-    private Date modifie_le;
+    private String modifie_le;
 
+    @Nullable
     @ColumnInfo(name = "valide")
-    private int valide;
+    private boolean valide;
 
+    @Nullable
     @ColumnInfo(name = "validateur")
     private String validateur;
 
+    @Nullable
     @ColumnInfo(name = "date_maj_valide")
-    private Date date_maj_valide;
+    private String date_maj_valide;
 
     // constructor
-    public Contact( /*int conId,*/ String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, int statut, String transfere_par, Date transfere_le, String cree_par, Date cree_le, String modifie_par, Date modifie_le, int valide, String validateur, Date date_maj_valide) {
+    @Ignore
+    public Contact() {
+    }
+
+    public Contact( /*int conId,*/ String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, int statut, String transfere_par, String transfere_le, String cree_par, String cree_le, String modifie_par, String modifie_le, boolean valide, String validateur, String date_maj_valide) {
         //this.conId = conId;
         this.titre = titre;
         this.nom = nom;
@@ -101,6 +133,49 @@ public class Contact implements Serializable {
         this.valide = valide;
         this.validateur = validateur;
         this.date_maj_valide = date_maj_valide;
+    }
+
+
+    public Contact(JSONObject jsonObject) {
+        try {
+            this.conId = jsonObject.getInt("CONID");
+            this.titre = jsonObject.getString("TITRE") == "null" ? null : jsonObject.getString("TITRE");
+            this.nom = jsonObject.getString("NOM") == "null" ? null : jsonObject.getString("NOM");
+            this.prenom = jsonObject.getString("PRENOM") == "null" ? null : jsonObject.getString("PRENOM");
+            this.nature = jsonObject.getString("NATURE") == "null" ? null : jsonObject.getString("NATURE");
+            this.secteur = jsonObject.getString("SECTEUR") == "null" ? null : jsonObject.getString("SECTEUR");
+            this.specialite = jsonObject.getString("SPECIALITE") == "null" ? null : jsonObject.getString("SPECIALITE");
+            this.force = jsonObject.getString("FORCE");
+            this.phone1 = jsonObject.getString("PHONE1") == "null" ? null : jsonObject.getString("PHONE1");
+            this.phone2 = jsonObject.getString("PHONE2") == "null" ? null : jsonObject.getString("PHONE2");
+            this.phone3 = jsonObject.getString("PHONE3") == "null" ? null : jsonObject.getString("PHONE3");
+            this.email = jsonObject.getString("EMAIL") == "null" ? null : jsonObject.getString("EMAIL");
+            this.statut = jsonObject.getInt("STATUT");
+            this.transfere_par = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.transfere_le = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.cree_par = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.cree_le = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.modifie_par = jsonObject.getString("MODIFIE_PAR") == "null" ? null : jsonObject.getString("MODIFIE_PAR");
+            this.modifie_le = jsonObject.getString("MODIFIE_LE") == "null" ? null : jsonObject.getString("MODIFIE_LE");
+            this.valide = jsonObject.getBoolean("VALIDE");
+            this.validateur = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.date_maj_valide = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static ArrayList<Contact> fromJson(JSONArray jsonArray) {
+        ArrayList<Contact> contacts = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                contacts.add(new Contact(jsonArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return contacts;
     }
 
     @NonNull
@@ -216,11 +291,11 @@ public class Contact implements Serializable {
         this.transfere_par = transfere_par;
     }
 
-    public Date getTransfere_le() {
+    public String getTransfere_le() {
         return transfere_le;
     }
 
-    public void setTransfere_le(Date transfere_le) {
+    public void setTransfere_le(String transfere_le) {
         this.transfere_le = transfere_le;
     }
 
@@ -232,11 +307,11 @@ public class Contact implements Serializable {
         this.cree_par = cree_par;
     }
 
-    public Date getCree_le() {
+    public String getCree_le() {
         return cree_le;
     }
 
-    public void setCree_le(Date cree_le) {
+    public void setCree_le(String cree_le) {
         this.cree_le = cree_le;
     }
 
@@ -248,19 +323,19 @@ public class Contact implements Serializable {
         this.modifie_par = modifie_par;
     }
 
-    public Date getModifie_le() {
+    public String getModifie_le() {
         return modifie_le;
     }
 
-    public void setModifie_le(Date modifie_le) {
+    public void setModifie_le(String modifie_le) {
         this.modifie_le = modifie_le;
     }
 
-    public int getValide() {
+    public boolean getValide() {
         return valide;
     }
 
-    public void setValide(int valide) {
+    public void setValide(boolean valide) {
         this.valide = valide;
     }
 
@@ -272,11 +347,11 @@ public class Contact implements Serializable {
         this.validateur = validateur;
     }
 
-    public Date getDate_maj_valide() {
+    public String getDate_maj_valide() {
         return date_maj_valide;
     }
 
-    public void setDate_maj_valide(Date date_maj_valide) {
+    public void setDate_maj_valide(String date_maj_valide) {
         this.date_maj_valide = date_maj_valide;
     }
 }

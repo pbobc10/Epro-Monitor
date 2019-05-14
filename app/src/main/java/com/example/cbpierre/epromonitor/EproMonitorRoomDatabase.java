@@ -11,14 +11,26 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.cbpierre.epromonitor.dao.ContactDao;
+import com.example.cbpierre.epromonitor.dao.ForceDao;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
+import com.example.cbpierre.epromonitor.dao.NatureDao;
 import com.example.cbpierre.epromonitor.dao.PostLoginDao;
+import com.example.cbpierre.epromonitor.dao.SecteurDao;
+import com.example.cbpierre.epromonitor.dao.SpecialiteDao;
+import com.example.cbpierre.epromonitor.dao.TitreDao;
+import com.example.cbpierre.epromonitor.dao.ZoneDao;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.Login;
+import com.example.cbpierre.epromonitor.models.Nature;
 import com.example.cbpierre.epromonitor.models.PostLogin;
+import com.example.cbpierre.epromonitor.models.Secteur;
+import com.example.cbpierre.epromonitor.models.Specialite;
+import com.example.cbpierre.epromonitor.models.Titre;
+import com.example.cbpierre.epromonitor.models.Zone;
 
 
-@Database(entities = {Login.class, Contact.class, PostLogin.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
@@ -52,6 +64,18 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
         return INSTANCE;
 
     }
+
+    public abstract TitreDao titreDao();
+
+    public abstract ZoneDao zoneDao();
+
+    public abstract ForceDao forceDao();
+
+    public abstract SpecialiteDao specialiteDao();
+
+    public abstract SecteurDao secteurDao();
+
+    public abstract NatureDao natureDao();
 
     public abstract LoginDao loginDao();
 

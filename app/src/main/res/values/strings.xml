@@ -45,13 +45,13 @@
     <string name="contact_specialite">MEDECINE GENERALE</string>
     <string name="contact_nature">PRESCRIPTEUR</string>
     <string name="contact_secteur">NON APLLICABLE</string>
-    <string name="contact_tel">Tel:(509)</string>
+    <string name="contact_tel">Tel:</string>
     <string name="contact_email">email@yourmail.com</string>
     <string name="contact_nouveau">Nouveau Contact</string>
     <string name="hint_nom">Nom</string>
     <string name="hint_prenom">Prenom</string>
     <string name="hint_email">Email</string>
-    <string name="hint_tel">Tel: (509)</string>
+    <string name="hint_tel">Tel:</string>
     <string name="register_btn">Soumettre</string>
 
     <!-- Spinner Prompt-->
@@ -60,5 +60,12 @@
     <string name="prompt_secteur">Secteur</string>
     <string name="prompt_specialite">Specialite</string>
     <string name="prompt_titre">Titre</string>
+
+    <string name="select_force">SELECTIONNER UNE FORCE...</string>
+    <string name="select_nature">SELECTIONNER UNE NATURE...</string>
+    <string name="select_secteur">SELECTIONNER UNE SECTEUR...</string>
+    <string name="select_specialite">SELECTIONNER UNE SPECIALITE...</string>
+    <string name="select_titre">SELECTIONNER UNE TITRE...</string>
+
 
 </resources>
