@@ -15,11 +15,11 @@ import java.util.ArrayList;
 public class Force {
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "f_id")
+    @ColumnInfo(name = "fid")
     private String fid;
 
     @NonNull
-    @ColumnInfo(name = "nom_force")
+    @ColumnInfo(name = "nomForce")
     private String nomForce;
 
     public Force() {
@@ -46,6 +46,7 @@ public class Force {
         }
         return forces;
     }
+
 
     @NonNull
     public String getFid() {

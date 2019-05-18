@@ -15,7 +15,7 @@ public interface ForceDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Force force);
 
-    @Query("select * from force_table order by  nom_force asc")
+    @Query("select * from force_table order by  nomForce asc")
     LiveData<List<Force>> getAllForce();
 
    /* @Query("select * from force_table order by  nom_force asc")

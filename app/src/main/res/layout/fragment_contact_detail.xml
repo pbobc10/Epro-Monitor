@@ -28,36 +28,11 @@
                     android:id="@+id/txtContactTitre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Dr."
+                    android:text="Dr.Pierre Bob Charlemagne"
                     android:textColor="@color/white"
-                    android:textSize="36sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtContactNom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:layout_toEndOf="@+id/txtContactTitre"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="Pierre "
-                    android:textColor="@color/white"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtContactPrenom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/txtContactNom"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="Bob Charlemagne"
-                    android:textColor="@color/white"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
-
 
                 <TextView
                     android:id="@+id/txtContactSpecialite"

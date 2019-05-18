@@ -16,6 +16,6 @@ public interface SecteurDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Secteur secteur);
 
-    @Query("Select * from secteur_table order by nom_secteur asc")
+    @Query("Select * from secteur_table order by nomSecteur asc")
     LiveData<List<Secteur>> getAllSecteur();
 }

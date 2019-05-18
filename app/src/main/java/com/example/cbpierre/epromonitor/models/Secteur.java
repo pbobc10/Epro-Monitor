@@ -15,11 +15,11 @@ import java.util.ArrayList;
 public class Secteur {
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "sec_id")
+    @ColumnInfo(name = "secId")
     private String secId;
 
     @NonNull
-    @ColumnInfo(name = "nom_secteur")
+    @ColumnInfo(name = "nomSecteur")
     private String nomSecteur;
 
     @NonNull

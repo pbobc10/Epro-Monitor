@@ -15,6 +15,6 @@ public interface TitreDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Titre titre);
 
-    @Query("Select * from titre_table order by titre asc")
+    @Query("Select * from titre_table order by nomTitre asc")
     LiveData<List<Titre>> getAllTitre();
 }

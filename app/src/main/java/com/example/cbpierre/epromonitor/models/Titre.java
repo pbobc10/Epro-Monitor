@@ -20,8 +20,8 @@ public class Titre {
     @ColumnInfo(name = "tid")
     private String tid;
 
-    @ColumnInfo(name = "titre")
-    private String titre;
+    @ColumnInfo(name = "nomTitre")
+    private String nomTitre;
 
     @ColumnInfo(name = "rang")
     private String rang;
@@ -33,7 +33,7 @@ public class Titre {
     public Titre(JSONObject jsonObject) {
         try {
             this.tid = jsonObject.getString("TID");
-            this.titre = jsonObject.getString("TITRE");
+            this.nomTitre = jsonObject.getString("TITRE");
             this.rang = jsonObject.getString("RANG");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -55,24 +55,25 @@ public class Titre {
         return titres;
     }
 
+    @NonNull
     public String getTid() {
         return tid;
     }
 
-    public void setTid(String tid) {
+    public void setTid(@NonNull String tid) {
         this.tid = tid;
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
     }
 
     public String getRang() {
         return rang;
+    }
+
+    public String getNomTitre() {
+        return nomTitre;
+    }
+
+    public void setNomTitre(String nomTitre) {
+        this.nomTitre = nomTitre;
     }
 
     public void setRang(String rang) {

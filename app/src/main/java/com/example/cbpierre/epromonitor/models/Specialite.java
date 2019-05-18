@@ -15,15 +15,15 @@ import java.util.ArrayList;
 public class Specialite {
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "sp_id")
+    @ColumnInfo(name = "spId")
     private String spId;
 
     @NonNull
-    @ColumnInfo(name = "nom_specialite")
+    @ColumnInfo(name = "nomSpecialite")
     private String nomSpecialite;
 
     @NonNull
-    @ColumnInfo(name = "nom_rang")
+    @ColumnInfo(name = "rang")
     private String rang;
 
     @NonNull

@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -15,7 +16,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-@Entity(tableName = "contact_table")
+@Entity(tableName = "contact_table",
+        foreignKeys = {
+                @ForeignKey(entity = Force.class, parentColumns = "fid", childColumns = "force"),
+                @ForeignKey(entity = Nature.class, parentColumns = "natId", childColumns = "nature"),
+                @ForeignKey(entity = Secteur.class, parentColumns = "secId", childColumns = "secteur"),
+                @ForeignKey(entity = Specialite.class, parentColumns = "spId", childColumns = "specialite"),
+                @ForeignKey(entity = Titre.class, parentColumns = "tid", childColumns = "titre")
+        }
+)
 public class Contact implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -155,8 +164,8 @@ public class Contact implements Serializable {
             this.transfere_le = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
             this.cree_par = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
             this.cree_le = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
-            this.modifie_par = jsonObject.getString("MODIFIE_PAR") == "null" ? null : jsonObject.getString("MODIFIE_PAR");
-            this.modifie_le = jsonObject.getString("MODIFIE_LE") == "null" ? null : jsonObject.getString("MODIFIE_LE");
+            this.modifie_par = jsonObject.getString("MODIFIE_PAR"); //== "null" ? null : jsonObject.getString("MODIFIE_PAR");
+            this.modifie_le = jsonObject.getString("MODIFIE_LE");// == "null" ? null : jsonObject.getString("MODIFIE_LE");
             this.valide = jsonObject.getBoolean("VALIDE");
             this.validateur = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
             this.date_maj_valide = jsonObject.getString("") == "null" ? null : jsonObject.getString("");

@@ -15,6 +15,6 @@ public interface SpecialiteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Specialite specialite);
 
-    @Query("select * from specialite_table order by nom_specialite asc")
+    @Query("select * from specialite_table order by nomSpecialite asc")
     LiveData<List<Specialite>> getAllSpecialite();
  }

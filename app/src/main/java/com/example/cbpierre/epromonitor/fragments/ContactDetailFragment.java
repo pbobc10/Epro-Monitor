@@ -13,8 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
-
 
 
 /**
@@ -24,7 +24,7 @@ import com.example.cbpierre.epromonitor.models.Contact;
  * to handle interaction events.
  */
 public class ContactDetailFragment extends Fragment {
-    TextView titre,nom,prenom, specialite, nature, secteur, tel, email, adresse;
+    TextView titre, specialite, nature, secteur, tel, email, creePar, creeLe, modifiePar, modifieLe, validePar, valideLe, adresse;
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,28 +48,39 @@ public class ContactDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         titre = view.findViewById(R.id.txtContactTitre);
-        nom = view.findViewById(R.id.txtContactNom);
-        prenom = view.findViewById(R.id.txtContactPrenom);
         specialite = view.findViewById(R.id.txtContactSpecialite);
         nature = view.findViewById(R.id.txtContactNature);
         secteur = view.findViewById(R.id.txtContactSecteur);
         tel = view.findViewById(R.id.txtContactTel);
         email = view.findViewById(R.id.txtContactEmail);
+        creePar = view.findViewById(R.id.txtCreePar);
+        creeLe = view.findViewById(R.id.txtCreatedDate);
+        modifiePar = view.findViewById(R.id.txtModiePar);
+        modifieLe = view.findViewById(R.id.txtModifiedDate);
+        validePar = view.findViewById(R.id.txtValidePar);
+        valideLe = view.findViewById(R.id.txtValidatedDate);
+
         adresse = view.findViewById(R.id.txtContactAddress);
 
 
         Bundle args = this.getArguments();
         if (args != null) {
-            Contact contact = (Contact) args.getSerializable("CONTACT");
-            Toast.makeText(getContext(), "===test " + contact.getNom(), Toast.LENGTH_SHORT).show();
-            titre.setText(contact.getTitre());
-            nom.setText(contact.getNom());
-            prenom.setText(contact.getPrenom());
-            specialite.setText(contact.getSpecialite());
-            nature.setText(contact.getNature());
-            secteur.setText(contact.getSecteur());
-            tel.setText(contact.getPhone1());
-            email.setText(contact.getEmail());
+            CompleteContact completeContact = (CompleteContact) args.getSerializable("CONTACT");
+             Toast.makeText(getContext(), "===test " + completeContact.getModifie_le(), Toast.LENGTH_SHORT).show();
+            String phone1 = completeContact.getPhone1() == null ? "" : completeContact.getPhone1();
+            String prenom = completeContact.getPrenom() == null ? "" : completeContact.getPrenom();
+            titre.setText(completeContact.getTitre() + ". " + completeContact.getNom() + " " + prenom);
+            specialite.setText(completeContact.getNomSpecialite());
+            nature.setText(completeContact.getNomNature());
+            secteur.setText(completeContact.getNomSecteur());
+            tel.setText(phone1);
+            email.setText(completeContact.getEmail());
+            creePar.setText(completeContact.getCree_par());
+            creeLe.setText(completeContact.getCree_le());
+            modifiePar.setText(completeContact.getModifie_par());
+            modifieLe.setText(completeContact.getModifie_le());
+            validePar.setText(completeContact.getValidateur());
+            valideLe.setText(completeContact.getDate_maj_valide());
             //adresse.setText(contact.getAdress);
         } else
             Toast.makeText(getContext(), "bundle null", Toast.LENGTH_SHORT).show();
