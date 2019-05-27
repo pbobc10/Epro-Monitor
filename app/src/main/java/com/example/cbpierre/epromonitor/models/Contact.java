@@ -114,7 +114,7 @@ public class Contact implements Serializable {
     @Nullable
     @ColumnInfo(name = "date_maj_valide")
     private String date_maj_valide;
-    
+
     // constructor
     @Ignore
     public Contact() {

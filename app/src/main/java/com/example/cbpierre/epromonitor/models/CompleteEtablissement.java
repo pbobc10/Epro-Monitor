@@ -1,6 +1,8 @@
 package com.example.cbpierre.epromonitor.models;
 
-public class CompleteEtablissement {
+import java.io.Serializable;
+
+public class CompleteEtablissement implements Serializable {
     //Eblissement
     private String etId;
     private String nom_Etablissement;

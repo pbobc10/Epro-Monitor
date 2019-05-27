@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.EtabsDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_orange_light"
+            android:elevation="2dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:id="@+id/txtEtabNom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Test Consulting"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtEtabStatut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtEtabNom"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="ACTIF"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:id="@+id/txtLabelAdresse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="15dp"
+                android:labelFor="@+id/txtEtabAdresse"
+                android:text="Adresse"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line1"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelAdresse" />
+
+            <TextView
+                android:id="@+id/txtEtabAdresse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line1"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Ardesse"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/txtLabelLocalite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEtabAdresse"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtEtabAdresse"
+                android:text="Localite"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line2"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelLocalite" />
+
+
+            <TextView
+                android:id="@+id/txtEtabLocalite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabelLocalite"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Localite"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelCommune"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEtabLocalite"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtEtabAdresse"
+                android:text="Commune "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line3"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelCommune" />
+
+
+            <TextView
+                android:id="@+id/txtEtabCommune"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line3"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Commune"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+            <TextView
+                android:id="@+id/txtLabelDepartement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEtabCommune"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtEtabAdresse"
+                android:text="Departement "
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line4"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelDepartement" />
+
+            <TextView
+                android:id="@+id/txtEtabDepartement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line4"
+                android:layout_alignParentStart="true"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Departement"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtLabelModifie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEtabDepartement"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:labelFor="@+id/txtEtabModifiePar"
+                android:text="Modifié par"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/line6"
+                style="@style/view_style"
+                android:layout_below="@id/txtLabelModifie" />
+
+            <TextView
+                android:id="@+id/txtEtabModifiePar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line6"
+                android:layout_centerHorizontal="false"
+                android:layout_marginTop="10dp"
+                android:text="Jean Pierre"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtEtabDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtEtabModifiePar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="12-Jan-2017"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
