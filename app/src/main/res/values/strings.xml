@@ -32,6 +32,7 @@
     <string name="nav_authentification_agent">Authentification Agent</string>
     <string name="nav_sign_in_user">Sign In  User</string>
     <string name="nav_user">User</string>
+    <string name="nav_etablissement_fragment">Etablissement</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -67,5 +68,6 @@
     <string name="select_specialite">SELECTIONNER UNE SPECIALITE...</string>
     <string name="select_titre">SELECTIONNER UNE TITRE...</string>
 
+    <string name="back_slash">/</string>
 
 </resources>

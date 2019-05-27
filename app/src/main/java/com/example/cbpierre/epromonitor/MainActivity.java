@@ -16,13 +16,15 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
+import com.example.cbpierre.epromonitor.fragments.ContactEtabsFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
+import com.example.cbpierre.epromonitor.fragments.EtablissementFragment;
 import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
 import com.example.cbpierre.epromonitor.fragments.TelechargementFragment;
 import com.example.cbpierre.epromonitor.fragments.UserFragment;
 
-public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnFragmentInteractionListener, PostDetailFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -91,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
             case R.id.nav_contact_fragment:
                 fragmentClass = ContactFragment.class;
                 break;
+            case R.id.nav_etablissement_fragment:
+                fragmentClass = EtablissementFragment.class;
+                break;
             case R.id.nav_gh_fragment:
                 fragmentClass = PostDetailFragment.class;
                 break;
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
                 break;
 
             case R.id.nav_telechargement_fragment:
-                fragmentClass= TelechargementFragment.class;
+                fragmentClass = TelechargementFragment.class;
                 break;
 
             case R.id.nav_logout:
@@ -153,5 +158,10 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onFragmentInteraction(int id) {
+        ContactEtabsFragment.id = id;
     }
 }

@@ -21,7 +21,10 @@ import com.example.cbpierre.epromonitor.AppVolleySingleton;
 import com.example.cbpierre.epromonitor.CustomArrayRequest;
 import com.example.cbpierre.epromonitor.CustomRequest;
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.ContactEtablissement;
+import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.Nature;
 import com.example.cbpierre.epromonitor.models.Secteur;
@@ -31,7 +34,9 @@ import com.example.cbpierre.epromonitor.models.Zone;
 import com.example.cbpierre.epromonitor.repositories.NatureRepository;
 import com.example.cbpierre.epromonitor.repositories.SecteurRepository;
 import com.example.cbpierre.epromonitor.repositories.SpecialiteRepository;
+import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
+import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ForceViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NatureViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SecteurViewModel;
@@ -56,8 +61,10 @@ public class TelechargementFragment extends Fragment {
     private TitreViewModel titreViewModel;
     private ZoneViewModel zoneViewModel;
     private ContactViewModel contactViewModel;
+    private EtablissementViewModel etablissementViewModel;
+    private ContactEtablissementViewModel contactEtablissementViewModel;
 
-    private Button btnDownload, btnSync;
+    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement;
 
     private ProgressDialog pDialog;
 
@@ -78,6 +85,8 @@ public class TelechargementFragment extends Fragment {
         titreViewModel = ViewModelProviders.of(this).get(TitreViewModel.class);
         zoneViewModel = ViewModelProviders.of(this).get(ZoneViewModel.class);
         contactViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+        etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
+        contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
     }
 
     @Override
@@ -95,8 +104,11 @@ public class TelechargementFragment extends Fragment {
         pDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
         pDialog.setCancelable(false);
 
-        btnDownload = view.findViewById(R.id.btnDownloadData);
-        btnDownload.setOnClickListener(new View.OnClickListener() {
+        btnDownloadContact = view.findViewById(R.id.btnDownloadData);
+        btnDownloadEtablissement = view.findViewById(R.id.btnDownloadDataEta);
+
+
+        btnDownloadContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -114,6 +126,22 @@ public class TelechargementFragment extends Fragment {
                 titreRequest(AppConfig.URL_TITRE);
                 zoneRequest(AppConfig.URL_ZONE);
                 contactRequest(AppConfig.URL_CONTACT);
+
+            }
+        });
+
+        btnDownloadEtablissement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //set title of the dialog
+                pDialog.setTitle("Get Etablissement Data  ...");
+                //set message of the dialog
+                pDialog.setMessage("Please wait.");
+                //show dialog
+                showDialog();
+
+                etablissementRequest(AppConfig.URL_ETABLISSEMENT);
 
             }
         });
@@ -255,6 +283,32 @@ public class TelechargementFragment extends Fragment {
 
                 for (Contact contact : contacts) {
                     contactViewModel.insertContact(contact);
+                }
+                for (ContactEtablissement etab : Contact.fromJsonEtabs(response)) {
+                    contactEtablissementViewModel.insertContactEtablissement(etab);
+                }
+                //dismiss dialog
+                hideDialog();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void etablissementRequest(String url) {
+
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                ArrayList<Etablissement> etablissements = Etablissement.fromJson(response);
+
+                for (Etablissement etablissement : etablissements) {
+                    etablissementViewModel.insertEtablissement(etablissement);
                 }
                 //dismiss dialog
                 hideDialog();

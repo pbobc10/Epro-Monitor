@@ -7,14 +7,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#b2dfdb"
-            android:elevation="5dp"
+            android:background="@android:color/holo_orange_light"
+            android:elevation="2dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -147,6 +148,36 @@
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
+            <TextView
+                android:id="@+id/txtContactTel2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line3"
+                android:layout_alignParentEnd="false"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/txtContactTel"
+                android:fontFamily="sans-serif-condensed"
+                android:text="(509)"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtContactTel3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line3"
+                android:layout_alignParentEnd="false"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/txtContactTel2"
+                android:fontFamily="sans-serif-condensed"
+                android:text="(509)"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
 
             <TextView
                 android:id="@+id/txtLabelEmail"
@@ -176,41 +207,11 @@
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
-
-            <TextView
-                android:id="@+id/txtLabelAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtContactEmail"
-                android:layout_centerHorizontal="false"
-                android:layout_marginTop="10dp"
-                android:labelFor="@+id/txtContactAddress"
-                android:text="Adresse "
-                android:textSize="18sp" />
-
-            <View
-                android:id="@+id/line5"
-                style="@style/view_style"
-                android:layout_below="@id/txtLabelAddress" />
-
-            <TextView
-                android:id="@+id/txtContactAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtLabelAddress"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="NON APLLICABLE"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="italic" />
-
             <TextView
                 android:id="@+id/txtCree"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtContactAddress"
+                android:layout_below="@+id/txtContactEmail"
                 android:layout_centerHorizontal="false"
                 android:layout_marginTop="10dp"
                 android:labelFor="@+id/txtCreatedDate"

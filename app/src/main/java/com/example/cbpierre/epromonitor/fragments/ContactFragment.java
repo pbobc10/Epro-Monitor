@@ -23,10 +23,9 @@ import android.view.ViewGroup;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.CompleteContactAdapter;
-import com.example.cbpierre.epromonitor.adapters.ContactAdapter;
 import com.example.cbpierre.epromonitor.models.CompleteContact;
-import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
+import com.example.cbpierre.epromonitor.viewModels.SharedViewModel;
 
 import java.util.List;
 
@@ -45,6 +44,7 @@ public class ContactFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private ContactViewModel contactViewModel;
+    private SharedViewModel sharedViewModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -83,6 +83,7 @@ public class ContactFragment extends Fragment {
         }
         // ViewModelProviders
         contactViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
     }
 
@@ -98,17 +99,6 @@ public class ContactFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //menu
         setHasOptionsMenu(true);
-        /*RecyclerView contactRecyclerView = view.findViewById(R.id.rvContacts);
-        final ContactAdapter completeContactAdapter = new ContactAdapter(this.getContext());
-        contactRecyclerView.setAdapter(completeContactAdapter);
-        contactRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-        contactViewModel.getAllContacts().observe(this, new Observer<List<Contact>>() {
-            @Override
-            public void onChanged(@Nullable List<Contact> completeContacts) {
-                completeContactAdapter.setContact(completeContacts);
-            }
-        });*/
 
         RecyclerView contactRecyclerView = view.findViewById(R.id.rvContacts);
         final CompleteContactAdapter completeContactAdapter = new CompleteContactAdapter(this.getContext());
@@ -125,30 +115,13 @@ public class ContactFragment extends Fragment {
         completeContactAdapter.setOnContactClickListener(new CompleteContactAdapter.OnContactClickListener() {
             @Override
             public void onContactClick(List<CompleteContact> _completeContact, int position) {
-                ContactDetailFragment fragment = new ContactDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("CONTACT", _completeContact.get(position));
-                fragment.setArguments(bundle);
+                sharedViewModel.setContactMutableLiveData(_completeContact.get(position));
+                ViewPagerFragment fragment = new ViewPagerFragment();
                 replaceFragment(fragment);
-
-                Log.d("contact", _completeContact.get(position).getNom() + " " + _completeContact.get(position).getModifie_par()
-                        + " " + _completeContact.get(position).getModifie_le()+" "+ _completeContact.get(position).getStatut());
-
+                /*Log.d("contact", _completeContact.get(position).getNom() + " " + _completeContact.get(position).getModifie_par()
+                        + " " + _completeContact.get(position).getModifie_le() + " " + _completeContact.get(position).getStatut());*/
             }
         });
-
-       /* completeContactAdapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
-            @Override
-            public void onContactClick(List<Contact> _contact, int position) {
-                ContactDetailFragment fragment = new ContactDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("CONTACT", _contact.get(position));
-                fragment.setArguments(bundle);
-                replaceFragment(fragment);
-                Log.d("=====testclick 6", "yes");
-
-            }
-        });*/
 
         //fab
         fabButton = view.findViewById(R.id.fabContact);

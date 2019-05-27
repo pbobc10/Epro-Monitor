@@ -102,6 +102,8 @@ public class SignInActivity extends AppCompatActivity {
                             Log.d("networkcheck", "pass2");
                         } else {
                             Toast.makeText(getApplicationContext(), "You Don't have Network Connection ...", Toast.LENGTH_LONG).show();
+                            //dismiss dialog
+                            hideDialog();
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Check if your Data or Wifi is Opened ...", Toast.LENGTH_LONG).show();

@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +27,7 @@ import java.util.Date;
         }
 )
 public class Contact implements Serializable {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @NonNull
     @ColumnInfo(name = "conId")
     private int conId;
@@ -113,7 +114,7 @@ public class Contact implements Serializable {
     @Nullable
     @ColumnInfo(name = "date_maj_valide")
     private String date_maj_valide;
-
+    
     // constructor
     @Ignore
     public Contact() {
@@ -148,27 +149,28 @@ public class Contact implements Serializable {
     public Contact(JSONObject jsonObject) {
         try {
             this.conId = jsonObject.getInt("CONID");
-            this.titre = jsonObject.getString("TITRE") == "null" ? null : jsonObject.getString("TITRE");
-            this.nom = jsonObject.getString("NOM") == "null" ? null : jsonObject.getString("NOM");
-            this.prenom = jsonObject.getString("PRENOM") == "null" ? null : jsonObject.getString("PRENOM");
-            this.nature = jsonObject.getString("NATURE") == "null" ? null : jsonObject.getString("NATURE");
-            this.secteur = jsonObject.getString("SECTEUR") == "null" ? null : jsonObject.getString("SECTEUR");
-            this.specialite = jsonObject.getString("SPECIALITE") == "null" ? null : jsonObject.getString("SPECIALITE");
+            this.titre = jsonObject.getString("TITRE").equals("null") ? null : jsonObject.getString("TITRE");
+            this.nom = jsonObject.getString("NOM").equals("null") ? null : jsonObject.getString("NOM");
+            this.prenom = jsonObject.getString("PRENOM").equals("null") ? null : jsonObject.getString("PRENOM");
+            this.nature = jsonObject.getString("NATURE").equals("null") ? null : jsonObject.getString("NATURE");
+            this.secteur = jsonObject.getString("SECTEUR").equals("null") ? null : jsonObject.getString("SECTEUR");
+            this.specialite = jsonObject.getString("SPECIALITE").equals("null") ? null : jsonObject.getString("SPECIALITE");
             this.force = jsonObject.getString("FORCE");
-            this.phone1 = jsonObject.getString("PHONE1") == "null" ? null : jsonObject.getString("PHONE1");
-            this.phone2 = jsonObject.getString("PHONE2") == "null" ? null : jsonObject.getString("PHONE2");
-            this.phone3 = jsonObject.getString("PHONE3") == "null" ? null : jsonObject.getString("PHONE3");
-            this.email = jsonObject.getString("EMAIL") == "null" ? null : jsonObject.getString("EMAIL");
+            this.phone1 = jsonObject.getString("PHONE1").equals("null") ? null : jsonObject.getString("PHONE1");
+            this.phone2 = jsonObject.getString("PHONE2").equals("null") ? null : jsonObject.getString("PHONE2");
+            this.phone3 = jsonObject.getString("PHONE3").equals("null") ? null : jsonObject.getString("PHONE3");
+            this.email = jsonObject.getString("EMAIL").equals("null") ? null : jsonObject.getString("EMAIL");
             this.statut = jsonObject.getInt("STATUT");
-            this.transfere_par = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
-            this.transfere_le = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
-            this.cree_par = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
-            this.cree_le = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.transfere_par = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.transfere_le = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.cree_par = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.cree_le = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
             this.modifie_par = jsonObject.getString("MODIFIE_PAR"); //== "null" ? null : jsonObject.getString("MODIFIE_PAR");
             this.modifie_le = jsonObject.getString("MODIFIE_LE");// == "null" ? null : jsonObject.getString("MODIFIE_LE");
             this.valide = jsonObject.getBoolean("VALIDE");
-            this.validateur = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
-            this.date_maj_valide = jsonObject.getString("") == "null" ? null : jsonObject.getString("");
+            this.validateur = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.date_maj_valide = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -186,6 +188,22 @@ public class Contact implements Serializable {
         }
         return contacts;
     }
+
+    public static ArrayList<ContactEtablissement> fromJsonEtabs(JSONArray jsonArray) {
+        ArrayList<ContactEtablissement> etabs = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                int conn = jsonArray.getJSONObject(i).getInt("CONID");
+                for (int j = 0; j < jsonArray.getJSONObject(i).getJSONArray("ETABS").length(); j++) {
+                    etabs.add(new ContactEtablissement(conn, jsonArray.getJSONObject(i).getJSONArray("ETABS").getInt(j)));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return etabs;
+    }
+
 
     @NonNull
     public int getConId() {

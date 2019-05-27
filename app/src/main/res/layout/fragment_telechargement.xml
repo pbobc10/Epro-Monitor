@@ -40,10 +40,46 @@
                 android:layout_alignBaseline="@id/btnDownloadData"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="60dp"
-                android:text="Download Data" />
+                android:text="Sync Data" />
 
 
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlEtablissement"
+            android:layout_width="match_parent"
+            android:layout_marginTop="24dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvEtablissement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginBottom="16dp"
+                android:text="Etablissement"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnDownloadDataEta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvEtablissement"
+                android:layout_alignStart="@id/tvEtablissement"
+                android:gravity="center_horizontal"
+                android:text="Download Data" />
+
+            <Button
+                android:id="@+id/btnSyncDataEta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/btnDownloadDataEta"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="60dp"
+                android:text="Sync Data" />
+
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

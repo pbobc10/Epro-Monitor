@@ -20,6 +20,8 @@ public class AppConfig {
     // Server  Contact url
     public static final String URL_CONTACT = "https://disprophar.net/webAPI/Prospection/GetContact?date=1/1/2018";
 
+    //Server Etablissement url
+    public static final String URL_ETABLISSEMENT = "https://disprophar.net/webAPI/Prospection/GetEtablissement?date=1/1/2018";
 
     // Server user register url
     public static final String URL_REGISTER = " ";

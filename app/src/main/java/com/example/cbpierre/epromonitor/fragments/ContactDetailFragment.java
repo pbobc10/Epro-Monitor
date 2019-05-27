@@ -1,5 +1,7 @@
 package com.example.cbpierre.epromonitor.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,18 +17,19 @@ import android.widget.Toast;
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.viewModels.SharedViewModel;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ContactDetailFragment.OnFragmentInteractionListener} interface
+ * {@link ContactDetailFragment.OnContactDetailInteractionListener} interface
  * to handle interaction events.
  */
 public class ContactDetailFragment extends Fragment {
-    TextView titre, specialite, nature, secteur, tel, email, creePar, creeLe, modifiePar, modifieLe, validePar, valideLe, adresse;
+    TextView titre, specialite, nature, secteur, tel, tel2, tel3, email, creePar, creeLe, modifiePar, modifieLe, validePar, valideLe, adresse;
 
-    private OnFragmentInteractionListener mListener;
+    private OnContactDetailInteractionListener mListener;
 
     public ContactDetailFragment() {
         // Required empty public constructor
@@ -35,6 +38,13 @@ public class ContactDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedViewModel sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
+            @Override
+            public void onChanged(@Nullable CompleteContact completeContact) {
+                populateContactDetail(completeContact);
+            }
+        });
     }
 
     @Override
@@ -52,6 +62,8 @@ public class ContactDetailFragment extends Fragment {
         nature = view.findViewById(R.id.txtContactNature);
         secteur = view.findViewById(R.id.txtContactSecteur);
         tel = view.findViewById(R.id.txtContactTel);
+        tel2 = view.findViewById(R.id.txtContactTel2);
+        tel3 = view.findViewById(R.id.txtContactTel3);
         email = view.findViewById(R.id.txtContactEmail);
         creePar = view.findViewById(R.id.txtCreePar);
         creeLe = view.findViewById(R.id.txtCreatedDate);
@@ -60,48 +72,48 @@ public class ContactDetailFragment extends Fragment {
         validePar = view.findViewById(R.id.txtValidePar);
         valideLe = view.findViewById(R.id.txtValidatedDate);
 
-        adresse = view.findViewById(R.id.txtContactAddress);
-
-
-        Bundle args = this.getArguments();
-        if (args != null) {
-            CompleteContact completeContact = (CompleteContact) args.getSerializable("CONTACT");
-             Toast.makeText(getContext(), "===test " + completeContact.getModifie_le(), Toast.LENGTH_SHORT).show();
-            String phone1 = completeContact.getPhone1() == null ? "" : completeContact.getPhone1();
-            String prenom = completeContact.getPrenom() == null ? "" : completeContact.getPrenom();
-            titre.setText(completeContact.getTitre() + ". " + completeContact.getNom() + " " + prenom);
-            specialite.setText(completeContact.getNomSpecialite());
-            nature.setText(completeContact.getNomNature());
-            secteur.setText(completeContact.getNomSecteur());
-            tel.setText(phone1);
-            email.setText(completeContact.getEmail());
-            creePar.setText(completeContact.getCree_par());
-            creeLe.setText(completeContact.getCree_le());
-            modifiePar.setText(completeContact.getModifie_par());
-            modifieLe.setText(completeContact.getModifie_le());
-            validePar.setText(completeContact.getValidateur());
-            valideLe.setText(completeContact.getDate_maj_valide());
-            //adresse.setText(contact.getAdress);
-        } else
-            Toast.makeText(getContext(), "bundle null", Toast.LENGTH_SHORT).show();
 
     }
 
+    public void populateContactDetail(CompleteContact completeContact) {
+        Toast.makeText(getContext(), "===TEST TEST " + completeContact.getNom(), Toast.LENGTH_SHORT).show();
+        String phone1 = completeContact.getPhone1() == null ? "" : completeContact.getPhone1();
+        String phone2 = completeContact.getPhone2() == null ? "" : "/ " + completeContact.getPhone2();
+        String phone3 = completeContact.getPhone3() == null ? "" : "/ " + completeContact.getPhone3();
+        String prenom = completeContact.getPrenom() == null ? "" : completeContact.getPrenom();
+        String info = completeContact.getTitre() + ". " + completeContact.getNom() + " " + prenom;
+        titre.setText(info);
+        specialite.setText(completeContact.getNomSpecialite());
+        nature.setText(completeContact.getNomNature());
+        secteur.setText(completeContact.getNomSecteur());
+        tel.setText(phone1);
+        tel2.setText(phone2);
+        tel3.setText(phone2);
+        email.setText(completeContact.getEmail());
+        creePar.setText(completeContact.getCree_par());
+        creeLe.setText(completeContact.getCree_le());
+        modifiePar.setText(completeContact.getModifie_par());
+        modifieLe.setText(completeContact.getModifie_le());
+        validePar.setText(completeContact.getValidateur());
+        valideLe.setText(completeContact.getDate_maj_valide());
+        onButtonPressed(completeContact.getConId());
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(int id) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(id);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnContactDetailInteractionListener) {
+            mListener = (OnContactDetailInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnContactDetailInteractionListener");
         }
     }
 
@@ -121,8 +133,8 @@ public class ContactDetailFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnContactDetailInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(int id);
     }
 }
