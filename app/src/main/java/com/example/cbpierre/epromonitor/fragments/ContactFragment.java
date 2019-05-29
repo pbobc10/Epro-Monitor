@@ -11,8 +11,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -105,6 +107,15 @@ public class ContactFragment extends Fragment {
         contactRecyclerView.setAdapter(completeContactAdapter);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        /*contactViewModel.getCompleteContact().observe(this, new Observer<List<CompleteContact>>() {
+            @Override
+            public void onChanged(@Nullable List<CompleteContact> completeContacts) {
+                completeContactAdapter.setContact(completeContacts);
+            }
+        });*/
+
+        // perform query here
+        contactViewModel.setContactByNom(null);
         contactViewModel.getCompleteContact().observe(this, new Observer<List<CompleteContact>>() {
             @Override
             public void onChanged(@Nullable List<CompleteContact> completeContacts) {
@@ -138,6 +149,27 @@ public class ContactFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_menu_contact, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                // perform query here
+                contactViewModel.setContactByNom(s);
+                // Reset SearchView
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                return true;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override

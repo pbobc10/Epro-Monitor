@@ -1,8 +1,11 @@
 package com.example.cbpierre.epromonitor.viewModels;
 
 import android.app.Application;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 
 import com.example.cbpierre.epromonitor.models.CompleteContact;
@@ -14,6 +17,7 @@ import java.util.List;
 public class ContactViewModel extends AndroidViewModel {
     private ContactRepository contactRepository;
     private LiveData<List<Contact>> mAllContact;
+    private MutableLiveData<String> contactByNom = new MutableLiveData<>();
     private LiveData<List<CompleteContact>> completeContact;
 
 
@@ -21,7 +25,19 @@ public class ContactViewModel extends AndroidViewModel {
         super(application);
         contactRepository = new ContactRepository(application);
         mAllContact = contactRepository.getmAllContacts();
-        completeContact = contactRepository.getCompleteContact();
+        completeContact = Transformations.switchMap(contactByNom, new Function<String, LiveData<List<CompleteContact>>>() {
+            @Override
+            public LiveData<List<CompleteContact>> apply(String input) {
+                if (input == null || input.equals(""))
+                    return contactRepository.getCompleteContact();
+                else
+                    return contactRepository.getContactNomRepo(input);
+            }
+        });
+    }
+
+    public void setContactByNom(String nom) {
+        contactByNom.setValue(nom);
     }
 
     public LiveData<List<Contact>> getAllContacts() {

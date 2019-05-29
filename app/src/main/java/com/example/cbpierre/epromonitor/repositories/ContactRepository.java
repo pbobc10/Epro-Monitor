@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
@@ -16,6 +17,7 @@ public class ContactRepository {
     private LiveData<List<Contact>> mAllContact;
     private LiveData<List<CompleteContact>> completeContact;
 
+
     public ContactRepository(Application application) {
         EproMonitorRoomDatabase db = EproMonitorRoomDatabase.getDatabase(application);
         contactDao = db.contactDao();
@@ -23,12 +25,17 @@ public class ContactRepository {
         completeContact = contactDao.getAllCompleteContacts();
     }
 
+
     public LiveData<List<Contact>> getmAllContacts() {
         return mAllContact;
     }
 
     public LiveData<List<CompleteContact>> getCompleteContact() {
         return completeContact;
+    }
+
+    public LiveData<List<CompleteContact>> getContactNomRepo(String nom) {
+        return contactDao.getContactByNom(nom);
     }
 
     public void insertContact(Contact newContact) {
