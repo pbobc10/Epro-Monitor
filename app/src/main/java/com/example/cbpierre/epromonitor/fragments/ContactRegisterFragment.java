@@ -157,7 +157,7 @@ public class ContactRegisterFragment extends Fragment {
         forceViewModel.getAllForce().observe(this, new Observer<List<Force>>() {
             @Override
             public void onChanged(@Nullable List<Force> forces) {
-                forceSpinnerAdapter = new ForceSpinnerAdapter(getContext(), R.layout.spinner_rows, forces);
+                forceSpinnerAdapter = new ForceSpinnerAdapter(getContext(), R.layout.spinner_item, forces);
                 forceSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spForce.setAdapter(forceSpinnerAdapter);
             }
@@ -165,7 +165,7 @@ public class ContactRegisterFragment extends Fragment {
         natureViewModel.getAllNature().observe(this, new Observer<List<Nature>>() {
             @Override
             public void onChanged(@Nullable List<Nature> natures) {
-                natureSpinnerAdapter = new NatureSpinnerAdapter(getContext(), R.layout.spinner_rows, natures);
+                natureSpinnerAdapter = new NatureSpinnerAdapter(getContext(), R.layout.spinner_item, natures);
                 natureSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spNature.setAdapter(natureSpinnerAdapter);
             }
@@ -173,7 +173,7 @@ public class ContactRegisterFragment extends Fragment {
         secteurViewModel.getsAllSecteur().observe(this, new Observer<List<Secteur>>() {
             @Override
             public void onChanged(@Nullable List<Secteur> secteurs) {
-                secteurSpinnerAdapter = new SecteurSpinnerAdapter(getContext(), R.layout.spinner_rows, secteurs);
+                secteurSpinnerAdapter = new SecteurSpinnerAdapter(getContext(), R.layout.spinner_item, secteurs);
                 secteurSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spSecteur.setAdapter(secteurSpinnerAdapter);
             }
@@ -181,7 +181,7 @@ public class ContactRegisterFragment extends Fragment {
         specialiteViewModel.getAllSpecialite().observe(this, new Observer<List<Specialite>>() {
             @Override
             public void onChanged(@Nullable List<Specialite> specialites) {
-                specialiteSpinnerAdapter = new SpecialiteSpinnerAdapter(getContext(), R.layout.spinner_rows, specialites);
+                specialiteSpinnerAdapter = new SpecialiteSpinnerAdapter(getContext(), R.layout.spinner_item, specialites);
                 specialiteSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spSpecialite.setAdapter(specialiteSpinnerAdapter);
             }
@@ -189,7 +189,7 @@ public class ContactRegisterFragment extends Fragment {
         titreViewModel.getmAllTitre().observe(this, new Observer<List<Titre>>() {
             @Override
             public void onChanged(@Nullable List<Titre> titres) {
-                titreSpinnerAdapter = new TitreSpinnerAdapter(getContext(), R.layout.spinner_rows, titres);
+                titreSpinnerAdapter = new TitreSpinnerAdapter(getContext(), R.layout.spinner_item, titres);
                 titreSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spTitre.setAdapter(titreSpinnerAdapter);
             }
@@ -219,7 +219,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     //on selected a spinner item
                     Nature nature =(Nature) adapterView.getItemAtPosition(position);
-                    item1 = nature.getNomNature();
+                    item1 = nature.getNatId();
                     // show selected spinner item
                     Toast.makeText(getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
                 }
@@ -269,7 +269,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     //on selected a spinner item
                     Secteur secteur = (Secteur) adapterView.getItemAtPosition(position);
-                    item3 = secteur.getNomSecteur();
+                    item3 = secteur.getSecId();
                     // show selected spinner item
                     Toast.makeText(getContext(), "Selected: " + item3, Toast.LENGTH_LONG).show();
                 }
@@ -294,7 +294,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     //on selected a spinner item
                     Specialite specialite =(Specialite) adapterView.getItemAtPosition(position);
-                    item4 = specialite.getNomSpecialite();
+                    item4 = specialite.getSpId();
                     // show selected spinner item
                     Toast.makeText(getContext(), "Selected: " + item4, Toast.LENGTH_LONG).show();
                 }

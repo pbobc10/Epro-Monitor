@@ -13,7 +13,9 @@
         <RelativeLayout
             android:id="@+id/rlContact"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tvContact"
@@ -22,33 +24,42 @@
                 android:layout_marginStart="60dp"
                 android:layout_marginBottom="16dp"
                 android:text="Contact"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnDownloadData"
-                android:layout_width="wrap_content"
+                android:layout_width="148dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvContact"
                 android:layout_alignStart="@id/tvContact"
-                android:gravity="center_horizontal"
-                android:text="Download Data" />
+                android:background="@drawable/button_solid_tel"
+                android:padding="12dp"
+                android:text="Download Data"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnSyncData"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/btnDownloadData"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="60dp"
-                android:text="Sync Data" />
+                android:background="@drawable/button_telechargement"
+                android:text="Sync Data"
+                android:textColor="@color/colorPrimary" />
 
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rlEtablissement"
             android:layout_width="match_parent"
-            android:layout_marginTop="24dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tvEtablissement"
@@ -57,25 +68,30 @@
                 android:layout_marginStart="60dp"
                 android:layout_marginBottom="16dp"
                 android:text="Etablissement"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnDownloadDataEta"
-                android:layout_width="wrap_content"
+                android:layout_width="148dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvEtablissement"
                 android:layout_alignStart="@id/tvEtablissement"
-                android:gravity="center_horizontal"
-                android:text="Download Data" />
+                android:background="@drawable/button_solid_tel"
+                android:text="Download Data"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnSyncDataEta"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/btnDownloadDataEta"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="60dp"
-                android:text="Sync Data" />
+                android:background="@drawable/button_telechargement"
+                android:text="Sync Data"
+                android:textColor="@color/colorPrimary" />
 
 
         </RelativeLayout>

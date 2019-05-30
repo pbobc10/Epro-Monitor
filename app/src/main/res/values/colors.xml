@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">@color/colorPrimary</color>
 
-   <!-- <color name="bg_login">#26ae90</color>-->
+    <!-- <color name="bg_login">#26ae90</color>-->
     <!--<color name="bg_lightPrimary">#e5e5e7</color>-->
     <color name="bg_lightPrimary">#eeedef</color>
     <color name="bg_login">#149C8E</color>
@@ -21,6 +21,7 @@
     <color name="btn_login_bg">#eceef1</color>
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
+    <color name="btn_download">#e61a5f</color>
 
 </resources>
 

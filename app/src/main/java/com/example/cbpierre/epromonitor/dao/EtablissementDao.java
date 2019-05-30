@@ -23,4 +23,9 @@ public interface EtablissementDao {
             "where etablissement_table.localite=zone_table.zone_ht_id ")
     LiveData<List<CompleteEtablissement>> getAllCompleteEtablissement();
 
+    @Query("select * from ETABLISSEMENT_TABLE,zone_table " +
+            "where etablissement_table.localite=zone_table.zone_ht_id " +
+            "and etablissement_table.nom_Etablissement like '%' || :nom || '%'")
+    LiveData<List<CompleteEtablissement>> getCompleteEtabsByNom(String nom);
+
 }

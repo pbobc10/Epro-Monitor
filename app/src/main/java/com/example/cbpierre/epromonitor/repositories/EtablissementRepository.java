@@ -21,11 +21,14 @@ public class EtablissementRepository {
         this.etablissementDao = database.etablissementDao();
         this.allEtablissement = etablissementDao.getAllEtablissement();
         this.allCompleteEtablissement = etablissementDao.getAllCompleteEtablissement();
-
     }
 
     public LiveData<List<Etablissement>> getAllEtablissement() {
         return allEtablissement;
+    }
+
+    public LiveData<List<CompleteEtablissement>> getCompleteEtabsByNom(String nom) {
+        return etablissementDao.getCompleteEtabsByNom(nom);
     }
 
     public LiveData<List<CompleteEtablissement>> getAllCompleteEtablissement() {

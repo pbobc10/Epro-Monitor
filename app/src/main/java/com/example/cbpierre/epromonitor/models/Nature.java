@@ -32,6 +32,12 @@ public class Nature {
     public Nature() {
     }
 
+    public Nature(@NonNull String natId, @NonNull String nomNature, @NonNull String rang) {
+        this.natId = natId;
+        this.nomNature = nomNature;
+        this.rang = rang;
+    }
+
     public Nature(JSONObject jsonObject) {
         try {
             this.natId = jsonObject.getString("NATID");

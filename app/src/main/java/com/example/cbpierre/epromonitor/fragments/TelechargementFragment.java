@@ -115,7 +115,7 @@ public class TelechargementFragment extends Fragment {
                 //set title of the dialog
                 pDialog.setTitle("Get Contact Data  ...");
                 //set message of the dialog
-                pDialog.setMessage("Please wait.");
+                pDialog.setMessage("Please wait...");
                 //show dialog
                 showDialog();
 
@@ -137,7 +137,7 @@ public class TelechargementFragment extends Fragment {
                 //set title of the dialog
                 pDialog.setTitle("Get Etablissement Data  ...");
                 //set message of the dialog
-                pDialog.setMessage("Please wait.");
+                pDialog.setMessage("Please wait...");
                 //show dialog
                 showDialog();
 

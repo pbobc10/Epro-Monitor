@@ -1,8 +1,11 @@
 package com.example.cbpierre.epromonitor.viewModels;
 
 import android.app.Application;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 
 import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
@@ -15,12 +18,26 @@ public class EtablissementViewModel extends AndroidViewModel {
     private LiveData<List<Etablissement>> allEtablissement;
     private LiveData<List<CompleteEtablissement>> allCompleteEtablissement;
     private EtablissementRepository etablissementRepository;
+    private MutableLiveData<String> completeEtabsByNom = new MutableLiveData<>();
 
     public EtablissementViewModel(@NonNull Application application) {
         super(application);
         etablissementRepository = new EtablissementRepository(application);
         allEtablissement = etablissementRepository.getAllEtablissement();
-        allCompleteEtablissement = etablissementRepository.getAllCompleteEtablissement();
+        allCompleteEtablissement = Transformations.switchMap(completeEtabsByNom, new Function<String, LiveData<List<CompleteEtablissement>>>() {
+            @Override
+            public LiveData<List<CompleteEtablissement>> apply(String input) {
+                if (input == null || input.equals(""))
+                    return etablissementRepository.getAllCompleteEtablissement();
+                else
+                    return etablissementRepository.getCompleteEtabsByNom(input);
+            }
+        });
+
+    }
+
+    public void setCompleteEtabsByNom(String nom) {
+        completeEtabsByNom.setValue(nom);
     }
 
     public LiveData<List<Etablissement>> getAllEtablissement() {

@@ -9,9 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -41,6 +46,7 @@ public class EtablissementFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
+        etablissementViewModel.setCompleteEtabsByNom(null);
 
     }
 
@@ -54,6 +60,9 @@ public class EtablissementFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //menu
+        setHasOptionsMenu(true);
+
         etablissementAdapter = new CompleteEtablissementAdapter(this.getContext());
         recyclerView = view.findViewById(R.id.rvEtablissements);
         recyclerView.setAdapter(etablissementAdapter);
@@ -64,6 +73,7 @@ public class EtablissementFragment extends Fragment {
                 etablissementAdapter.setEtablissement(etablissements);
             }
         });
+
 
         etablissementAdapter.setOnCompleteEtablissementListener(new CompleteEtablissementAdapter.OnCompleteEtablissementListener() {
             @Override
@@ -77,6 +87,33 @@ public class EtablissementFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_menu_etablissement, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_etab_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("Search by Nom");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                etablissementViewModel.setCompleteEtabsByNom(s);
+                // perform query here
+                searchView.clearFocus();
+                //reset searchView
+                searchView.setIconified(true);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
