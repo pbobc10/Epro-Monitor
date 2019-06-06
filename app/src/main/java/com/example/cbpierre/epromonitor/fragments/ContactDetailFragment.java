@@ -76,7 +76,7 @@ public class ContactDetailFragment extends Fragment {
     }
 
     public void populateContactDetail(CompleteContact completeContact) {
-        Toast.makeText(getContext(), "===TEST TEST " + completeContact.getNom(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "===TEST TEST " + completeContact.getNom(), Toast.LENGTH_SHORT).show();
         String phone1 = completeContact.getPhone1() == null ? "" : completeContact.getPhone1();
         String phone2 = completeContact.getPhone2() == null ? "" : "/ " + completeContact.getPhone2();
         String phone3 = completeContact.getPhone3() == null ? "" : "/ " + completeContact.getPhone3();

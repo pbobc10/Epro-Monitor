@@ -79,7 +79,6 @@ public class ContactRegisterFragment extends Fragment {
     private SecteurSpinnerAdapter secteurSpinnerAdapter;
     private SpecialiteSpinnerAdapter specialiteSpinnerAdapter;
     private TitreSpinnerAdapter titreSpinnerAdapter;
-    private ZoneSpinnerAdapter zoneSpinnerAdapter;
 
 
     public ContactRegisterFragment() {
@@ -96,7 +95,6 @@ public class ContactRegisterFragment extends Fragment {
         secteurViewModel = ViewModelProviders.of(this).get(SecteurViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
         titreViewModel = ViewModelProviders.of(this).get(TitreViewModel.class);
-        zoneViewModel = ViewModelProviders.of(this).get(ZoneViewModel.class);
     }
 
     @Override
@@ -212,16 +210,20 @@ public class ContactRegisterFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (view == null)
                     return;
-                if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE NATURE...")) {
+                //Nature Object
+                //on selected a spinner item
+                Nature nature = (Nature) adapterView.getItemAtPosition(position);
+
+                if (nature.getNomNature().equals("-- SELECTIONNER UNE NATURE --")) {
                     //change default item color
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
                 } else {
-                    //on selected a spinner item
-                    Nature nature =(Nature) adapterView.getItemAtPosition(position);
+
+
                     item1 = nature.getNatId();
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -237,16 +239,18 @@ public class ContactRegisterFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (view == null)
                     return;
-                if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UN TITRE...")) {
+                //Titre Object
+                //on selected a spinner item
+                Titre titre = (Titre) adapterView.getItemAtPosition(position);
+
+                if (titre.getNomTitre().equals("-- SELECTIONNER UN TITRE --")) {
                     //change default item color
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    //on selected a spinner item
-                    Titre titre = (Titre)adapterView.getItemAtPosition(position);
                     item2 = titre.getTid();
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + item2, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(), "Selected: " + item2, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -262,16 +266,18 @@ public class ContactRegisterFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (view == null)
                     return;
-                if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UN SECTEUR...")) {
+                //Secteur Object
+                //on selected a spinner item
+                Secteur secteur = (Secteur) adapterView.getItemAtPosition(position);
+
+                if (secteur.getNomSecteur().equals("-- SELECTIONNER UN SECTEUR --")) {
                     //change default item color
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    //on selected a spinner item
-                    Secteur secteur = (Secteur) adapterView.getItemAtPosition(position);
                     item3 = secteur.getSecId();
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + item3, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Selected: " + item3, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -287,16 +293,18 @@ public class ContactRegisterFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (view == null)
                     return;
-                if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE SPECIALITE...")) {
+                //Specialite
+                //on selected a spinner item
+                Specialite specialite = (Specialite) adapterView.getItemAtPosition(position);
+
+                if (specialite.getNomSpecialite().equals("-- SELECTIONNER UNE SPECIALITE --")) {
                     //change default item color
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    //on selected a spinner item
-                    Specialite specialite =(Specialite) adapterView.getItemAtPosition(position);
                     item4 = specialite.getSpId();
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + item4, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(), "Selected: " + item4, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -312,16 +320,18 @@ public class ContactRegisterFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (view == null)
                     return;
-                if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE FORCE...")) {
+                //Force Object
+                //on selected a spinner item
+                Force force = (Force) adapterView.getItemAtPosition(position);
+
+                if (force.getNomForce().equals("-- SELECTIONNER UNE FORCE --")) {
                     //change default item color
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    //on selected a spinner item
-                    Force force = (Force) adapterView.getItemAtPosition(position);
                     item5 = force.getFid();
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + item5, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(), "Selected: " + item5, Toast.LENGTH_LONG).show();
                 }
             }
 

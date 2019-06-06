@@ -29,6 +29,12 @@ public class Secteur {
     public Secteur() {
     }
 
+    public Secteur(@NonNull String secId, @NonNull String nomSecteur, @NonNull String rang) {
+        this.secId = secId;
+        this.nomSecteur = nomSecteur;
+        this.rang = rang;
+    }
+
     public Secteur(JSONObject jsonObject) {
         try {
             this.secId = jsonObject.getString("SECID");

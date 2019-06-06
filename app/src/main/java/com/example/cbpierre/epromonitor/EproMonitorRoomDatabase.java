@@ -45,7 +45,7 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
                 @Override
                 public void onOpen(@NonNull SupportSQLiteDatabase db) {
                     super.onOpen(db);
-                    // new PopulateDbAsync(INSTANCE).execute();
+                    new PopulateDbAsync(INSTANCE).execute();
                     Log.d("test", "room3");
 
                     //test to insert contact
@@ -94,22 +94,60 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
     public abstract PostLoginDao postLoginDao();
 
 
-    /*public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+    public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
-        private final LoginDao loginDao;
+        private final EtablissementDao etablissementDao;
+        private final ZoneDao zoneDao;
+        private final NatureDao natureDao;
+        private final TitreDao titreDao;
+        private final SecteurDao secteurDao;
+        private final SpecialiteDao specialiteDao;
+        private final ForceDao forceDao;
 
         public PopulateDbAsync(EproMonitorRoomDatabase db) {
-            loginDao = db.loginDao();
+            etablissementDao = db.etablissementDao();
+            zoneDao = db.zoneDao();
+            natureDao = db.natureDao();
+            titreDao = db.titreDao();
+            secteurDao = db.secteurDao();
+            specialiteDao = db.specialiteDao();
+            forceDao = db.forceDao();
+
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Login login = new Login("Test ePM", "testepm","SAM-004","4837489328734890","");
-            loginDao.insert(login);
+            //insert Etablissement
+            Etablissement eta = new Etablissement(0, "N'EST PAS DANS LA LISTE", null, null, null, null, 0, false, null, null);
+            etablissementDao.insert(eta);
+
+            //insert Zone
+            Zone zone = new Zone("AAA", "--SELECTIONNER UNE LOCALITE--", "AAA", "AAA", "AAA", "AAA");
+            zoneDao.insert(zone);
             Log.d("test", "room4");
+
+            //insert Nature
+            Nature nature = new Nature("AA1", "-- SELECTIONNER UNE NATURE --", "A");
+            natureDao.insert(nature);
+
+            //insert Titre
+            Titre titre = new Titre("AA2", "-- SELECTIONNER UN TITRE --", "A");
+            titreDao.insert(titre);
+
+            //insert Secteur
+            Secteur secteur = new Secteur("AA3", "-- SELECTIONNER UN SECTEUR --", "A");
+            secteurDao.insert(secteur);
+
+            //insert Specialite
+            Specialite specialite = new Specialite("AA4", "-- SELECTIONNER UNE SPECIALITE --", "A", "A");
+            specialiteDao.insert(specialite);
+
+            // insert Force
+            Force force = new Force("AA5", "-- SELECTIONNER UNE FORCE --");
+            forceDao.insert(force);
             return null;
         }
-    }*/
+    }
 
     //test to insert contacts
    /* private static class InsertContactTask extends AsyncTask<Void, Void, Void> {

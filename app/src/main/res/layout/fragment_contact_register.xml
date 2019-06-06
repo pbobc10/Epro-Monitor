@@ -210,6 +210,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="@string/hint_tel"
                     android:inputType="phone"
+                    android:maxLength="11"
                     android:padding="12dp"
                     android:textColorHint="@color/input_login_hint" />
             </RelativeLayout>

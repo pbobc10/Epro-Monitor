@@ -6,7 +6,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,6 +34,7 @@ public class ContactEtabsFragment extends Fragment {
     private RecyclerView recyclerView;
     private ContactEtablissementViewModel contactEtablissementViewModel;
     private JoinContactEtablissementAdapter etablissementAdapter;
+    private FloatingActionButton fabButton;
     public static int id;
 
     public ContactEtabsFragment() {
@@ -62,6 +66,20 @@ public class ContactEtabsFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<JoinContactEtablissementData> joinContactEtablissementData) {
                 etablissementAdapter.setEtablissement(joinContactEtablissementData);
+            }
+        });
+
+        //fab
+        fabButton = view.findViewById(R.id.fabEtabs);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new EtabsRegisterFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
     }

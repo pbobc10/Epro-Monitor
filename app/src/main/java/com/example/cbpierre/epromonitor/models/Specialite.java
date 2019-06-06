@@ -33,6 +33,13 @@ public class Specialite {
     public Specialite() {
     }
 
+    public Specialite(@NonNull String spId, @NonNull String nomSpecialite, @NonNull String rang, @NonNull String statut) {
+        this.spId = spId;
+        this.nomSpecialite = nomSpecialite;
+        this.rang = rang;
+        this.statut = statut;
+    }
+
     public Specialite(JSONObject jsonObject) {
         try {
             this.spId = jsonObject.getString("SPID");

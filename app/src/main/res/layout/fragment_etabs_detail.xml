@@ -83,7 +83,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Ardesse"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp" />
 
 
@@ -113,7 +113,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Localite"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -144,7 +144,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Commune"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -173,7 +173,7 @@
                 android:layout_alignParentStart="true"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Departement"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -201,7 +201,7 @@
                 android:layout_centerHorizontal="false"
                 android:layout_marginTop="10dp"
                 android:text="Jean Pierre"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="18sp" />
 
             <TextView
@@ -213,7 +213,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="12-Jan-2017"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 

@@ -25,6 +25,11 @@ public class Force {
     public Force() {
     }
 
+    public Force(@NonNull String fid, @NonNull String nomForce) {
+        this.fid = fid;
+        this.nomForce = nomForce;
+    }
+
     public Force(JSONObject jsonObject) {
         try {
             this.fid = jsonObject.getString("FID");

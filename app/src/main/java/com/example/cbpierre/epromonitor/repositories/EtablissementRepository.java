@@ -14,6 +14,7 @@ import java.util.List;
 public class EtablissementRepository {
     private LiveData<List<Etablissement>> allEtablissement;
     private LiveData<List<CompleteEtablissement>> allCompleteEtablissement;
+    private LiveData<List<Etablissement>> etabByLocalite;
     private EtablissementDao etablissementDao;
 
     public EtablissementRepository(Application application) {
@@ -21,6 +22,10 @@ public class EtablissementRepository {
         this.etablissementDao = database.etablissementDao();
         this.allEtablissement = etablissementDao.getAllEtablissement();
         this.allCompleteEtablissement = etablissementDao.getAllCompleteEtablissement();
+    }
+
+    public LiveData<List<Etablissement>> getEtabByLocalite(String localite) {
+        return etablissementDao.getEtabByLocalite(localite);
     }
 
     public LiveData<List<Etablissement>> getAllEtablissement() {

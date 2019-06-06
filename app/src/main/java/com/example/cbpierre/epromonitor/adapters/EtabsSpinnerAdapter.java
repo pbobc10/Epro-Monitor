@@ -8,27 +8,27 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.cbpierre.epromonitor.R;
-import com.example.cbpierre.epromonitor.models.Titre;
+import com.example.cbpierre.epromonitor.models.Etablissement;
 
 import java.util.List;
 
-public class TitreSpinnerAdapter extends ArrayAdapter<Titre> {
-    private List<Titre> titres;
+public class EtabsSpinnerAdapter extends ArrayAdapter<Etablissement> {
+    private List<Etablissement> etablissements;
     private Context context;
 
     public static class ViewHolder {
         TextView textView;
     }
 
-    public TitreSpinnerAdapter(Context context, int resource, List<Titre> titres) {
-        super(context, resource, titres);
+    public EtabsSpinnerAdapter(Context context, int resource, List<Etablissement> etablissements) {
+        super(context,resource,etablissements);
         this.context = context;
-        this.titres = titres;
+        this.etablissements = etablissements;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Titre titre = titres.get(position);
+        Etablissement etablissement = etablissements.get(position);
 
         // view lookup cache stored in tag
         ViewHolder viewHolder;
@@ -50,7 +50,7 @@ public class TitreSpinnerAdapter extends ArrayAdapter<Titre> {
 
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.textView.setText(titre.getNomTitre());
+        viewHolder.textView.setText(etablissement.getNomEtablissement());
         // Return the completed view to render on screen
         return convertView;
         //return super.getView(position, convertView, parent);

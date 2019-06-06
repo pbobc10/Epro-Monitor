@@ -32,6 +32,7 @@ public class Nature {
     public Nature() {
     }
 
+
     public Nature(@NonNull String natId, @NonNull String nomNature, @NonNull String rang) {
         this.natId = natId;
         this.nomNature = nomNature;

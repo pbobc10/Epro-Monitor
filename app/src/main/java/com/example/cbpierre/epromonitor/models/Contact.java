@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,11 +25,15 @@ import java.util.Date;
                 @ForeignKey(entity = Secteur.class, parentColumns = "secId", childColumns = "secteur"),
                 @ForeignKey(entity = Specialite.class, parentColumns = "spId", childColumns = "specialite"),
                 @ForeignKey(entity = Titre.class, parentColumns = "tid", childColumns = "titre")
-        }
+        }, indices = @Index(value = "conId", name = "contact_index", unique = true)
 )
 public class Contact implements Serializable {
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @NonNull
+    @ColumnInfo(name = "contactId")
+    private int contactId;
+
+
     @ColumnInfo(name = "conId")
     private int conId;
 
@@ -115,6 +120,9 @@ public class Contact implements Serializable {
     @ColumnInfo(name = "date_maj_valide")
     private String date_maj_valide;
 
+    @ColumnInfo(name = "data_change")
+    private int dataChange;
+
     // constructor
     @Ignore
     public Contact() {
@@ -143,6 +151,7 @@ public class Contact implements Serializable {
         this.valide = valide;
         this.validateur = validateur;
         this.date_maj_valide = date_maj_valide;
+        this.dataChange=0;
     }
 
 
@@ -170,6 +179,7 @@ public class Contact implements Serializable {
             this.valide = jsonObject.getBoolean("VALIDE");
             this.validateur = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
             this.date_maj_valide = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.dataChange=0;
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -380,5 +390,21 @@ public class Contact implements Serializable {
 
     public void setDate_maj_valide(String date_maj_valide) {
         this.date_maj_valide = date_maj_valide;
+    }
+
+    public int getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
+    }
+
+    public int getDataChange() {
+        return dataChange;
+    }
+
+    public void setDataChange(int dataChange) {
+        this.dataChange = dataChange;
     }
 }

@@ -41,6 +41,15 @@ public class Zone {
     public Zone() {
     }
 
+    public Zone(@NonNull String zoneHtId, @NonNull String descriptionZoneHt, @NonNull String typeZone, @NonNull String departement, @NonNull String commune, @NonNull String localite) {
+        this.zoneHtId = zoneHtId;
+        this.descriptionZoneHt = descriptionZoneHt;
+        this.typeZone = typeZone;
+        this.departement = departement;
+        this.commune = commune;
+        this.localite = localite;
+    }
+
     public Zone(JSONObject jsonObject) {
         try {
             this.zoneHtId = jsonObject.getString("ZONE_HT_ID");

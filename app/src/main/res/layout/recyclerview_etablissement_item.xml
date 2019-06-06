@@ -29,7 +29,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:text="Test Entreprise"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Andresse: 100,Impasse Test, Port -au- Prince"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="Localite: HT.OU.CB-1-HT2323-LOC"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 

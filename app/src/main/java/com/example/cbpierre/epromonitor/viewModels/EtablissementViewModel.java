@@ -17,8 +17,10 @@ import java.util.List;
 public class EtablissementViewModel extends AndroidViewModel {
     private LiveData<List<Etablissement>> allEtablissement;
     private LiveData<List<CompleteEtablissement>> allCompleteEtablissement;
+    private LiveData<List<Etablissement>> etabsLocalite;
     private EtablissementRepository etablissementRepository;
     private MutableLiveData<String> completeEtabsByNom = new MutableLiveData<>();
+    private MutableLiveData<String> etabByLocalite = new MutableLiveData<>();
 
     public EtablissementViewModel(@NonNull Application application) {
         super(application);
@@ -34,6 +36,20 @@ public class EtablissementViewModel extends AndroidViewModel {
             }
         });
 
+        etabsLocalite = Transformations.switchMap(etabByLocalite, new Function<String, LiveData<List<Etablissement>>>() {
+            @Override
+            public LiveData<List<Etablissement>> apply(String input) {
+                return etablissementRepository.getEtabByLocalite(input);
+            }
+        });
+    }
+
+    public void setEtabByLocalite(String localite) {
+        etabByLocalite.setValue(localite);
+    }
+
+    public LiveData<List<Etablissement>> getEtabByLocalite() {
+        return etabsLocalite;
     }
 
     public void setCompleteEtabsByNom(String nom) {

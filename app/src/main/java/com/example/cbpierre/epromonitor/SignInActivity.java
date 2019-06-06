@@ -107,9 +107,13 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Check if your Data or Wifi is Opened ...", Toast.LENGTH_LONG).show();
+                        //dismiss dialog
+                        hideDialog();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter your Username or Password or Mobile Code", Toast.LENGTH_LONG).show();
+                    //dismiss dialog
+                    hideDialog();
                 }
 
             }
@@ -127,7 +131,7 @@ public class SignInActivity extends AppCompatActivity {
         params.put("Imei2", imei2);
 
         // Formulate the request and handle the response.
-        CustomRequest customRequest = new CustomRequest(Request.Method.POST, AppConfig.URL_LOGIN, params, new Response.Listener<JSONObject>() {
+       CustomRequest customRequest = new CustomRequest(Request.Method.POST, AppConfig.URL_LOGIN, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("volleyTest", "pass1");

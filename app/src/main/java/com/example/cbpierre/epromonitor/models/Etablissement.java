@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -11,12 +12,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "etablissement_table")
+@Entity(tableName = "etablissement_table", indices = @Index(value = "etId", name = "etablissement_index", unique = true))
 public class Etablissement {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "etabId")
+    private int etabId;
+
     @ColumnInfo(name = "etId")
-    private String etId;
+    private int etId;
 
     @ColumnInfo(name = "nom_Etablissement")
     private String nomEtablissement;
@@ -45,13 +48,30 @@ public class Etablissement {
     @ColumnInfo(name = "modifie_le")
     private String modifie_le;
 
+    @ColumnInfo(name = "data_change")
+    private int dataChange;
+
 
     public Etablissement() {
     }
 
+    public Etablissement(int etId, String nomEtablissement, String localite, String adresse, String latitude, String longitude, int statut, boolean valide, String modifie_par, String modifie_le) {
+        this.etId = etId;
+        this.nomEtablissement = nomEtablissement;
+        this.localite = localite;
+        this.adresse = adresse;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.statut = statut;
+        this.valide = valide;
+        this.modifie_par = modifie_par;
+        this.modifie_le = modifie_le;
+        this.dataChange = 0;
+    }
+
     public Etablissement(JSONObject jsonObject) {
         try {
-            this.etId = jsonObject.getString("ETID");
+            this.etId = jsonObject.getInt("ETID");
             this.nomEtablissement = jsonObject.getString("NOM");
             this.localite = jsonObject.getString("LOCALITE");
             this.adresse = jsonObject.getString("ADRESSE");
@@ -61,6 +81,7 @@ public class Etablissement {
             this.valide = jsonObject.getBoolean("VALIDE");
             this.modifie_par = jsonObject.getString("MODIFIE_PAR");
             this.modifie_le = jsonObject.getString("MODIFIE_LE");
+            this.dataChange = 0;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,7 +101,7 @@ public class Etablissement {
     }
 
     @NonNull
-    public String getEtId() {
+    public int getEtId() {
         return etId;
     }
 
@@ -116,7 +137,7 @@ public class Etablissement {
         return modifie_par;
     }
 
-    public void setEtId(@NonNull String etId) {
+    public void setEtId(@NonNull int etId) {
         this.etId = etId;
     }
 
@@ -158,5 +179,21 @@ public class Etablissement {
 
     public String getModifie_le() {
         return modifie_le;
+    }
+
+    public int getEtabId() {
+        return etabId;
+    }
+
+    public void setEtabId(int etabId) {
+        this.etabId = etabId;
+    }
+
+    public int getDataChange() {
+        return dataChange;
+    }
+
+    public void setDataChange(int dataChange) {
+        this.dataChange = dataChange;
     }
 }

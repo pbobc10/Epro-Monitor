@@ -30,6 +30,12 @@ public class Titre {
     public Titre() {
     }
 
+    public Titre(@NonNull String tid, String nomTitre, String rang) {
+        this.tid = tid;
+        this.nomTitre = nomTitre;
+        this.rang = rang;
+    }
+
     public Titre(JSONObject jsonObject) {
         try {
             this.tid = jsonObject.getString("TID");

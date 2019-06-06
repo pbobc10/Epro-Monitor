@@ -22,7 +22,7 @@ public class ForceSpinnerAdapter extends ArrayAdapter<Force> {
     }
 
     public ForceSpinnerAdapter(Context context, int resource, List<Force> forces) {
-        super(context,resource,forces);
+        super(context, resource, forces);
         this.context = context;
         this.forces = forces;
     }
@@ -51,7 +51,7 @@ public class ForceSpinnerAdapter extends ArrayAdapter<Force> {
 
         // Populate the data from the data object via the viewHolder object
         // into the template view.
-        viewHolder.textView.setText(force.getFid());
+        viewHolder.textView.setText(force.getNomForce());
         // Return the completed view to render on screen
         return convertView;
         //return super.getView(position, convertView, parent);

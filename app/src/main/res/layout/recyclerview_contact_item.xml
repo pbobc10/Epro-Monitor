@@ -32,7 +32,7 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="Dr. Pierre Bob Charlemagne "
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="MEDECINE GENERALE"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="18sp" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="PRESCRIPTEUR"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp" />
 
             <TextView
@@ -70,7 +70,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="NON APLLICABLE"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -83,7 +83,7 @@
                 android:layout_marginEnd="45dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Tel: (509)"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -97,7 +97,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="email@yourmail.com"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
         </RelativeLayout>

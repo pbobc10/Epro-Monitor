@@ -83,7 +83,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="PRESCRIPTEUR"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp" />
 
 
@@ -113,7 +113,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="NON APLLICABLE"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -144,7 +144,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="(509)"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -159,7 +159,7 @@
                 android:layout_toEndOf="@+id/txtContactTel"
                 android:fontFamily="sans-serif-condensed"
                 android:text="(509)"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -174,7 +174,7 @@
                 android:layout_toEndOf="@+id/txtContactTel2"
                 android:fontFamily="sans-serif-condensed"
                 android:text="(509)"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -203,7 +203,7 @@
                 android:layout_alignParentStart="true"
                 android:fontFamily="sans-serif-condensed"
                 android:text="email@yourmail.com"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -231,7 +231,7 @@
                 android:layout_centerHorizontal="false"
                 android:layout_marginTop="10dp"
                 android:text="Jean Pierre"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="18sp" />
 
             <TextView
@@ -243,7 +243,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="12-Jan-2017"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -275,7 +275,7 @@
                 android:layout_marginTop="10dp"
                 android:labelFor="@+id/txtModifiedDate"
                 android:text="Jude Jean"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="18sp" />
 
             <TextView
@@ -287,7 +287,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="14-Fev-2019"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -316,7 +316,7 @@
                 android:layout_marginTop="10dp"
                 android:labelFor="@+id/txtModifiedDate"
                 android:text="Henry Christophe"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="18sp" />
 
             <TextView
@@ -328,7 +328,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="09-Mar-2019"
-                android:textColor="#000"
+                android:textColor="@color/input_login"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 

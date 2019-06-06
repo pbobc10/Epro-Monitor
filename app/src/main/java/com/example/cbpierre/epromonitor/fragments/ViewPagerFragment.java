@@ -63,7 +63,16 @@ public class ViewPagerFragment extends Fragment {
 
             @Override
             public void onPageSelected(int i) {
-                Toast.makeText(getContext(), "page : " + i, Toast.LENGTH_LONG).show();
+                switch (i) {
+                    case 0:
+                        Toast.makeText(getContext(), "page : Contact", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getContext(), "page : Adresse", Toast.LENGTH_LONG).show();
+                        break;
+
+                }
+
 
             }
 

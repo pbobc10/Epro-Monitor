@@ -15,6 +15,6 @@ public interface ZoneDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Zone zone);
 
-    @Query("select * from zone_table order by description_zone_ht asc")
+    @Query("select DISTINCT * from zone_table order by description_zone_ht asc")
     LiveData<List<Zone>> getAllZone();
 }

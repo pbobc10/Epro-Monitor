@@ -20,12 +20,13 @@ import com.example.cbpierre.epromonitor.fragments.ContactEtabsFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
 import com.example.cbpierre.epromonitor.fragments.EtablissementFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsDetailFragment;
+import com.example.cbpierre.epromonitor.fragments.EtabsRegisterFragment;
 import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
 import com.example.cbpierre.epromonitor.fragments.TelechargementFragment;
 import com.example.cbpierre.epromonitor.fragments.UserFragment;
 
-public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener, EtabsDetailFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener, EtabsDetailFragment.OnFragmentInteractionListener, EtabsRegisterFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;

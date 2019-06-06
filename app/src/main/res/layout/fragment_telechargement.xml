@@ -7,92 +7,107 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rlContact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:layout_marginTop="24dp">
 
             <TextView
                 android:id="@+id/tvContact"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
                 android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal"
                 android:text="Contact"
-                android:textColor="#000000"
+                android:textColor="#212121"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnDownloadData"
-                android:layout_width="148dp"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvContact"
-                android:layout_alignStart="@id/tvContact"
-                android:background="@drawable/button_solid_tel"
-                android:padding="12dp"
-                android:text="Download Data"
-                android:textColor="@color/white" />
+                android:layout_below="@id/tvContact"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
-            <Button
-                android:id="@+id/btnSyncData"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/btnDownloadData"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/button_telechargement"
-                android:text="Sync Data"
-                android:textColor="@color/colorPrimary" />
+                <Button
+                    android:id="@+id/btnDownloadData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_solid_tel"
+                    android:padding="12dp"
+                    android:text="Download Data"
+                    android:textColor="@color/white" />
 
+                <Button
+                    android:id="@+id/btnSyncData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_telechargement"
+                    android:text="Sync Data"
+                    android:textColor="@color/colorPrimary" />
 
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rlEtablissement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:layout_marginTop="24dp">
 
             <TextView
                 android:id="@+id/tvEtablissement"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
                 android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal"
                 android:text="Etablissement"
-                android:textColor="#000000"
+                android:textColor="@color/input_login"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnDownloadDataEta"
-                android:layout_width="148dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvEtablissement"
-                android:layout_alignStart="@id/tvEtablissement"
-                android:background="@drawable/button_solid_tel"
-                android:text="Download Data"
-                android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/btnSyncDataEta"
-                android:layout_width="120dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/btnDownloadDataEta"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/button_telechargement"
-                android:text="Sync Data"
-                android:textColor="@color/colorPrimary" />
+                android:layout_below="@id/tvEtablissement"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
+                <Button
+                    android:id="@+id/btnDownloadDataEta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_solid_tel"
+                    android:text="Download Data"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnSyncDataEta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_telechargement"
+                    android:text="Sync Data"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
 
         </RelativeLayout>
 
