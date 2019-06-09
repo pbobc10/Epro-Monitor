@@ -34,6 +34,7 @@ import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.viewModels.LoginViewModel;
 import com.example.cbpierre.epromonitor.viewModels.PostViewModel;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -131,22 +132,33 @@ public class SignInActivity extends AppCompatActivity {
         params.put("Imei2", imei2);
 
         // Formulate the request and handle the response.
-       CustomRequest customRequest = new CustomRequest(Request.Method.POST, AppConfig.URL_LOGIN, params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, AppConfig.URL_LOGIN, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("volleyTest", "pass1");
                 Log.d("volleyResponse", response.toString());
-                userSessionPreferences.createUserLoginSession(mUsername);
-                mLoginViewModel.insertLogin(new Login(mUsername, mPassword, mCodMob, imei1, null));
-                mPostViewModel.insertPostLogin(new PostLogin(response));
+                //test validate
+                try {
+                    if (response.getString("msg").equals("SUCCÈS")) {
+                        userSessionPreferences.createUserLoginSession(mUsername);
+                        mLoginViewModel.insertLogin(new Login(mUsername, mPassword, mCodMob, imei1, null));
+                        mPostViewModel.insertPostLogin(new PostLogin(response));
 
-                //dismiss dialog
-                hideDialog();
+                        //dismiss dialog
+                        hideDialog();
 
-                //start MainActivity
-                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                        //start MainActivity
+                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        //dismiss dialog
+                        hideDialog();
+                        Toast.makeText(getApplicationContext(), response.getString("msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
