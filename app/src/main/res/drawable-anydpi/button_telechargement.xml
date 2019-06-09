@@ -3,10 +3,10 @@
     android:shape="rectangle">
 
     <!-- View background color -->
-    <solid android:color="@color/white"></solid>
+    <solid android:color="@color/btn_logut_bg"></solid>
     <!-- View button_general color and width -->
-    <stroke android:color="@color/colorPrimary" android:width="2dp"></stroke>
+    <!-- <stroke android:color="" android:width="2dp"></stroke> -->
     <!-- The radius makes the corners rounded -->
-    <corners android:radius="12dp"></corners>
+    <corners android:radius="4dp"></corners>
 
 </shape>

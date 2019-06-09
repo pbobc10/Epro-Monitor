@@ -1,6 +1,7 @@
 package com.example.cbpierre.epromonitor.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
 
 import java.util.List;
+import java.util.Random;
 
 public class CompleteEtablissementAdapter extends RecyclerView.Adapter<CompleteEtablissementAdapter.CompleteEtablissementViewHolder> {
     private final LayoutInflater mInflater;
@@ -20,6 +22,25 @@ public class CompleteEtablissementAdapter extends RecyclerView.Adapter<CompleteE
     private List<CompleteEtablissement> mCompleteEtablissement;
 
     private OnCompleteEtablissementListener listener;
+
+    private Random rnd;
+
+    // Member variables (properties about the object)
+    public String[] mColors = {
+            "#39add1", // light blue
+            "#3079ab", // dark blue
+            "#c25975", // mauve
+            "#e15258", // red
+            "#f9845b", // orange
+            "#838cc7", // lavender
+            "#7d669e", // purple
+            "#53bbb4", // aqua
+            "#51b46d", // green
+            "#e0ab18", // mustard
+            "#637a91", // dark gray
+            "#f092b0", // pink
+            "#b7c0c7"  // light gray
+    };
 
     // listener interface
     public interface OnCompleteEtablissementListener {
@@ -34,6 +55,7 @@ public class CompleteEtablissementAdapter extends RecyclerView.Adapter<CompleteE
         private final TextView txtNom;
         private final TextView txtLocalite;
         private final TextView txtAdresse;
+        private final View colorEtab;
 
 
         public CompleteEtablissementViewHolder(@NonNull final View itemView) {
@@ -41,6 +63,7 @@ public class CompleteEtablissementAdapter extends RecyclerView.Adapter<CompleteE
             txtNom = itemView.findViewById(R.id.txtNomTablissement);
             txtAdresse = itemView.findViewById(R.id.txtAdressef);
             txtLocalite = itemView.findViewById(R.id.txtLocalite);
+            colorEtab = itemView.findViewById(R.id.colorLineEtab);
 
             // Attach a click listener to the entire row view
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +112,10 @@ public class CompleteEtablissementAdapter extends RecyclerView.Adapter<CompleteE
             completeEtablissementViewHolder.txtNom.setText(current.getNom_Etablissement());
             completeEtablissementViewHolder.txtLocalite.setText("Localite:  " + current.getDescription_zone_ht());
             completeEtablissementViewHolder.txtAdresse.setText("Adresse:  " + current.getAdresse());
+
+            //random color
+            rnd = new Random();
+            completeEtablissementViewHolder.colorEtab.setBackgroundColor(Color.parseColor(mColors[rnd.nextInt(mColors.length)]));
         } else {
             // Covers the case of data not being ready yet.
             completeEtablissementViewHolder.txtNom.setText(R.string.contact_nom);

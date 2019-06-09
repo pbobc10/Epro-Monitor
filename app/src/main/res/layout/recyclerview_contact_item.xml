@@ -11,6 +11,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         card_view:cardBackgroundColor="?android:attr/windowBackground"
+        card_view:cardCornerRadius="12dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true"
         tools:ignore="MissingConstraints">
@@ -19,10 +20,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/colorLineContact"
+                android:layout_width="wrap_content"
+                android:layout_height="8dp"
+                android:layout_marginTop="0dp"
+                android:background="@android:color/holo_orange_light" />
+
             <TextView
                 android:id="@+id/txtNom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/colorLineContact"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
@@ -32,7 +41,7 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="Dr. Pierre Bob Charlemagne "
-                android:textColor="@color/input_login"
+                android:textColor="@color/input_register_bg"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 

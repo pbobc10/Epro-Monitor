@@ -1,6 +1,7 @@
 package com.example.cbpierre.epromonitor.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 
 import java.util.List;
+import java.util.Random;
 
 public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContactAdapter.CompleteContactViewHolder> {
     private final LayoutInflater mInflater;
@@ -22,6 +24,25 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
     private List<CompleteContact> mCompleteContact;
 
     private OnContactClickListener listener;
+
+    private Random rnd;
+
+    // Member variables (properties about the object)
+    public String[] mColors = {
+            "#39add1", // light blue
+            "#3079ab", // dark blue
+            "#c25975", // mauve
+            "#e15258", // red
+            "#f9845b", // orange
+            "#838cc7", // lavender
+            "#7d669e", // purple
+            "#53bbb4", // aqua
+            "#51b46d", // green
+            "#e0ab18", // mustard
+            "#637a91", // dark gray
+            "#f092b0", // pink
+            "#b7c0c7"  // light gray
+    };
 
     // listener interface
     public interface OnContactClickListener {
@@ -39,6 +60,7 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
         private final TextView txtSecteur;
         private final TextView txtTel;
         private final TextView txtEmail;
+        private final View colorContact;
 
 
         public CompleteContactViewHolder(@NonNull final View itemView) {
@@ -49,6 +71,8 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
             txtSecteur = itemView.findViewById(R.id.txtSecteur);
             txtTel = itemView.findViewById(R.id.txtTel);
             txtEmail = itemView.findViewById(R.id.txtEmail);
+            colorContact = itemView.findViewById(R.id.colorLineContact);
+
 
             // Attach a click listener to the entire row view
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +86,7 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
                         if (position != RecyclerView.NO_POSITION) {
                             Log.d("=====testclick 3", "yes");
                             listener.onContactClick(mCompleteContact, position);
-                             Toast.makeText(view.getContext(), "===test " + mCompleteContact.get(position).getModifie_le(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "===test " + mCompleteContact.get(position).getModifie_le(), Toast.LENGTH_SHORT).show();
                             Log.d("=====testclick 4", "yes");
 
                         }
@@ -102,6 +126,10 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
             completeContactViewHolder.txtNature.setText(current.getNomNature());
             completeContactViewHolder.txtTel.setText("Tel: " + phone1);
             completeContactViewHolder.txtEmail.setText(current.getEmail());
+
+            //random color
+            rnd = new Random();
+            completeContactViewHolder.colorContact.setBackgroundColor(Color.parseColor(mColors[rnd.nextInt(mColors.length)]));
         } else {
             // Covers the case of data not being ready yet.
             completeContactViewHolder.txtNom.setText(R.string.contact_nom);
