@@ -81,14 +81,15 @@ public class ContactDetailFragment extends Fragment {
         String phone2 = completeContact.getPhone2() == null ? "" : "/ " + completeContact.getPhone2();
         String phone3 = completeContact.getPhone3() == null ? "" : "/ " + completeContact.getPhone3();
         String prenom = completeContact.getPrenom() == null ? "" : completeContact.getPrenom();
-        String info = completeContact.getTitre() + ". " + completeContact.getNom() + " " + prenom;
+        String titreNa = completeContact.getTitre().equals("NA") ? "" : completeContact.getTitre() + ".";
+        String info = titreNa + " " + completeContact.getNom() + " " + prenom;
         titre.setText(info);
         specialite.setText(completeContact.getNomSpecialite());
         nature.setText(completeContact.getNomNature());
         secteur.setText(completeContact.getNomSecteur());
         tel.setText(phone1);
         tel2.setText(phone2);
-        tel3.setText(phone2);
+        tel3.setText(phone3);
         email.setText(completeContact.getEmail());
         creePar.setText(completeContact.getCree_par());
         creeLe.setText(completeContact.getCree_le());

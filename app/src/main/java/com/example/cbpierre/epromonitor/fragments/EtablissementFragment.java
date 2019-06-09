@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.CompleteEtablissementAdapter;
@@ -96,20 +97,37 @@ public class EtablissementFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_etab_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setQueryHint("Search by Nom");
+        searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                etablissementViewModel.setCompleteEtabsByNom(s);
                 // perform query here
-                searchView.clearFocus();
+                etablissementViewModel.setCompleteEtabsByNom(s);
                 //reset searchView
-                searchView.setIconified(true);
+                searchView.clearFocus();
+                //searchView.setIconified(true);
+                //searchView.setIconifiedByDefault(false);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
                 return false;
+            }
+        });
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Toast.makeText(getContext(), "menu Expand", Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                //Toast.makeText(getContext(), "menu collapse", Toast.LENGTH_LONG).show();
+                // perform query here
+                etablissementViewModel.setCompleteEtabsByNom(null);
+                return true;
             }
         });
     }

@@ -120,7 +120,8 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
             CompleteContact current = mCompleteContact.get(i);
             String phone1 = current.getPhone1() == null ? "" : current.getPhone1();
             String prenom = current.getPrenom() == null ? "" : current.getPrenom();
-            completeContactViewHolder.txtNom.setText(current.getTitre() + "." + " " + current.getNom() + " " + prenom);
+            String titre = current.getTitre().equals("NA") ? "" : current.getTitre() + ".";
+            completeContactViewHolder.txtNom.setText(titre + " " + current.getNom() + " " + prenom);
             completeContactViewHolder.txtSpecialite.setText(current.getNomSpecialite());
             completeContactViewHolder.txtSecteur.setText(current.getNomSecteur());
             completeContactViewHolder.txtNature.setText(current.getNomNature());

@@ -160,13 +160,27 @@ public class ContactFragment extends Fragment {
                 contactViewModel.setContactByNom(s);
                 // Reset SearchView
                 searchView.clearFocus();
-                searchView.setIconified(true);
+                // searchView.setIconified(true);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
                 return false;
+            }
+        });
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // perform query here
+                contactViewModel.setContactByNom(null);
+                return true;
             }
         });
     }
