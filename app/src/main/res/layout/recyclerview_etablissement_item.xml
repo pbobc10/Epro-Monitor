@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Andresse: 100,Impasse Test, Port -au- Prince"
-                    android:textColor="@color/btn_logut_bg"
+                    android:textColor="@color/input_register_bg"
                     android:textSize="18sp"
                     android:textStyle="italic" />
 
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="Localite: HT.OU.CB-1-HT2323-LOC"
-                    android:textColor="@color/input_register_bg"
+                    android:textColor="@color/secondaryText"
                     android:textSize="16sp"
                     android:textStyle="italic" />
 

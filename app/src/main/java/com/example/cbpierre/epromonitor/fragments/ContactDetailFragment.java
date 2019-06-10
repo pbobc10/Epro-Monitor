@@ -8,7 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -45,6 +51,8 @@ public class ContactDetailFragment extends Fragment {
                 populateContactDetail(completeContact);
             }
         });
+
+        showBackButton();
     }
 
     @Override
@@ -57,6 +65,7 @@ public class ContactDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         titre = view.findViewById(R.id.txtContactTitre);
         specialite = view.findViewById(R.id.txtContactSpecialite);
         nature = view.findViewById(R.id.txtContactNature);
@@ -72,7 +81,14 @@ public class ContactDetailFragment extends Fragment {
         validePar = view.findViewById(R.id.txtValidePar);
         valideLe = view.findViewById(R.id.txtValidatedDate);
 
-
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDrawerButton();
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     public void populateContactDetail(CompleteContact completeContact) {
@@ -98,6 +114,27 @@ public class ContactDetailFragment extends Fragment {
         validePar.setText(completeContact.getValidateur());
         valideLe.setText(completeContact.getDate_maj_valide());
         onButtonPressed(completeContact.getConId());
+    }
+
+    /**
+     * Changes the icon of the drawer to back
+     */
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
+    }
+
+    /**
+     * Changes the icon of the drawer to menu
+     */
+    public void showDrawerButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        // mActionBarDrawerToggle.syncState();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,6 +97,9 @@ public class ContactRegisterFragment extends Fragment {
         secteurViewModel = ViewModelProviders.of(this).get(SecteurViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
         titreViewModel = ViewModelProviders.of(this).get(TitreViewModel.class);
+
+        //enable back arrow
+        showBackButton();
     }
 
     @Override
@@ -133,6 +138,9 @@ public class ContactRegisterFragment extends Fragment {
 
         //observers
         spinnerObservers();
+
+        //call back arrow
+        backArrow();
     }
 
     public void insertLocalContacts() {
@@ -250,7 +258,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     item2 = titre.getTid();
                     // show selected spinner item
-                   // Toast.makeText(getContext(), "Selected: " + item2, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getContext(), "Selected: " + item2, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -304,7 +312,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     item4 = specialite.getSpId();
                     // show selected spinner item
-                   // Toast.makeText(getContext(), "Selected: " + item4, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getContext(), "Selected: " + item4, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -331,7 +339,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     item5 = force.getFid();
                     // show selected spinner item
-                   // Toast.makeText(getContext(), "Selected: " + item5, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getContext(), "Selected: " + item5, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -341,5 +349,39 @@ public class ContactRegisterFragment extends Fragment {
             }
         });
 
+    }
+
+    /**
+     * backArrow
+     */
+    public void backArrow() {
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDrawerButton();
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    /**
+     * Changes the icon of the drawer to back
+     */
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
+    }
+
+    /**
+     * Changes the icon of the drawer to menu
+     */
+    public void showDrawerButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 }

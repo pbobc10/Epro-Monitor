@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,9 @@ public class EtabsRegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         zoneViewModel = ViewModelProviders.of(this).get(ZoneViewModel.class);
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
+
+        //show back Arrow
+        showBackButton();
     }
 
     @Override
@@ -90,6 +95,9 @@ public class EtabsRegisterFragment extends Fragment {
         //etablissementViewModel.setEtabByLocalite("HT.ND.CH-1-HT1110-LOC");
         //spinner Observers
         spinnerObservers();
+
+        //back Arrow
+        backArrow();
     }
 
     public void spinnerObservers() {
@@ -185,7 +193,7 @@ public class EtabsRegisterFragment extends Fragment {
         });
     }
 
-    public void insertNewEtab(String nomEtab,String zoneHtId,String adresse) {
+    public void insertNewEtab(String nomEtab, String zoneHtId, String adresse) {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -210,6 +218,29 @@ public class EtabsRegisterFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    /**
+     * backArrow
+     */
+    public void backArrow() {
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+    }
+
+    /**
+     * Changes the icon of the drawer to back
+     */
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
     }
 
     /**
