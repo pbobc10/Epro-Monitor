@@ -38,14 +38,13 @@ public class ViewPagerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
-
-        //enable back arrow
-        showBackButton();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //enable back arrow
+        showBackButton();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_view_pager, container, false);
     }

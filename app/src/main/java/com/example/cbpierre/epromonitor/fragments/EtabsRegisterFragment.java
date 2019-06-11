@@ -61,14 +61,13 @@ public class EtabsRegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         zoneViewModel = ViewModelProviders.of(this).get(ZoneViewModel.class);
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
-
-        //show back Arrow
-        showBackButton();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //show back Arrow
+        showBackButton();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_etabs_register, container, false);
     }

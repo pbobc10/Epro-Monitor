@@ -97,14 +97,13 @@ public class ContactRegisterFragment extends Fragment {
         secteurViewModel = ViewModelProviders.of(this).get(SecteurViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
         titreViewModel = ViewModelProviders.of(this).get(TitreViewModel.class);
-
-        //enable back arrow
-        showBackButton();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //enable back arrow
+        showBackButton();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contact_register, container, false);
     }
@@ -380,7 +379,6 @@ public class ContactRegisterFragment extends Fragment {
      */
     public void showDrawerButton() {
         if (getActivity() instanceof AppCompatActivity) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
     }

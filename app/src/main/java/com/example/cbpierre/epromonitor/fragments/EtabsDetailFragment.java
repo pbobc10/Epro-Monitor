@@ -37,13 +37,13 @@ public class EtabsDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Get back arguments
         etablissement = (CompleteEtablissement) getArguments().getSerializable("COMPLETE_ETAB");
-        //
-        showBackButton();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //enable back arrow
+        showBackButton();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_etabs_detail, container, false);
     }
