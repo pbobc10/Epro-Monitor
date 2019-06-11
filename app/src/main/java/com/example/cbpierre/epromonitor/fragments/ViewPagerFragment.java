@@ -90,7 +90,6 @@ public class ViewPagerFragment extends Fragment {
         backArrow();
     }
 
-
     /**
      * back arrow
      */
@@ -121,10 +120,8 @@ public class ViewPagerFragment extends Fragment {
      */
     public void showDrawerButton() {
         if (getActivity() instanceof AppCompatActivity) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
-        // mActionBarDrawerToggle.syncState();
     }
 
 }

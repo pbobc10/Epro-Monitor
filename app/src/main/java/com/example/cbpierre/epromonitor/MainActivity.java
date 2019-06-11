@@ -159,14 +159,15 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             getSupportFragmentManager().popBackStack();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             drawerToggle = setupDrawerToggle();
             drawerToggle.syncState();
-        } else if (getSupportFragmentManager().getBackStackEntryCount() > 2)
-            getSupportFragmentManager().popBackStack();
-        else
             super.onBackPressed();
+        }
     }
 
     /**

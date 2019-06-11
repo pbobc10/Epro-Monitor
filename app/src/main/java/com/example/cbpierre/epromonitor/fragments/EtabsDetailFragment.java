@@ -137,10 +137,8 @@ public class EtabsDetailFragment extends Fragment {
      */
     public void showDrawerButton() {
         if (getActivity() instanceof AppCompatActivity) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
-        // mActionBarDrawerToggle.syncState();
     }
 
     /**
