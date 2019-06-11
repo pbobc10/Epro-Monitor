@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,8 @@ public class ViewPagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
 
+        //enable back arrow
+        showBackButton();
     }
 
     @Override
@@ -81,5 +85,46 @@ public class ViewPagerFragment extends Fragment {
 
             }
         });
+
+        //call back arrow
+        backArrow();
     }
+
+
+    /**
+     * back arrow
+     */
+
+    public void backArrow() {
+        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDrawerButton();
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    /**
+     * Changes the icon of the drawer to back
+     */
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
+    }
+
+    /**
+     * Changes the icon of the drawer to menu
+     */
+    public void showDrawerButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        // mActionBarDrawerToggle.syncState();
+    }
+
 }

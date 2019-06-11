@@ -36,6 +36,7 @@ public class ContactDetailFragment extends Fragment {
     TextView titre, specialite, nature, secteur, tel, tel2, tel3, email, creePar, creeLe, modifiePar, modifieLe, validePar, valideLe, adresse;
 
     private OnContactDetailInteractionListener mListener;
+    private SharedViewModel sharedViewModel;
 
     public ContactDetailFragment() {
         // Required empty public constructor
@@ -44,15 +45,7 @@ public class ContactDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedViewModel sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
-            @Override
-            public void onChanged(@Nullable CompleteContact completeContact) {
-                populateContactDetail(completeContact);
-            }
-        });
-
-        showBackButton();
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
     }
 
     @Override
@@ -81,12 +74,10 @@ public class ContactDetailFragment extends Fragment {
         validePar = view.findViewById(R.id.txtValidePar);
         valideLe = view.findViewById(R.id.txtValidatedDate);
 
-        final Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
             @Override
-            public void onClick(View v) {
-                showDrawerButton();
-                getActivity().onBackPressed();
+            public void onChanged(@Nullable CompleteContact completeContact) {
+                populateContactDetail(completeContact);
             }
         });
     }
@@ -114,27 +105,6 @@ public class ContactDetailFragment extends Fragment {
         validePar.setText(completeContact.getValidateur());
         valideLe.setText(completeContact.getDate_maj_valide());
         onButtonPressed(completeContact.getConId());
-    }
-
-    /**
-     * Changes the icon of the drawer to back
-     */
-    public void showBackButton() {
-        if (getActivity() instanceof AppCompatActivity) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        }
-    }
-
-    /**
-     * Changes the icon of the drawer to menu
-     */
-    public void showDrawerButton() {
-        if (getActivity() instanceof AppCompatActivity) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-        // mActionBarDrawerToggle.syncState();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
