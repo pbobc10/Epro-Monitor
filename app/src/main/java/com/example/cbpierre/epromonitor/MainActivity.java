@@ -159,11 +159,13 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             getSupportFragmentManager().popBackStack();
-            drawerToggle=setupDrawerToggle();
+            drawerToggle = setupDrawerToggle();
             drawerToggle.syncState();
-        } else
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 2)
+            getSupportFragmentManager().popBackStack();
+        else
             super.onBackPressed();
     }
 
