@@ -19,6 +19,12 @@ public interface ContactDao {
     @Query("Select * from contact_table order by nom asc")
     LiveData<List<Contact>> getAllContacts();
 
+    @Query("Select * from contact_table where conId is null and is_new_contact=1 order by nom asc")
+    LiveData<List<Contact>> getAllNewContacts();
+
+    @Query("Select * from contact_table where conId is null and is_new_contact=1 order by nom asc")
+    List<Contact> getNewContacts();
+
     @Query("Select * from contact_table , FORCE_TABLE, NATURE_TABLE,SECTEUR_TABLE,SPECIALITE_TABLE,TITRE_TABLE " +
             "where FORCE_TABLE.fId=CONTACT_TABLE.force " +
             "and  NATURE_TABLE.natId=CONTACT_TABLE.nature  " +

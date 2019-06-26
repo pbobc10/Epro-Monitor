@@ -16,6 +16,7 @@ public class ContactRepository {
     private ContactDao contactDao;
     private LiveData<List<Contact>> mAllContact;
     private LiveData<List<CompleteContact>> completeContact;
+    private static OnNewcontactListener contactListener;
 
 
     public ContactRepository(Application application) {
@@ -38,10 +39,21 @@ public class ContactRepository {
         return contactDao.getContactByNom(nom);
     }
 
+    public LiveData<List<Contact>> getAllNewContacts() {
+        return contactDao.getAllNewContacts();
+    }
+
     public void insertContact(Contact newContact) {
         new InsertContactTask(contactDao).execute(newContact);
     }
 
+    public void setOnNewContact(OnNewcontactListener contactListener) {
+        this.contactListener = contactListener;
+    }
+
+    public void getNewContact() {
+        new NewContactTask(contactDao).execute();
+    }
 
     //****************************** ASYNC CLASS*******************************************
     private static class InsertContactTask extends AsyncTask<Contact, Void, Void> {
@@ -57,5 +69,32 @@ public class ContactRepository {
             mContact.insert(contacts[0]);
             return null;
         }
+    }
+
+    /**
+     * new Etablissement
+     */
+    private static class NewContactTask extends AsyncTask<Void, Void, List<Contact>> {
+        private ContactDao contactDao;
+
+        public NewContactTask(ContactDao contactDao) {
+            this.contactDao = contactDao;
+        }
+
+        @Override
+        protected List<Contact> doInBackground(Void... voids) {
+            return contactDao.getNewContacts();
+        }
+
+        @Override
+        protected void onPostExecute(List<Contact> contacts) {
+            super.onPostExecute(contacts);
+            if (contactListener != null)
+                contactListener.newContact(contacts);
+        }
+    }
+
+    public interface OnNewcontactListener {
+        void newContact(List<Contact> contacts);
     }
 }

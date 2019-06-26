@@ -16,6 +16,7 @@ import com.example.cbpierre.epromonitor.dao.EtablissementDao;
 import com.example.cbpierre.epromonitor.dao.ForceDao;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
 import com.example.cbpierre.epromonitor.dao.NatureDao;
+import com.example.cbpierre.epromonitor.dao.NewContactEtabDao;
 import com.example.cbpierre.epromonitor.dao.PostLoginDao;
 import com.example.cbpierre.epromonitor.dao.SecteurDao;
 import com.example.cbpierre.epromonitor.dao.SpecialiteDao;
@@ -27,6 +28,7 @@ import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.Login;
 import com.example.cbpierre.epromonitor.models.Nature;
+import com.example.cbpierre.epromonitor.models.NewContactETab;
 import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.Specialite;
@@ -34,7 +36,7 @@ import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 
 
-@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
@@ -89,6 +91,8 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
     public abstract ContactEtablissementDao contactEtablissementDao();
 
+    public abstract NewContactEtabDao newContactEtabDao();
+
     // To repopulate the database whenever the app is started
 
     public abstract PostLoginDao postLoginDao();
@@ -118,7 +122,7 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             //insert Etablissement
-            Etablissement eta = new Etablissement(0, "N'EST PAS DANS LA LISTE", null, null, null, null, 0, false, null, null);
+            Etablissement eta = new Etablissement(0, "N'EST PAS DANS LA LISTE", null, null, null, null, 0, false, null, null, null,null,null, null, false);
             etablissementDao.insert(eta);
 
             //insert Zone

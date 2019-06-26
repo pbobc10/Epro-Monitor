@@ -104,11 +104,16 @@ public class ContactDetailFragment extends Fragment {
         modifieLe.setText(completeContact.getModifie_le());
         validePar.setText(completeContact.getValidateur());
         valideLe.setText(completeContact.getDate_maj_valide());
-        onButtonPressed(completeContact.getConId());
+
+        //test for passing new contact or old contact
+        if (completeContact.getConId() != null)
+            onButtonPressed(completeContact.getConId());
+        else
+            onButtonPressed(null);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(int id) {
+    public void onButtonPressed(Integer id) {
         if (mListener != null) {
             mListener.onFragmentInteraction(id);
         }
@@ -143,6 +148,6 @@ public class ContactDetailFragment extends Fragment {
      */
     public interface OnContactDetailInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(int id);
+        void onFragmentInteraction(Integer id);
     }
 }

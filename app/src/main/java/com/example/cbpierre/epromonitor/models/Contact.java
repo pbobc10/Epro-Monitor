@@ -30,12 +30,12 @@ import java.util.Date;
 public class Contact implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    @ColumnInfo(name = "contactId")
+    @ColumnInfo(name = "contactId", index = true)
     private int contactId;
 
 
     @ColumnInfo(name = "conId")
-    private int conId;
+    private Integer conId;
 
     @Nullable
     @ColumnInfo(name = "titre")
@@ -120,16 +120,16 @@ public class Contact implements Serializable {
     @ColumnInfo(name = "date_maj_valide")
     private String date_maj_valide;
 
-    @ColumnInfo(name = "data_change")
-    private int dataChange;
+    @ColumnInfo(name = "is_new_contact")
+    private boolean isNewContact;
 
     // constructor
     @Ignore
     public Contact() {
     }
 
-    public Contact( /*int conId,*/ String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, int statut, String transfere_par, String transfere_le, String cree_par, String cree_le, String modifie_par, String modifie_le, boolean valide, String validateur, String date_maj_valide) {
-        //this.conId = conId;
+    public Contact(Integer conId, @Nullable String titre, @Nullable String nom, @Nullable String prenom, @Nullable String nature, @Nullable String secteur, @Nullable String specialite, @Nullable String force, @Nullable String phone1, @Nullable String phone2, String phone3, @Nullable String email, int statut, @Nullable String transfere_par, @Nullable String transfere_le, @Nullable String cree_par, @Nullable String cree_le, @Nullable String modifie_par, @Nullable String modifie_le, boolean valide, @Nullable String validateur, @Nullable String date_maj_valide, boolean isNewContact) {
+        this.conId = conId;
         this.titre = titre;
         this.nom = nom;
         this.prenom = prenom;
@@ -151,9 +151,8 @@ public class Contact implements Serializable {
         this.valide = valide;
         this.validateur = validateur;
         this.date_maj_valide = date_maj_valide;
-        this.dataChange=0;
+        this.isNewContact = isNewContact;
     }
-
 
     public Contact(JSONObject jsonObject) {
         try {
@@ -174,12 +173,12 @@ public class Contact implements Serializable {
             this.transfere_le = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
             this.cree_par = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
             this.cree_le = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
-            this.modifie_par = jsonObject.getString("MODIFIE_PAR"); //== "null" ? null : jsonObject.getString("MODIFIE_PAR");
-            this.modifie_le = jsonObject.getString("MODIFIE_LE");// == "null" ? null : jsonObject.getString("MODIFIE_LE");
+            this.modifie_par = jsonObject.getString("MODIFIE_PAR");
+            this.modifie_le = jsonObject.getString("MODIFIE_LE");
             this.valide = jsonObject.getBoolean("VALIDE");
             this.validateur = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
             this.date_maj_valide = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
-            this.dataChange=0;
+            this.isNewContact = false;
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -216,11 +215,11 @@ public class Contact implements Serializable {
 
 
     @NonNull
-    public int getConId() {
+    public Integer getConId() {
         return conId;
     }
 
-    public void setConId(@NonNull int conId) {
+    public void setConId(@NonNull Integer conId) {
         this.conId = conId;
     }
 
@@ -400,11 +399,11 @@ public class Contact implements Serializable {
         this.contactId = contactId;
     }
 
-    public int getDataChange() {
-        return dataChange;
+    public boolean isNewContact() {
+        return isNewContact;
     }
 
-    public void setDataChange(int dataChange) {
-        this.dataChange = dataChange;
+    public void setNewContact(boolean newContact) {
+        isNewContact = newContact;
     }
 }

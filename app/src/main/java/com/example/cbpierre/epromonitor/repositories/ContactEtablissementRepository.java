@@ -35,7 +35,7 @@ public class ContactEtablissementRepository {
         new InsertContactEtablissementTask(contactEtablissementDao).execute(contactEtablissement);
     }
 
-    public void findContactEtabs(int i) {
+    public void findContactEtabs(Integer i) {
         GetEtablissementByContactTask task = new GetEtablissementByContactTask(contactEtablissementDao);
         task.delegate = this;
         task.execute(i);

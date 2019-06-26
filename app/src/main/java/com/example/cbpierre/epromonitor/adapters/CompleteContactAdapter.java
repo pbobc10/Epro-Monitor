@@ -86,7 +86,7 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
                         if (position != RecyclerView.NO_POSITION) {
                             Log.d("=====testclick 3", "yes");
                             listener.onContactClick(mCompleteContact, position);
-                            Toast.makeText(view.getContext(), "===test " + mCompleteContact.get(position).getModifie_le(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(view.getContext(), "===test " + mCompleteContact.get(position).getModifie_le(), Toast.LENGTH_SHORT).show();
                             Log.d("=====testclick 4", "yes");
 
                         }

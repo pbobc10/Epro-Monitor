@@ -5,21 +5,24 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity(tableName = "etablissement_table", indices = @Index(value = "etId", name = "etablissement_index", unique = true))
-public class Etablissement {
+public class Etablissement implements Serializable {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "etabId")
+    @NonNull
+    @ColumnInfo(name = "etabId", index = true)
     private int etabId;
 
     @ColumnInfo(name = "etId")
-    private int etId;
+    private Integer etId;
 
     @ColumnInfo(name = "nom_Etablissement")
     private String nomEtablissement;
@@ -48,14 +51,30 @@ public class Etablissement {
     @ColumnInfo(name = "modifie_le")
     private String modifie_le;
 
-    @ColumnInfo(name = "data_change")
-    private int dataChange;
+    @Nullable
+    @ColumnInfo(name = "cree_par")
+    private String cree_par;
+
+    @Nullable
+    @ColumnInfo(name = "cree_le")
+    private String cree_le;
+
+    @Nullable
+    @ColumnInfo(name = "transfere_par")
+    private String transfere_par;
+
+    @Nullable
+    @ColumnInfo(name = "transfere_le")
+    private String transfere_le;
+
+    @ColumnInfo(name = "is_new_etab")
+    private boolean isNewEtab;
 
 
     public Etablissement() {
     }
 
-    public Etablissement(int etId, String nomEtablissement, String localite, String adresse, String latitude, String longitude, int statut, boolean valide, String modifie_par, String modifie_le) {
+    public Etablissement(Integer etId, String nomEtablissement, String localite, String adresse, String latitude, String longitude, int statut, boolean valide, String modifie_par, String modifie_le, String cree_par, String cree_le, String transfere_par, String transfere_le, boolean isNewEtab) {
         this.etId = etId;
         this.nomEtablissement = nomEtablissement;
         this.localite = localite;
@@ -66,7 +85,11 @@ public class Etablissement {
         this.valide = valide;
         this.modifie_par = modifie_par;
         this.modifie_le = modifie_le;
-        this.dataChange = 0;
+        this.cree_par = cree_par;
+        this.cree_le = cree_le;
+        this.transfere_par = transfere_par;
+        this.transfere_le = transfere_le;
+        this.isNewEtab = isNewEtab;
     }
 
     public Etablissement(JSONObject jsonObject) {
@@ -81,7 +104,7 @@ public class Etablissement {
             this.valide = jsonObject.getBoolean("VALIDE");
             this.modifie_par = jsonObject.getString("MODIFIE_PAR");
             this.modifie_le = jsonObject.getString("MODIFIE_LE");
-            this.dataChange = 0;
+            this.isNewEtab = false;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,7 +124,7 @@ public class Etablissement {
     }
 
     @NonNull
-    public int getEtId() {
+    public Integer getEtId() {
         return etId;
     }
 
@@ -137,7 +160,7 @@ public class Etablissement {
         return modifie_par;
     }
 
-    public void setEtId(@NonNull int etId) {
+    public void setEtId(@NonNull Integer etId) {
         this.etId = etId;
     }
 
@@ -189,11 +212,47 @@ public class Etablissement {
         this.etabId = etabId;
     }
 
-    public int getDataChange() {
-        return dataChange;
+    public boolean isNewEtab() {
+        return isNewEtab;
     }
 
-    public void setDataChange(int dataChange) {
-        this.dataChange = dataChange;
+    public void setNewEtab(boolean newEtab) {
+        isNewEtab = newEtab;
+    }
+
+    @Nullable
+    public String getCree_par() {
+        return cree_par;
+    }
+
+    public void setCree_par(@Nullable String cree_par) {
+        this.cree_par = cree_par;
+    }
+
+    @Nullable
+    public String getCree_le() {
+        return cree_le;
+    }
+
+    public void setCree_le(@Nullable String cree_le) {
+        this.cree_le = cree_le;
+    }
+
+    @Nullable
+    public String getTransfere_par() {
+        return transfere_par;
+    }
+
+    public void setTransfere_par(@Nullable String transfere_par) {
+        this.transfere_par = transfere_par;
+    }
+
+    @Nullable
+    public String getTransfere_le() {
+        return transfere_le;
+    }
+
+    public void setTransfere_le(@Nullable String transfere_le) {
+        this.transfere_le = transfere_le;
     }
 }

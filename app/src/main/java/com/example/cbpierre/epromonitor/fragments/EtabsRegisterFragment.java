@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.adapters.EtablissementAdapter;
 import com.example.cbpierre.epromonitor.adapters.EtabsSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.ZoneSpinnerAdapter;
+import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Etablissement;
+import com.example.cbpierre.epromonitor.models.NewContactETab;
 import com.example.cbpierre.epromonitor.models.Zone;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
+import com.example.cbpierre.epromonitor.viewModels.NewContactEtabViewModel;
+import com.example.cbpierre.epromonitor.viewModels.SharedViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ZoneViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,8 +57,17 @@ public class EtabsRegisterFragment extends Fragment {
 
     private ZoneViewModel zoneViewModel;
     private EtablissementViewModel etablissementViewModel;
+    private NewContactEtabViewModel contactEtabViewModel;
+    private SharedViewModel sharedViewModel;
+
     private EtabsSpinnerAdapter etabsSpinnerAdapter;
 
+    private Zone zone;
+    private Etablissement etablissement;
+    private CompleteContact contact;
+
+    private UserSessionPreferences userSessionPreferences;
+    private String creeLe, creePar;
 
     public EtabsRegisterFragment() {
         // Required empty public constructor
@@ -61,6 +78,16 @@ public class EtabsRegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         zoneViewModel = ViewModelProviders.of(this).get(ZoneViewModel.class);
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
+        contactEtabViewModel = ViewModelProviders.of(this).get(NewContactEtabViewModel.class);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        //SharePreference
+        userSessionPreferences = new UserSessionPreferences(getContext());
+        creePar = userSessionPreferences.getUserDetails();
+
+        //Date
+        String parttern = "yyyy-MM-dd HH:mm:ss.SSS";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
+        creeLe = simpleDateFormat.format(new Date());
     }
 
     @Override
@@ -88,7 +115,6 @@ public class EtabsRegisterFragment extends Fragment {
         btnOk.setVisibility(View.GONE);
         btnCancel.setVisibility(View.GONE);
 
-
         //spinner Listener
         getSpinnerListener(view);
         //etablissementViewModel.setEtabByLocalite("HT.ND.CH-1-HT1110-LOC");
@@ -97,9 +123,44 @@ public class EtabsRegisterFragment extends Fragment {
 
         //back Arrow
         backArrow();
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertNewEtab();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        // contact Id
+        sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
+            @Override
+            public void onChanged(@Nullable CompleteContact completeContact) {
+                if (completeContact != null) {
+                    contact = completeContact;
+                }
+            }
+        });
+
+        //max new etablissement id
+        etablissementViewModel.getMaxEtab().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                if (contact.getConId() != null)
+                    contactEtabViewModel.insert(new NewContactETab(contact.getConId(), null, integer));
+                else
+                    contactEtabViewModel.insert(new NewContactETab(contact.getContactId(), null, integer));
+            }
+        });
     }
 
     public void spinnerObservers() {
+        //zone view model
         zoneViewModel.getAllZone().observe(this, new Observer<List<Zone>>() {
             @Override
             public void onChanged(@Nullable List<Zone> zones) {
@@ -107,10 +168,10 @@ public class EtabsRegisterFragment extends Fragment {
                 zoneSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spLocalite.setAdapter(zoneSpinnerAdapter);
                 spLocalite.setPrompt("LOCALITE :");
-
             }
         });
 
+        // etablissement view model
         etablissementViewModel.getEtabByLocalite().observe(this, new Observer<List<Etablissement>>() {
             @Override
             public void onChanged(@Nullable List<Etablissement> etablissements) {
@@ -120,12 +181,11 @@ public class EtabsRegisterFragment extends Fragment {
                 spEtab.setPrompt("ETABLISSEMENT :");
             }
         });
-
     }
 
     public void getSpinnerListener(@NonNull View view) {
 
-        // Nature spinner
+        // Localite spinner
         spLocalite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -137,7 +197,7 @@ public class EtabsRegisterFragment extends Fragment {
                     textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
                 } else {
                     //on selected a spinner item
-                    Zone zone = (Zone) adapterView.getItemAtPosition(position);
+                    zone = (Zone) adapterView.getItemAtPosition(position);
                     zoneHtId = zone.getZoneHtId();
                     spEtab.setVisibility(View.VISIBLE);
                     etablissementViewModel.setEtabByLocalite(zoneHtId);
@@ -152,19 +212,19 @@ public class EtabsRegisterFragment extends Fragment {
             }
         });
 
-        // Nature spinner
+        // Etablissement spinner
         spEtab.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (view == null)
                     return;
-                if (adapterView.getItemAtPosition(position).equals("SELECTIONNER UNE NATURE...")) {
+                if (adapterView.getItemAtPosition(position).equals("--SELECTIONNER UN ETABLISSEMENT--")) {
                     //change default item color
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
                 } else {
                     //on selected a spinner item
-                    Etablissement etablissement = (Etablissement) adapterView.getItemAtPosition(position);
+                    etablissement = (Etablissement) adapterView.getItemAtPosition(position);
                     nomEtab = etablissement.getNomEtablissement();
 
                     etNom.setVisibility(View.VISIBLE);
@@ -192,7 +252,27 @@ public class EtabsRegisterFragment extends Fragment {
         });
     }
 
-    public void insertNewEtab(String nomEtab, String zoneHtId, String adresse) {
+    /**
+     * insert etablissement info
+     */
+    public void insertNewEtab() {
+        //check if it's in the list
+        if (etablissement.getNomEtablissement().equals("N'EST PAS DANS LA LISTE")) {
+            //check for empty views
+            if (!(TextUtils.isEmpty(etNom.getText()) || TextUtils.isEmpty(etAdresse.getText()))) {
+                etablissementViewModel.insertEtablissement(new Etablissement(null, etNom.getText().toString(), zone.getZoneHtId(), etAdresse.getText().toString(), null, null, 0, false, null, null, creePar, creeLe, null, null, true));
+                etablissementViewModel.finMaxEtab();
+            } else {
+                Toast.makeText(getContext(), "Vous avez oublie un champ!!!", Toast.LENGTH_LONG).show();
+            }
+
+        } // its in the list
+        else {
+            if (contact.getConId() != null)
+                contactEtabViewModel.insert(new NewContactETab(contact.getConId(), etablissement.getEtId(), null));
+            else
+                contactEtabViewModel.insert(new NewContactETab(contact.getContactId(), etablissement.getEtId(), null));
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -227,7 +307,7 @@ public class EtabsRegisterFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().onBackPressed();
             }
         });
     }

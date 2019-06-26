@@ -30,7 +30,7 @@ public class ContactEtablissementViewModel extends AndroidViewModel {
         contactEtablissementRepository.insertContactEtablissement(contactEtablissement);
     }
 
-    public void findContactEtablissement(int conId) {
+    public void findContactEtablissement(Integer conId) {
         contactEtablissementRepository.findContactEtabs(conId);
     }
 }

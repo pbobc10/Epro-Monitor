@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.adapters.ForceSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.NatureSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.SecteurSpinnerAdapter;
@@ -48,7 +49,9 @@ import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.TitreViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ZoneViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,6 +85,9 @@ public class ContactRegisterFragment extends Fragment {
     private SpecialiteSpinnerAdapter specialiteSpinnerAdapter;
     private TitreSpinnerAdapter titreSpinnerAdapter;
 
+    private UserSessionPreferences userSessionPreferences;
+
+    private String creeLe, creePar;
 
     public ContactRegisterFragment() {
         // Required empty public constructor
@@ -97,6 +103,17 @@ public class ContactRegisterFragment extends Fragment {
         secteurViewModel = ViewModelProviders.of(this).get(SecteurViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
         titreViewModel = ViewModelProviders.of(this).get(TitreViewModel.class);
+
+        //SharePreference
+        userSessionPreferences = new UserSessionPreferences(getContext());
+        creePar = userSessionPreferences.getUserDetails();
+
+        //Date
+        String parttern = "yyyy-MM-dd HH:mm:ss.SSS";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
+        creeLe = simpleDateFormat.format(new Date());
+
+
     }
 
     @Override
@@ -149,7 +166,7 @@ public class ContactRegisterFragment extends Fragment {
         String tel = mTel.getText().toString().trim();
 
         if (!(TextUtils.isEmpty(nom) || TextUtils.isEmpty(prenom) || TextUtils.isEmpty(email) || TextUtils.isEmpty(tel) || TextUtils.isEmpty(item1) || TextUtils.isEmpty(item2) || TextUtils.isEmpty(item3) || TextUtils.isEmpty(item4) || TextUtils.isEmpty(item5))) {
-            mContactViewModel.insertContact(new Contact(item2, nom, prenom, item1, item3, item4, item5, tel, null, null, email, 0, null, null, null, null, null, null, false, null, null));
+            mContactViewModel.insertContact(new Contact(null, item2, nom, prenom, item1, item3, item4, item5, tel, null, null, email, 0, null, null, creePar, creeLe, null, null, false, null, null, true));
             getActivity().getSupportFragmentManager().popBackStack(getActivity().getSupportFragmentManager().getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         } else {

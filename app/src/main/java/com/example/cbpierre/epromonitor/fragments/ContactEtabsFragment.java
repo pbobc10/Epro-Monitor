@@ -35,7 +35,7 @@ public class ContactEtabsFragment extends Fragment {
     private ContactEtablissementViewModel contactEtablissementViewModel;
     private JoinContactEtablissementAdapter etablissementAdapter;
     private FloatingActionButton fabButton;
-    public static int id;
+    public static Integer id;
 
     public ContactEtabsFragment() {
         // Required empty public constructor

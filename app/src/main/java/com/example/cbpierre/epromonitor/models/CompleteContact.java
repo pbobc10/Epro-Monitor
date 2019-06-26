@@ -3,7 +3,8 @@ package com.example.cbpierre.epromonitor.models;
 import java.io.Serializable;
 
 public class CompleteContact implements Serializable {
-    private int conId;
+    private int contactId;
+    private Integer conId;
     private String titre;
     private String nom;
     private String prenom;
@@ -42,7 +43,7 @@ public class CompleteContact implements Serializable {
     private String tid;
     private String nomTitre;
 
-    public CompleteContact(int conId, String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, int statut, String transfere_par, String transfere_le, String cree_par, String cree_le, String modifie_par, String modifie_le, boolean valide, String validateur, String date_maj_valide, String fid, String nomForce, String natId, String nomNature, String secId, String nomSecteur, String spId, String nomSpecialite, String tid, String nomTitre) {
+    public CompleteContact(Integer conId, String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, int statut, String transfere_par, String transfere_le, String cree_par, String cree_le, String modifie_par, String modifie_le, boolean valide, String validateur, String date_maj_valide, String fid, String nomForce, String natId, String nomNature, String secId, String nomSecteur, String spId, String nomSpecialite, String tid, String nomTitre) {
         this.conId = conId;
         this.titre = titre;
         this.nom = nom;
@@ -77,7 +78,15 @@ public class CompleteContact implements Serializable {
         this.nomTitre = nomTitre;
     }
 
-    public int getConId() {
+    public int getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
+    }
+
+    public Integer getConId() {
         return conId;
     }
 
