@@ -18,4 +18,8 @@ public class NewContactEtabViewModel extends AndroidViewModel {
     public void insert(NewContactETab contactETab) {
         contactEtabRepository.insert(contactETab);
     }
+
+    public void updateNewContactEtabAfterSync() {
+        contactEtabRepository.updateNewContactEtabAfterSync();
+    }
 }

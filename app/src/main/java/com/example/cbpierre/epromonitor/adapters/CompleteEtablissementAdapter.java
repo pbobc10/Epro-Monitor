@@ -119,7 +119,7 @@ public class CompleteEtablissementAdapter extends RecyclerView.Adapter<CompleteE
         } else {
             // Covers the case of data not being ready yet.
             completeEtablissementViewHolder.txtNom.setText(R.string.contact_nom);
-            completeEtablissementViewHolder.txtAdresse.setText(R.string.contact_tel);
+            completeEtablissementViewHolder.txtAdresse.setText(R.string.hint_tel);
             completeEtablissementViewHolder.txtLocalite.setText(R.string.contact_specialite);
         }
 

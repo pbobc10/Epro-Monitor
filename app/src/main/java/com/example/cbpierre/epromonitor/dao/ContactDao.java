@@ -19,8 +19,8 @@ public interface ContactDao {
     @Query("Select * from contact_table order by nom asc")
     LiveData<List<Contact>> getAllContacts();
 
-    @Query("Select * from contact_table where conId is null and is_new_contact=1 order by nom asc")
-    LiveData<List<Contact>> getAllNewContacts();
+    @Query("update contact_table set is_new_contact=0  where conId is null and is_new_contact=1")
+    void updateNewcontactAfterSync();
 
     @Query("Select * from contact_table where conId is null and is_new_contact=1 order by nom asc")
     List<Contact> getNewContacts();

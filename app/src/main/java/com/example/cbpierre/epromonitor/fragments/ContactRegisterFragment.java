@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,7 +72,7 @@ public class ContactRegisterFragment extends Fragment {
     private EditText mTel;
     private EditText mEmail;
     private Button button;
-    private String item1, item2, item3, item4, item5;
+    private String natureId, titreId, secteurId, specialiteId, forceId, nom, prenom, email, tel;
 
     private ContactViewModel mContactViewModel;
     private ForceViewModel forceViewModel;
@@ -87,7 +90,7 @@ public class ContactRegisterFragment extends Fragment {
 
     private UserSessionPreferences userSessionPreferences;
 
-    private String creeLe, creePar;
+    private String creeLe, creePar, modifieLe, modifiePar, transfereLe, transferePar;
 
     public ContactRegisterFragment() {
         // Required empty public constructor
@@ -106,14 +109,12 @@ public class ContactRegisterFragment extends Fragment {
 
         //SharePreference
         userSessionPreferences = new UserSessionPreferences(getContext());
-        creePar = userSessionPreferences.getUserDetails();
+        creePar = modifiePar = transferePar = userSessionPreferences.getUserDetails();
 
         //Date
-        String parttern = "yyyy-MM-dd HH:mm:ss.SSS";
+        String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
-        creeLe = simpleDateFormat.format(new Date());
-
-
+        creeLe = modifieLe = transfereLe = simpleDateFormat.format(new Date());
     }
 
     @Override
@@ -147,33 +148,89 @@ public class ContactRegisterFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertLocalContacts();
+                contactRegister();
                 // contactRepository.populateContact();
             }
         });
 
         //observers
         spinnerObservers();
-
         //call back arrow
         backArrow();
     }
 
-    public void insertLocalContacts() {
-        String nom = mNom.getText().toString().trim();
-        String prenom = mPrenom.getText().toString().trim();
-        String email = mEmail.getText().toString().trim();
-        String tel = mTel.getText().toString().trim();
-
-        if (!(TextUtils.isEmpty(nom) || TextUtils.isEmpty(prenom) || TextUtils.isEmpty(email) || TextUtils.isEmpty(tel) || TextUtils.isEmpty(item1) || TextUtils.isEmpty(item2) || TextUtils.isEmpty(item3) || TextUtils.isEmpty(item4) || TextUtils.isEmpty(item5))) {
-            mContactViewModel.insertContact(new Contact(null, item2, nom, prenom, item1, item3, item4, item5, tel, null, null, email, 0, null, null, creePar, creeLe, null, null, false, null, null, true));
+    public void contactRegister() {
+        initialize();
+        if (isValidate()) {
+            mContactViewModel.insertContact(new Contact(null, titreId, nom, prenom, natureId, secteurId, specialiteId, forceId, tel, null, null, email, 0, transferePar, transfereLe, creePar, creeLe, modifiePar, modifieLe, false, null, null, true));
             getActivity().getSupportFragmentManager().popBackStack(getActivity().getSupportFragmentManager().getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         } else {
-            Toast.makeText(getContext(), "Vous avez oublie un champ!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
         }
     }
 
+    public void initialize() {
+        nom = mNom.getText().toString().trim();
+        prenom = mPrenom.getText().toString().trim();
+        email = mEmail.getText().toString().trim();
+        tel = mTel.getText().toString().trim();
+    }
+
+    public boolean isValidate() {
+        boolean valid = true;
+        if (TextUtils.isEmpty(natureId) || natureId == null) {
+            TextView errorText = (TextView) spNature.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("le fileur Nature est vide!");
+            valid = false;
+        } else if (TextUtils.isEmpty(titreId) || titreId == null) {
+            TextView errorText = (TextView) spTitre.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("le fileur Titre est vide!");
+            valid = false;
+        } else if (nom.isEmpty() || nom.length() < 3) {
+            mNom.setError("Merci d'entrer un nom valide");
+            valid = false;
+        } else if (prenom.isEmpty() || prenom.length() < 3) {
+            mPrenom.setError("Merci d'entrer un prenom valide");
+            valid = false;
+        } else if (TextUtils.isEmpty(secteurId) || secteurId == null) {
+            TextView errorText = (TextView) spSecteur.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("le fileur Secteur est vide!");
+            valid = false;
+        } else if (TextUtils.isEmpty(specialiteId) || specialiteId == null) {
+            TextView errorText = (TextView) spSpecialite.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("le fileur Specialite est vide!");
+            valid = false;
+        } else if (TextUtils.isEmpty(forceId) || forceId == null) {
+            TextView errorText = (TextView) spForce.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("le fileur Force est vide!");
+            valid = false;
+        } else if (tel.isEmpty() || !isValidePhoneNumber(tel)) {
+            mTel.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
+            valid = false;
+        } else if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mEmail.setError("Merci d'entrer un email valide");
+            valid = false;
+        }
+        return valid;
+    }
+
+    public boolean isValidePhoneNumber(String number) {
+        String PHONE_NUMBER = "\\d{3}-\\d{4}-\\d{4}";
+        Pattern pattern = Pattern.compile(PHONE_NUMBER);
+        Matcher matcher = pattern.matcher(number);
+        return matcher.matches();
+    }
 
     public void spinnerObservers() {
         forceViewModel.getAllForce().observe(this, new Observer<List<Force>>() {
@@ -216,15 +273,11 @@ public class ContactRegisterFragment extends Fragment {
                 spTitre.setAdapter(titreSpinnerAdapter);
             }
         });
-       /* zoneViewModel.getAllZone().observe(this, new Observer<List<Zone>>() {
-            @Override
-            public void onChanged(@Nullable List<Zone> zones) {
-                zoneSpinnerAdapter = new ZoneSpinnerAdapter(getContext(), R.layout.spinner_rows, zones);
-                zoneSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                .setAdapter(zoneSpinnerAdapter);
-            }
-        });*/
     }
+
+    /**
+     * Spinner
+     */
 
     public void getSpinnerItem(@NonNull View view) {
 
@@ -243,9 +296,7 @@ public class ContactRegisterFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(android.R.color.darker_gray));
                 } else {
-
-
-                    item1 = nature.getNatId();
+                    natureId = nature.getNatId();
                     // show selected spinner item
                     //Toast.makeText(getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
                 }
@@ -272,7 +323,7 @@ public class ContactRegisterFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    item2 = titre.getTid();
+                    titreId = titre.getTid();
                     // show selected spinner item
                     // Toast.makeText(getContext(), "Selected: " + item2, Toast.LENGTH_LONG).show();
                 }
@@ -299,7 +350,7 @@ public class ContactRegisterFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    item3 = secteur.getSecId();
+                    secteurId = secteur.getSecId();
                     // show selected spinner item
                     //Toast.makeText(getContext(), "Selected: " + item3, Toast.LENGTH_LONG).show();
                 }
@@ -326,7 +377,7 @@ public class ContactRegisterFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    item4 = specialite.getSpId();
+                    specialiteId = specialite.getSpId();
                     // show selected spinner item
                     // Toast.makeText(getContext(), "Selected: " + item4, Toast.LENGTH_LONG).show();
                 }
@@ -353,7 +404,7 @@ public class ContactRegisterFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
-                    item5 = force.getFid();
+                    forceId = force.getFid();
                     // show selected spinner item
                     // Toast.makeText(getContext(), "Selected: " + item5, Toast.LENGTH_LONG).show();
                 }

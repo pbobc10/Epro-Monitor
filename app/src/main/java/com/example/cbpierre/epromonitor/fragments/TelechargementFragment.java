@@ -16,9 +16,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.example.cbpierre.epromonitor.AppConfig;
 import com.example.cbpierre.epromonitor.AppVolleySingleton;
 import com.example.cbpierre.epromonitor.CustomArrayRequest;
@@ -47,6 +53,7 @@ import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ForceViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NatureViewModel;
+import com.example.cbpierre.epromonitor.viewModels.NewContactEtabViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SecteurViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.TitreViewModel;
@@ -61,6 +68,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,11 +86,12 @@ public class TelechargementFragment extends Fragment {
     private ContactViewModel contactViewModel;
     private EtablissementViewModel etablissementViewModel;
     private ContactEtablissementViewModel contactEtablissementViewModel;
+    private NewContactEtabViewModel newContactEtabViewModel;
+
     private ArrayList<OldEtablissement> oldEtabs;
     private ArrayList<JoinNewEtabNewContact> newEtab;
 
     private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement;
-    //private ArrayList<SendNewContactEtabs> sendContactEtabList = new ArrayList<>();
     private List<SendNewContactEtabs> sendContactEtabList;
     private SendNewContactEtabs sendNewContactEtabs;
     private ProgressDialog pDialog;
@@ -109,6 +118,7 @@ public class TelechargementFragment extends Fragment {
         contactViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
+        newContactEtabViewModel = ViewModelProviders.of(this).get(NewContactEtabViewModel.class);
     }
 
     @Override
@@ -138,9 +148,9 @@ public class TelechargementFragment extends Fragment {
             public void onClick(View v) {
 
                 //set title of the dialog
-                pDialog.setTitle("Get Contact Data  ...");
+                pDialog.setTitle("Obtenir les données de contact du serveur  ...");
                 //set message of the dialog
-                pDialog.setMessage("Please wait...");
+                pDialog.setMessage("S'il vous plaît, attendez...");
                 //show dialog
                 showDialog();
 
@@ -157,6 +167,13 @@ public class TelechargementFragment extends Fragment {
         btnSyncContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //set title of the dialog
+                pDialog.setTitle("synchronisation des données ...");
+                //set message of the dialog
+                pDialog.setMessage("S'il vous plaît, attendez...");
+                //show dialog
+                showDialog();
+
                 //Async Old Etabs
                 etablissementViewModel.getOldEtabs();
                 //Async New Etabs
@@ -177,7 +194,7 @@ public class TelechargementFragment extends Fragment {
                 //set title of the dialog
                 pDialog.setTitle("Get Etablissement Data  ...");
                 //set message of the dialog
-                pDialog.setMessage("Please wait...");
+                pDialog.setMessage("S'il vous plaît, attendez...");
                 //show dialog
                 showDialog();
 
@@ -398,22 +415,6 @@ public class TelechargementFragment extends Fragment {
         }
     }
 
-    /**
-     * SYNC  CONTACT DATA
-     */
-    private void syncContactData(String url) {
-        CustomRequest request = new CustomRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-    }
 
     public void fromAsyncReposeCreateJsonString() {
         sendContactEtabList = new ArrayList<>();
@@ -425,7 +426,7 @@ public class TelechargementFragment extends Fragment {
                     oldEtabs = new ArrayList<>();
                     oldEtabs.addAll(contactsIds);
                 }
-                Toast.makeText(getContext(), "etab Existant ok", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "etab Existant ok", Toast.LENGTH_SHORT).show();
             }
         });
         //New Etab Async Response
@@ -436,7 +437,7 @@ public class TelechargementFragment extends Fragment {
                     newEtab = new ArrayList<>();
                     newEtab.addAll(newEtabs);
                 }
-                Toast.makeText(getContext(), "new etab  ok", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "new etab  ok", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -484,27 +485,22 @@ public class TelechargementFragment extends Fragment {
                         sendNewContactEtabs.setEtabsNouveaux(newEtabList);
                         /////////////////////////////////////////////
                         sendNewContactEtabs.setCreePar(contact.getCree_par());
-                        try {
-                            sendNewContactEtabs.setCreeLe(todate(contact.getCree_le()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                        sendNewContactEtabs.setCreeLe(contact.getCree_le());
+
                         sendNewContactEtabs.setModifiePar(contact.getModifie_par());
-                        try {
-                            sendNewContactEtabs.setModifieLe(todate(contact.getModifie_le()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                        sendNewContactEtabs.setModifieLe(contact.getModifie_le());
+
                         sendNewContactEtabs.setTransferePar(contact.getTransfere_par());
-                        try {
-                            sendNewContactEtabs.setTransfereLe(todate(contact.getTransfere_le()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                        sendNewContactEtabs.setTransfereLe(contact.getTransfere_le());
+
                         sendContactEtabList.add(sendNewContactEtabs);
                     }
                     // Log.d("---test", "" + sendContactEtabList.size());
                     Log.d("-test", toJSON(sendContactEtabList));
+                    syncContactData(AppConfig.URL_NEW_CONTACT_REGISTER, toJSON(sendContactEtabList));
                 } else
                     Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
             }
@@ -520,14 +516,69 @@ public class TelechargementFragment extends Fragment {
         return gson.toJson(src);
     }
 
+    /**
+     * SYNC  CONTACT DATA
+     */
+    private void syncContactData(String url, String post) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("test", post);
+        CustomRequest request = new CustomRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response.equals("Succès")) {
+                    newContactEtabViewModel.updateNewContactEtabAfterSync();
+                    etablissementViewModel.updateNewEtabsAfterSync();
+                    contactViewModel.updateNewcontactAfterSync();
+                    hideDialog();
+                    Toast.makeText(getContext(), "les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_SHORT).show();
+                } else {
+                    hideDialog();
+                    Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof AuthFailureError) {
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NetworkError) {
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ParseError) {
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_LONG).show();
+                } else {
+                    hideDialog();
+                    Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_LONG).show();
+                    Log.e("Volley Error", error.toString());
+                }
+
+            }
+        });
+
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(request);
+    }
+
     //toDate function
-    public Date todate(String date) throws ParseException {
+   /* public Date todate(String date) throws ParseException {
         if (date != null) {
-            String parttern = "yyyy-MM-dd HH:mm:ss.SSS";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern, Locale.FRANCE);
+            String parttern = "yyyy-MM-dd HH:mm:ss.SS";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern, Locale.getDefault());
             return simpleDateFormat.parse(date);
         } else
             return null;
-    }
+    }*/
 
 }

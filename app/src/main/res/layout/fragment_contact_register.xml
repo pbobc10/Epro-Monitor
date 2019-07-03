@@ -27,11 +27,12 @@
             android:fontFamily="sans-serif-condensed"
             android:text="@string/contact_nouveau"
             android:textColor="@color/input_login"
-            android:textSize="46sp" />
+            android:textSize="36sp" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -53,6 +54,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -75,6 +77,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -91,9 +94,10 @@
                     android:ems="10"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="@string/hint_nom"
-                    android:inputType="textPersonName"
-                    android:padding="12dp"
-                    android:textColorHint="@color/input_login_hint" />
+                    android:inputType="textPersonName|textCapWords"
+                    android:padding="10dp"
+                    android:textColorHint="@color/input_login_hint"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -101,6 +105,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -117,9 +122,10 @@
                     android:ems="10"
                     android:fontFamily="sans-serif-condensed"
                     android:hint="@string/hint_prenom"
-                    android:inputType="textPersonName"
-                    android:padding="12dp"
-                    android:textColorHint="@color/input_login_hint" />
+                    android:inputType="textPersonName|textCapWords"
+                    android:padding="10dp"
+                    android:textColorHint="@color/input_login_hint"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -127,6 +133,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -149,6 +156,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -171,6 +179,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -193,6 +202,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -210,9 +220,10 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="@string/hint_tel"
                     android:inputType="phone"
-                    android:maxLength="11"
-                    android:padding="12dp"
-                    android:textColorHint="@color/input_login_hint" />
+                    android:maxLength="13"
+                    android:padding="10dp"
+                    android:textColorHint="@color/input_login_hint"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -220,6 +231,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             card_view:cardCornerRadius="5dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
@@ -237,8 +249,9 @@
                     android:fontFamily="sans-serif-condensed"
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress"
-                    android:padding="12dp"
-                    android:textColorHint="@color/input_login_hint" />
+                    android:padding="10dp"
+                    android:textColorHint="@color/input_login_hint"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -248,7 +261,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/button_contact"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/register_btn"

@@ -46,13 +46,12 @@
     <string name="contact_specialite">MEDECINE GENERALE</string>
     <string name="contact_nature">PRESCRIPTEUR</string>
     <string name="contact_secteur">NON APLLICABLE</string>
-    <string name="contact_tel">Tel:</string>
     <string name="contact_email">email@yourmail.com</string>
     <string name="contact_nouveau">Nouveau Contact</string>
     <string name="hint_nom">Nom</string>
     <string name="hint_prenom">Prenom</string>
     <string name="hint_email">Email</string>
-    <string name="hint_tel">Tel:</string>
+    <string name="hint_tel">Tel: 509-2222-1111</string>
     <string name="register_btn">Soumettre</string>
 
     <!-- Spinner Prompt-->

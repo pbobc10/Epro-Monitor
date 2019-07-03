@@ -2,7 +2,7 @@ package com.example.cbpierre.epromonitor.models;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.Date;
+
 import java.util.List;
 
 public class SendNewContactEtabs {
@@ -35,20 +35,20 @@ public class SendNewContactEtabs {
     @Expose
     private String creePar;
     @Expose
-    private Date creeLe;
+    private String creeLe;
     @Expose
     private String modifiePar;
     @Expose
-    private Date modifieLe;
+    private String modifieLe;
     @Expose
     private String transferePar;
     @Expose
-    private Date transfereLe;
+    private String transfereLe;
 
     public SendNewContactEtabs() {
     }
 
-    public SendNewContactEtabs(String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, List<Integer> etabsExistants, List<JoinNewEtabNewContact> etabsNouveaux, String creePar, Date creeLe, String modifiePar, Date modifieLe, String transferePar, Date transfereLe) {
+    public SendNewContactEtabs(String titre, String nom, String prenom, String nature, String secteur, String specialite, String force, String phone1, String phone2, String phone3, String email, List<Integer> etabsExistants, List<JoinNewEtabNewContact> etabsNouveaux, String creePar, String creeLe, String modifiePar, String modifieLe, String transferePar, String transfereLe) {
         this.titre = titre;
         this.nom = nom;
         this.prenom = prenom;
@@ -126,7 +126,7 @@ public class SendNewContactEtabs {
         this.creePar = creePar;
     }
 
-    public void setCreeLe(Date creeLe) {
+    public void setCreeLe(String creeLe) {
         this.creeLe = creeLe;
     }
 
@@ -134,7 +134,7 @@ public class SendNewContactEtabs {
         this.modifiePar = modifiePar;
     }
 
-    public void setModifieLe(Date modifieLe) {
+    public void setModifieLe(String modifieLe) {
         this.modifieLe = modifieLe;
     }
 
@@ -142,7 +142,7 @@ public class SendNewContactEtabs {
         this.transferePar = transferePar;
     }
 
-    public void setTransfereLe(Date transfereLe) {
+    public void setTransfereLe(String transfereLe) {
         this.transfereLe = transfereLe;
     }
 }

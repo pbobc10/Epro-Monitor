@@ -87,7 +87,7 @@
                 android:ems="10"
                 android:fontFamily="sans-serif-condensed"
                 android:hint="@string/hint_nom"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapWords"
                 android:padding="12dp"
                 android:textColorHint="@color/input_login_hint" />
         </RelativeLayout>
@@ -115,7 +115,7 @@
                 android:ems="10"
                 android:fontFamily="sans-serif-condensed"
                 android:hint="Adresse Etablissement ..."
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapWords"
                 android:padding="12dp"
                 android:textColorHint="@color/input_login_hint" />
         </RelativeLayout>
@@ -125,9 +125,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
+        android:orientation="vertical"
         android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:orientation="vertical">
+        android:paddingEnd="4dp">
 
         <Button
             android:id="@+id/btnok"

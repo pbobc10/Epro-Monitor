@@ -19,6 +19,10 @@ public class NewContactEtabRepository {
         new NewContactEtabTask(newContactEtabDao).execute(contactETab);
     }
 
+    public void updateNewContactEtabAfterSync() {
+        new UpdateNewContactEtabAfterSync(newContactEtabDao).execute();
+    }
+
     /**
      * AsyncTask
      */
@@ -33,6 +37,20 @@ public class NewContactEtabRepository {
         @Override
         protected Void doInBackground(NewContactETab... newContactETabs) {
             contactEtabDao.insert(newContactETabs[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateNewContactEtabAfterSync extends AsyncTask<Void, Void, Void> {
+        private NewContactEtabDao newContactEtabDao;
+
+        public UpdateNewContactEtabAfterSync(NewContactEtabDao newContactEtabDao) {
+            this.newContactEtabDao = newContactEtabDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            newContactEtabDao.updateNewContactEtabAfterSync();
             return null;
         }
     }

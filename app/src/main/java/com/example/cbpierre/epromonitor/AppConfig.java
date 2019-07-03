@@ -2,8 +2,18 @@ package com.example.cbpierre.epromonitor;
 
 public class AppConfig {
 
+    /**
+     * HTTP POST
+     */
+
     // Server user login url
     public static final String URL_LOGIN = "https://disprophar.net/webAPI/Account/Post";
+    // Server user register url
+    public static final String URL_NEW_CONTACT_REGISTER = "https://disprophar.net/webAPI/Prospection/PostProspection";
+
+    /**
+     * HTTP GET
+     */
 
     // Server titre url
     public static final String URL_TITRE = "https://disprophar.net/webAPI/Prospection/GetTitre";
@@ -19,10 +29,7 @@ public class AppConfig {
     public static final String URL_ZONE = "https://disprophar.net/webAPI/Prospection/GetZone";
     // Server  Contact url
     public static final String URL_CONTACT = "https://disprophar.net/webAPI/Prospection/GetContact?date=1/1/2018";
-
     //Server Etablissement url
     public static final String URL_ETABLISSEMENT = "https://disprophar.net/webAPI/Prospection/GetEtablissement?date=1/1/2018";
 
-    // Server user register url
-    public static final String URL_REGISTER = " ";
 }

@@ -67,7 +67,7 @@ public class EtabsRegisterFragment extends Fragment {
     private CompleteContact contact;
 
     private UserSessionPreferences userSessionPreferences;
-    private String creeLe, creePar;
+    private String creeLe, creePar, transfereLe, transferePar, nom, adresse;
 
     public EtabsRegisterFragment() {
         // Required empty public constructor
@@ -82,12 +82,12 @@ public class EtabsRegisterFragment extends Fragment {
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         //SharePreference
         userSessionPreferences = new UserSessionPreferences(getContext());
-        creePar = userSessionPreferences.getUserDetails();
+        creePar = transferePar = userSessionPreferences.getUserDetails();
 
         //Date
-        String parttern = "yyyy-MM-dd HH:mm:ss.SSS";
+        String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
-        creeLe = simpleDateFormat.format(new Date());
+        creeLe = transfereLe = simpleDateFormat.format(new Date());
     }
 
     @Override
@@ -128,6 +128,7 @@ public class EtabsRegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 insertNewEtab();
+                Toast.makeText(getContext(), "enregistrement de données d'établissement", Toast.LENGTH_SHORT).show();
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -258,12 +259,13 @@ public class EtabsRegisterFragment extends Fragment {
     public void insertNewEtab() {
         //check if it's in the list
         if (etablissement.getNomEtablissement().equals("N'EST PAS DANS LA LISTE")) {
+            initialize();
             //check for empty views
-            if (!(TextUtils.isEmpty(etNom.getText()) || TextUtils.isEmpty(etAdresse.getText()))) {
-                etablissementViewModel.insertEtablissement(new Etablissement(null, etNom.getText().toString(), zone.getZoneHtId(), etAdresse.getText().toString(), null, null, 0, false, null, null, creePar, creeLe, null, null, true));
+            if (isValidate()) {
+                etablissementViewModel.insertEtablissement(new Etablissement(null, nom, zone.getZoneHtId(), adresse, null, null, 0, false, null, null, creePar, creeLe, transferePar, transfereLe, true));
                 etablissementViewModel.finMaxEtab();
             } else {
-                Toast.makeText(getContext(), "Vous avez oublie un champ!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
             }
 
         } // its in the list
@@ -273,6 +275,23 @@ public class EtabsRegisterFragment extends Fragment {
             else
                 contactEtabViewModel.insert(new NewContactETab(contact.getContactId(), etablissement.getEtId(), null));
         }
+    }
+
+    public void initialize() {
+        nom = etNom.getText().toString().trim();
+        adresse = etAdresse.getText().toString().trim();
+    }
+
+    public boolean isValidate() {
+        boolean valid = true;
+        if (TextUtils.isEmpty(nom) || nom.length() < 3) {
+            etNom.setError("Merci d'entrer un nom valide ...");
+            valid = false;
+        } else if (TextUtils.isEmpty(adresse) || adresse.length() < 4) {
+            etAdresse.setError("Merci d'entrer une adresse valide ...");
+            valid = false;
+        }
+        return valid;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

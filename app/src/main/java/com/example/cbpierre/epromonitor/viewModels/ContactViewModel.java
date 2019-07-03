@@ -18,7 +18,6 @@ import java.util.List;
 public class ContactViewModel extends AndroidViewModel {
     private ContactRepository contactRepository;
     private LiveData<List<Contact>> mAllContact;
-    private LiveData<List<Contact>> mAllNewContact;
     private MutableLiveData<String> contactByNom = new MutableLiveData<>();
     private LiveData<List<CompleteContact>> completeContact;
     private ContactRepository.OnNewcontactListener contactListener;
@@ -27,7 +26,6 @@ public class ContactViewModel extends AndroidViewModel {
     public ContactViewModel(@NonNull Application application) {
         super(application);
         contactRepository = new ContactRepository(application);
-        mAllNewContact = contactRepository.getAllNewContacts();
         mAllContact = contactRepository.getmAllContacts();
         completeContact = Transformations.switchMap(contactByNom, new Function<String, LiveData<List<CompleteContact>>>() {
             @Override
@@ -48,14 +46,9 @@ public class ContactViewModel extends AndroidViewModel {
         return mAllContact;
     }
 
-    public LiveData<List<Contact>> getAllNewContacts() {
-        return mAllNewContact;
-    }
-
     public LiveData<List<CompleteContact>> getCompleteContact() {
         return completeContact;
     }
-
 
     public void insertContact(Contact contact) {
         contactRepository.insertContact(contact);
@@ -68,5 +61,9 @@ public class ContactViewModel extends AndroidViewModel {
     public void getNewContacts() {
         contactRepository.setOnNewContact(contactListener);
         contactRepository.getNewContact();
+    }
+
+    public void updateNewcontactAfterSync() {
+        contactRepository.updateNewcontactAfterSync();
     }
 }

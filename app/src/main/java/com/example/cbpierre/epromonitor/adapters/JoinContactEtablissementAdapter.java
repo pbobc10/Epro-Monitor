@@ -92,7 +92,7 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
         } else {
             // Covers the case of data not being ready yet.
             viewHolder.txtNom.setText(R.string.contact_nom);
-            viewHolder.txtAdresse.setText(R.string.contact_tel);
+            viewHolder.txtAdresse.setText(R.string.hint_tel);
             viewHolder.txtLocalite.setText(R.string.contact_specialite);
         }
 

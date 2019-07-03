@@ -134,10 +134,9 @@ public class CompleteContactAdapter extends RecyclerView.Adapter<CompleteContact
         } else {
             // Covers the case of data not being ready yet.
             completeContactViewHolder.txtNom.setText(R.string.contact_nom);
-            completeContactViewHolder.txtTel.setText(R.string.contact_tel);
+            completeContactViewHolder.txtTel.setText(R.string.hint_tel);
             completeContactViewHolder.txtSpecialite.setText(R.string.contact_specialite);
             completeContactViewHolder.txtNature.setText(R.string.contact_nature);
-            completeContactViewHolder.txtTel.setText(R.string.contact_tel);
             completeContactViewHolder.txtEmail.setText(R.string.contact_email);
 
         }

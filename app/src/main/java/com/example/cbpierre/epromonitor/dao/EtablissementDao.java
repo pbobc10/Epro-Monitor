@@ -33,7 +33,7 @@ public interface EtablissementDao {
             "and etablissement_table.nom_Etablissement like '%' || :nom || '%'")
     LiveData<List<CompleteEtablissement>> getCompleteEtabsByNom(String nom);
 
-    @Query("select * from etablissement_table where etablissement_table.localite like :localite ||'%' or nom_Etablissement = 'N''EST PAS DANS LA LISTE' order by nom_Etablissement")
+    @Query("select * from etablissement_table where is_new_etab=0 and etablissement_table.localite like :localite ||'%' or nom_Etablissement = 'N''EST PAS DANS LA LISTE' order by nom_Etablissement")
     LiveData<List<Etablissement>> getEtabByLocalite(String localite);
 
     @Query("select new_contact_etab.contact_id,etablissement_table.nom_Etablissement,etablissement_table.adresse,etablissement_table.localite,etablissement_table.latitude,etablissement_table.longitude, etablissement_table.cree_par,etablissement_table.cree_le,etablissement_table.transfere_par,etablissement_table.transfere_le from new_contact_etab,etablissement_table where new_contact_etab.new_etab_id=etablissement_table.etabId and etablissement_table.is_new_etab=1")
@@ -44,4 +44,6 @@ public interface EtablissementDao {
             "and new_contact_etab.sync_data=0")
     List<OldEtablissement> getOldEtab();
 
+    @Query("update etablissement_table set is_new_etab=0 where etId is null and is_new_etab=1")
+    void updateNewEtabsAfterSync();
 }

@@ -69,6 +69,10 @@ public class EtablissementRepository {
         task.execute();
     }
 
+    public void updateNewEtabsAfterSync() {
+        new UpdateNewEtabsAfterSync(etablissementDao).execute();
+    }
+
     /**
      * method interface
      */
@@ -106,9 +110,6 @@ public class EtablissementRepository {
         }
     }
 
-    /**
-     * Async Task
-     */
     private static class GetMaxEtabAsyncTask extends AsyncTask<Void, Void, Integer> {
         private EtablissementDao etablissementDao;
         private EtablissementRepository delegate;
@@ -135,7 +136,6 @@ public class EtablissementRepository {
         public NewEtablissementByContactIdTask(EtablissementDao etablissementDao) {
             this.etablissementDao = etablissementDao;
         }
-
 
         @Override
         protected List<JoinNewEtabNewContact> doInBackground(Void... voids) {
@@ -168,6 +168,20 @@ public class EtablissementRepository {
             super.onPostExecute(oldEtablissements);
             if (onOldEtadListener != null)
                 onOldEtadListener.getOldEtab(oldEtablissements);
+        }
+    }
+
+    private static class UpdateNewEtabsAfterSync extends AsyncTask<Void, Void, Void> {
+        private EtablissementDao etablissementDao;
+
+        public UpdateNewEtabsAfterSync(EtablissementDao etablissementDao) {
+            this.etablissementDao = etablissementDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            etablissementDao.updateNewEtabsAfterSync();
+            return null;
         }
     }
 

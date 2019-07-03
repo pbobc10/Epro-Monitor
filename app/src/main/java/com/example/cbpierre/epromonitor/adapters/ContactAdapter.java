@@ -107,10 +107,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         } else {
             // Covers the case of data not being ready yet.
             contactViewHolder.txtNom.setText(R.string.contact_nom);
-            contactViewHolder.txtTel.setText(R.string.contact_tel);
+            contactViewHolder.txtTel.setText(R.string.hint_tel);
             contactViewHolder.txtSpecialite.setText(R.string.contact_specialite);
             contactViewHolder.txtNature.setText(R.string.contact_nature);
-            contactViewHolder.txtTel.setText(R.string.contact_tel);
             contactViewHolder.txtEmail.setText(R.string.contact_email);
 
         }

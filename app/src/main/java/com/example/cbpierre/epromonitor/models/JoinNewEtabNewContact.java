@@ -1,26 +1,41 @@
 package com.example.cbpierre.epromonitor.models;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class JoinNewEtabNewContact {
     private Integer contact_id;
+
     @Expose
+    @SerializedName(value = "nom")
     private String nom_Etablissement;
+
     @Expose
     private String adresse;
+
     @Expose
     private String localite;
+
     @Expose
     private String latitude;
+
     @Expose
     private String longitude;
+
     @Expose
+    @SerializedName(value = "creePar")
     private String cree_par;
+
     @Expose
+    @SerializedName(value = "creeLe")
     private String cree_le;
+
     @Expose
+    @SerializedName(value = "transferePar")
     private String transfert_par;
+
     @Expose
+    @SerializedName(value = "transfereLe")
     private String transfere_le;
 
     public Integer getContact_id() {

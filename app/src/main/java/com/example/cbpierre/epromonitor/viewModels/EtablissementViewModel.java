@@ -76,32 +76,9 @@ public class EtablissementViewModel extends AndroidViewModel {
         return allCompleteEtablissement;
     }
 
-   /* //new Etab MutableLiveData
-    public LiveData<List<JoinNewEtabNewContact>> getNewEtabByContactId() {
-        return Transformations.switchMap(newEtabByContactId, new Function<Integer, LiveData<List<JoinNewEtabNewContact>>>() {
-            @Override
-            public LiveData<List<JoinNewEtabNewContact>> apply(Integer input) {
-                return etablissementRepository.getNewEtablissementByContactId(input);
-            }
-        });
+    public void updateNewEtabsAfterSync() {
+        etablissementRepository.updateNewEtabsAfterSync();
     }
-
-    public void setNewEtabByContactId(Integer contactId) {
-        newEtabByContactId.setValue(contactId);
-    }
-    //Old Etab MutableLiveData
-    public LiveData<List<Integer>> getOldEtabByContactId() {
-        return Transformations.switchMap(oldEtabByContactId, new Function<Integer, LiveData<List<Integer>>>() {
-            @Override
-            public LiveData<List<Integer>> apply(Integer input) {
-                return getOldEtabByContactId();
-            }
-        });
-    }
-
-    public void setOldEtabByContactId(Integer contactId) {
-        oldEtabByContactId.setValue(contactId);
-    }*/
 
     public void insertEtablissement(Etablissement etablissement) {
         etablissementRepository.insertEtablissement(etablissement);

@@ -92,7 +92,7 @@ public class EtablissementAdapter extends RecyclerView.Adapter<EtablissementAdap
         } else {
             // Covers the case of data not being ready yet.
             etablissementViewHolder.txtNom.setText(R.string.contact_nom);
-            etablissementViewHolder.txtAdresse.setText(R.string.contact_tel);
+            etablissementViewHolder.txtAdresse.setText(R.string.hint_tel);
             etablissementViewHolder.txtLocalite.setText(R.string.contact_specialite);
         }
 
