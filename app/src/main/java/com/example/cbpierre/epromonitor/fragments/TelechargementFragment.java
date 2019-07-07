@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -24,6 +25,9 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cbpierre.epromonitor.AppConfig;
 import com.example.cbpierre.epromonitor.AppVolleySingleton;
@@ -64,6 +68,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,6 +76,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -500,9 +506,10 @@ public class TelechargementFragment extends Fragment {
                     }
                     // Log.d("---test", "" + sendContactEtabList.size());
                     Log.d("-test", toJSON(sendContactEtabList));
-                    syncContactData(AppConfig.URL_NEW_CONTACT_REGISTER, toJSON(sendContactEtabList));
+                    syncContactData(toJSON(sendContactEtabList));
                 } else
-                    Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
+                    hideDialog();
+                Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -519,66 +526,76 @@ public class TelechargementFragment extends Fragment {
     /**
      * SYNC  CONTACT DATA
      */
-    private void syncContactData(String url, String post) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("test", post);
-        CustomRequest request = new CustomRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
+    private void syncContactData(final String requestBody) {
+        // Formulate the request and handle the response.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_NEW_CONTACT_REGISTER,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Do something with the response
+                        if (response.equals("\"Succès\"")) {
+                            // update after sync "Succès"
+                            newContactEtabViewModel.updateNewContactEtabAfterSync();
+                            etablissementViewModel.updateNewEtabsAfterSync();
+                            contactViewModel.updateNewcontactAfterSync();
+                            hideDialog();
+                            Toast.makeText(getContext(), "Les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_LONG).show();
+                            Log.d("volley", response);
+                        } else {
+                            hideDialog();
+                            Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_LONG).show();
+                            Log.d("volley", response);
+                            Log.d("volley", "\"Succès\"");
+                            Log.d("volley", "Succès");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                        if (error instanceof AuthFailureError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof NetworkError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ParseError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ServerError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof TimeoutError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_LONG).show();
+                        } else {
+                            hideDialog();
+                            Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_LONG).show();
+                            Log.e("Volley Error", error.toString());
+                        }
+                    }
+                }) {
             @Override
-            public void onResponse(JSONObject response) {
-                if (response.equals("Succès")) {
-                    newContactEtabViewModel.updateNewContactEtabAfterSync();
-                    etablissementViewModel.updateNewEtabsAfterSync();
-                    contactViewModel.updateNewcontactAfterSync();
-                    hideDialog();
-                    Toast.makeText(getContext(), "les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_SHORT).show();
-                } else {
-                    hideDialog();
-                    Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException exception) {
+                    Log.e("ERROR", "exception", exception);
+                    return null;
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error instanceof AuthFailureError) {
-                    //dismiss dialog
-                    hideDialog();
-                    Toast.makeText(getContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
-                } else if (error instanceof NetworkError) {
-                    //dismiss dialog
-                    hideDialog();
-                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
-                } else if (error instanceof ParseError) {
-                    //dismiss dialog
-                    hideDialog();
-                    Toast.makeText(getContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
-                } else if (error instanceof ServerError) {
-                    //dismiss dialog
-                    hideDialog();
-                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
-                } else if (error instanceof TimeoutError) {
-                    //dismiss dialog
-                    hideDialog();
-                    Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_LONG).show();
-                } else {
-                    hideDialog();
-                    Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_LONG).show();
-                    Log.e("Volley Error", error.toString());
-                }
-
-            }
-        });
-
-        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(request);
+        };
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
-
-    //toDate function
-   /* public Date todate(String date) throws ParseException {
-        if (date != null) {
-            String parttern = "yyyy-MM-dd HH:mm:ss.SS";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern, Locale.getDefault());
-            return simpleDateFormat.parse(date);
-        } else
-            return null;
-    }*/
-
 }

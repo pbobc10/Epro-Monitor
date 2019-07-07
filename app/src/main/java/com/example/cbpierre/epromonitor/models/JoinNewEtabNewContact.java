@@ -32,7 +32,7 @@ public class JoinNewEtabNewContact {
 
     @Expose
     @SerializedName(value = "transferePar")
-    private String transfert_par;
+    private String transfere_par;
 
     @Expose
     @SerializedName(value = "transfereLe")
@@ -102,12 +102,12 @@ public class JoinNewEtabNewContact {
         this.cree_le = cree_le;
     }
 
-    public String getTransfert_par() {
-        return transfert_par;
+    public String getTransfere_par() {
+        return transfere_par;
     }
 
-    public void setTransfert_par(String transfert_par) {
-        this.transfert_par = transfert_par;
+    public void setTransfere_par(String transfert_par) {
+        this.transfere_par = transfert_par;
     }
 
     public String getTransfere_le() {
