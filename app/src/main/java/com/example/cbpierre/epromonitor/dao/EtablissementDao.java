@@ -44,6 +44,6 @@ public interface EtablissementDao {
             "and new_contact_etab.sync_data=0")
     List<OldEtablissement> getOldEtab();
 
-    @Query("update etablissement_table set is_new_etab=0 where etId is null and is_new_etab=1")
-    void updateNewEtabsAfterSync();
+    @Query("delete from etablissement_table where etId is null and is_new_etab=1")
+    void deleteNewEtabsAfterSync();
 }

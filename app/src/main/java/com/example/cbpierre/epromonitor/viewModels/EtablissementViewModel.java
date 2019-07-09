@@ -76,8 +76,8 @@ public class EtablissementViewModel extends AndroidViewModel {
         return allCompleteEtablissement;
     }
 
-    public void updateNewEtabsAfterSync() {
-        etablissementRepository.updateNewEtabsAfterSync();
+    public void deleteNewEtabsAfterSync() {
+        etablissementRepository.deleteNewEtabsAfterSync();
     }
 
     public void insertEtablissement(Etablissement etablissement) {

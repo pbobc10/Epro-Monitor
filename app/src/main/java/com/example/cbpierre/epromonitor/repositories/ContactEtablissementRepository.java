@@ -21,24 +21,17 @@ public class ContactEtablissementRepository {
         this.contactEtablissementDao = database.contactEtablissementDao();
     }
 
-    public MutableLiveData<List<JoinContactEtablissementData>> searchEtabsByContactId = new MutableLiveData<>();
 
-    public MutableLiveData<List<JoinContactEtablissementData>> getSearchEtabsByContactId() {
-        return searchEtabsByContactId;
+    public LiveData<List<JoinContactEtablissementData>> getNewEtabsbyContactid(Integer conId) {
+        return contactEtablissementDao.getAllNewEtablissementByContactId(conId);
     }
 
-    public void setSearchEtabsByContactId(List<JoinContactEtablissementData> results) {
-        searchEtabsByContactId.setValue(results);
+    public LiveData<List<JoinContactEtablissementData>> getEtabsByContactId(Integer conId) {
+        return contactEtablissementDao.getAllEtablissementByContactId(conId);
     }
 
     public void insertContactEtablissement(ContactEtablissement... contactEtablissement) {
         new InsertContactEtablissementTask(contactEtablissementDao).execute(contactEtablissement);
-    }
-
-    public void findContactEtabs(Integer i) {
-        GetEtablissementByContactTask task = new GetEtablissementByContactTask(contactEtablissementDao);
-        task.delegate = this;
-        task.execute(i);
     }
 
     /**
@@ -56,27 +49,6 @@ public class ContactEtablissementRepository {
         protected Void doInBackground(ContactEtablissement... contactEtablissements) {
             dao.insert(contactEtablissements[0]);
             return null;
-        }
-    }
-
-    private static class GetEtablissementByContactTask extends AsyncTask<Integer, Void, List<JoinContactEtablissementData>> {
-        private ContactEtablissementDao dao;
-        private ContactEtablissementRepository delegate;
-
-        public GetEtablissementByContactTask(ContactEtablissementDao dao) {
-            this.dao = dao;
-        }
-
-        @Override
-        protected List<JoinContactEtablissementData> doInBackground(Integer... integers) {
-            return dao.getAllEtablissementByContactId(integers[0]);
-        }
-
-        @Override
-        protected void onPostExecute(List<JoinContactEtablissementData> joinContactEtablissementData) {
-            super.onPostExecute(joinContactEtablissementData);
-            delegate.setSearchEtabsByContactId(joinContactEtablissementData);
-
         }
     }
 

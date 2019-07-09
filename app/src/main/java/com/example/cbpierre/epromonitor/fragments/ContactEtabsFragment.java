@@ -21,9 +21,11 @@ import android.widget.Toast;
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.EtablissementAdapter;
 import com.example.cbpierre.epromonitor.adapters.JoinContactEtablissementAdapter;
+import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.JoinContactEtablissementData;
 import com.example.cbpierre.epromonitor.repositories.ContactEtablissementRepository;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
+import com.example.cbpierre.epromonitor.viewModels.SharedViewModel;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ import java.util.List;
 public class ContactEtabsFragment extends Fragment {
     private RecyclerView recyclerView;
     private ContactEtablissementViewModel contactEtablissementViewModel;
+    private SharedViewModel sharedViewModel;
     private JoinContactEtablissementAdapter etablissementAdapter;
     private FloatingActionButton fabButton;
     public static Integer id;
@@ -45,6 +48,7 @@ public class ContactEtabsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
     }
 
     @Override
@@ -61,11 +65,29 @@ public class ContactEtabsFragment extends Fragment {
         etablissementAdapter = new JoinContactEtablissementAdapter(getContext());
         recyclerView.setAdapter(etablissementAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        contactEtablissementViewModel.findContactEtablissement(id);
-        contactEtablissementViewModel.getSearchEtabsByContactId().observe(this, new Observer<List<JoinContactEtablissementData>>() {
+
+        sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
             @Override
-            public void onChanged(@Nullable List<JoinContactEtablissementData> joinContactEtablissementData) {
-                etablissementAdapter.setEtablissement(joinContactEtablissementData);
+            public void onChanged(@Nullable CompleteContact completeContact) {
+                if (completeContact != null) {
+                    if (completeContact.getConId() != null) {
+                        contactEtablissementViewModel.setEtabsByContactId(completeContact.getConId());
+                        contactEtablissementViewModel.getEtabsByContactId().observe(getViewLifecycleOwner(), new Observer<List<JoinContactEtablissementData>>() {
+                            @Override
+                            public void onChanged(@Nullable List<JoinContactEtablissementData> joinContactEtablissementData) {
+                                etablissementAdapter.setEtablissement(joinContactEtablissementData);
+                            }
+                        });
+                    } else {
+                        contactEtablissementViewModel.setNewEtabsByContactId(completeContact.getContactId());
+                        contactEtablissementViewModel.getNewEtabsByContactId().observe(getViewLifecycleOwner(), new Observer<List<JoinContactEtablissementData>>() {
+                            @Override
+                            public void onChanged(@Nullable List<JoinContactEtablissementData> joinContactEtablissementData) {
+                                etablissementAdapter.setEtablissement(joinContactEtablissementData);
+                            }
+                        });
+                    }
+                }
             }
         });
 

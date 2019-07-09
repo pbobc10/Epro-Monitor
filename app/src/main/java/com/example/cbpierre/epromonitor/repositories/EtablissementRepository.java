@@ -69,8 +69,8 @@ public class EtablissementRepository {
         task.execute();
     }
 
-    public void updateNewEtabsAfterSync() {
-        new UpdateNewEtabsAfterSync(etablissementDao).execute();
+    public void deleteNewEtabsAfterSync() {
+        new DeleteNewEtabsAfterSync(etablissementDao).execute();
     }
 
     /**
@@ -171,16 +171,16 @@ public class EtablissementRepository {
         }
     }
 
-    private static class UpdateNewEtabsAfterSync extends AsyncTask<Void, Void, Void> {
+    private static class DeleteNewEtabsAfterSync extends AsyncTask<Void, Void, Void> {
         private EtablissementDao etablissementDao;
 
-        public UpdateNewEtabsAfterSync(EtablissementDao etablissementDao) {
+        public DeleteNewEtabsAfterSync(EtablissementDao etablissementDao) {
             this.etablissementDao = etablissementDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            etablissementDao.updateNewEtabsAfterSync();
+            etablissementDao.deleteNewEtabsAfterSync();
             return null;
         }
     }

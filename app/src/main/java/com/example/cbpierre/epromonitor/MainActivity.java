@@ -180,8 +180,4 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
 
     }
 
-    @Override
-    public void onFragmentInteraction(Integer id) {
-        ContactEtabsFragment.id = id;
-    }
 }

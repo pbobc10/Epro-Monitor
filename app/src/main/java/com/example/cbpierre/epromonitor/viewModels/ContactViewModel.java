@@ -63,7 +63,7 @@ public class ContactViewModel extends AndroidViewModel {
         contactRepository.getNewContact();
     }
 
-    public void updateNewcontactAfterSync() {
-        contactRepository.updateNewcontactAfterSync();
+    public void deleteNewcontactAfterSyncTask() {
+        contactRepository.deleteNewcontactAfterSyncTask();
     }
 }

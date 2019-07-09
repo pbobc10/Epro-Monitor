@@ -198,7 +198,7 @@ public class TelechargementFragment extends Fragment {
             public void onClick(View v) {
 
                 //set title of the dialog
-                pDialog.setTitle("Get Etablissement Data  ...");
+                pDialog.setTitle("synchronisation des données ...");
                 //set message of the dialog
                 pDialog.setMessage("S'il vous plaît, attendez...");
                 //show dialog
@@ -451,62 +451,64 @@ public class TelechargementFragment extends Fragment {
         contactViewModel.setOnNewContactListener(new ContactRepository.OnNewcontactListener() {
             @Override
             public void newContact(List<Contact> contacts) {
-                if (contacts.size() > 0) {
-                    sendContactEtabList.clear();
-                    for (Contact contact : contacts) {
-                        etabExistant = new ArrayList<>();
-                        newEtabList = new ArrayList<>();
-                        sendNewContactEtabs = new SendNewContactEtabs();
-                        sendNewContactEtabs.setTitre(contact.getTitre());
-                        sendNewContactEtabs.setNom(contact.getNom());
-                        sendNewContactEtabs.setPrenom(contact.getPrenom());
-                        sendNewContactEtabs.setNature(contact.getNature());
-                        sendNewContactEtabs.setSecteur(contact.getSecteur());
-                        sendNewContactEtabs.setSpecialite(contact.getSpecialite());
-                        sendNewContactEtabs.setForce(contact.getForce());
-                        sendNewContactEtabs.setPhone1(contact.getPhone1());
-                        sendNewContactEtabs.setPhone2(contact.getPhone2());
-                        sendNewContactEtabs.setPhone3(contact.getPhone3());
-                        sendNewContactEtabs.setEmail(contact.getEmail());
-                        ///////////////////////////////////////////////
-                        // fill up etab exitant
-                        if (oldEtabs.size() > 0) {
-                            for (OldEtablissement old : oldEtabs) {
-                                if (old.getContact_id() == contact.getContactId()) {
-                                    //System.out.println("--test " + oldEtabs.size());
-                                    etabExistant.add(old.getEtab_id());
+                if (contacts != null) {
+                    if (contacts.size() > 0) {
+                        sendContactEtabList.clear();
+                        for (Contact contact : contacts) {
+                            etabExistant = new ArrayList<>();
+                            newEtabList = new ArrayList<>();
+                            sendNewContactEtabs = new SendNewContactEtabs();
+                            sendNewContactEtabs.setTitre(contact.getTitre());
+                            sendNewContactEtabs.setNom(contact.getNom());
+                            sendNewContactEtabs.setPrenom(contact.getPrenom());
+                            sendNewContactEtabs.setNature(contact.getNature());
+                            sendNewContactEtabs.setSecteur(contact.getSecteur());
+                            sendNewContactEtabs.setSpecialite(contact.getSpecialite());
+                            sendNewContactEtabs.setForce(contact.getForce());
+                            sendNewContactEtabs.setPhone1(contact.getPhone1());
+                            sendNewContactEtabs.setPhone2(contact.getPhone2());
+                            sendNewContactEtabs.setPhone3(contact.getPhone3());
+                            sendNewContactEtabs.setEmail(contact.getEmail());
+                            ///////////////////////////////////////////////
+                            // fill up etab exitant
+                            if (oldEtabs.size() > 0) {
+                                for (OldEtablissement old : oldEtabs) {
+                                    if (old.getContact_id() == contact.getContactId()) {
+                                        //System.out.println("--test " + oldEtabs.size());
+                                        etabExistant.add(old.getEtab_id());
+                                    }
                                 }
                             }
-                        }
-                        sendNewContactEtabs.setEtabsExistants(etabExistant);
-                        // fill up new Etab
-                        if (newEtab.size() > 0) {
-                            for (JoinNewEtabNewContact newEta : newEtab) {
-                                if (newEta.getContact_id() == contact.getContactId()) {
-                                    //System.out.println("--test " + oldEtabs.size());
-                                    newEtabList.add(newEta);
+                            sendNewContactEtabs.setEtabsExistants(etabExistant);
+                            // fill up new Etab
+                            if (newEtab.size() > 0) {
+                                for (JoinNewEtabNewContact newEta : newEtab) {
+                                    if (newEta.getContact_id() == contact.getContactId()) {
+                                        //System.out.println("--test " + oldEtabs.size());
+                                        newEtabList.add(newEta);
+                                    }
                                 }
                             }
+                            sendNewContactEtabs.setEtabsNouveaux(newEtabList);
+                            /////////////////////////////////////////////
+                            sendNewContactEtabs.setCreePar(contact.getCree_par());
+
+                            sendNewContactEtabs.setCreeLe(contact.getCree_le());
+
+                            sendNewContactEtabs.setModifiePar(contact.getModifie_par());
+
+                            sendNewContactEtabs.setModifieLe(contact.getModifie_le());
+
+                            sendNewContactEtabs.setTransferePar(contact.getTransfere_par());
+
+                            sendNewContactEtabs.setTransfereLe(contact.getTransfere_le());
+
+                            sendContactEtabList.add(sendNewContactEtabs);
                         }
-                        sendNewContactEtabs.setEtabsNouveaux(newEtabList);
-                        /////////////////////////////////////////////
-                        sendNewContactEtabs.setCreePar(contact.getCree_par());
-
-                        sendNewContactEtabs.setCreeLe(contact.getCree_le());
-
-                        sendNewContactEtabs.setModifiePar(contact.getModifie_par());
-
-                        sendNewContactEtabs.setModifieLe(contact.getModifie_le());
-
-                        sendNewContactEtabs.setTransferePar(contact.getTransfere_par());
-
-                        sendNewContactEtabs.setTransfereLe(contact.getTransfere_le());
-
-                        sendContactEtabList.add(sendNewContactEtabs);
+                        // Log.d("---test", "" + sendContactEtabList.size());
+                        Log.d("-test", toJSON(sendContactEtabList));
+                        syncContactData(toJSON(sendContactEtabList));
                     }
-                    // Log.d("---test", "" + sendContactEtabList.size());
-                    Log.d("-test", toJSON(sendContactEtabList));
-                    syncContactData(toJSON(sendContactEtabList));
                 } else
                     hideDialog();
                 Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
@@ -535,9 +537,9 @@ public class TelechargementFragment extends Fragment {
                         // Do something with the response
                         if (response.equals("\"Succès\"")) {
                             // update after sync "Succès"
-                            newContactEtabViewModel.updateNewContactEtabAfterSync();
-                            etablissementViewModel.updateNewEtabsAfterSync();
-                            contactViewModel.updateNewcontactAfterSync();
+                            newContactEtabViewModel.deleteNewContactEtabAfterSync();
+                            etablissementViewModel.deleteNewEtabsAfterSync();
+                            contactViewModel.deleteNewcontactAfterSyncTask();
                             hideDialog();
                             Toast.makeText(getContext(), "Les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_LONG).show();
                             Log.d("volley", response);
@@ -546,7 +548,6 @@ public class TelechargementFragment extends Fragment {
                             Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_LONG).show();
                             Log.d("volley", response);
                             Log.d("volley", "\"Succès\"");
-                            Log.d("volley", "Succès");
                         }
                     }
                 },

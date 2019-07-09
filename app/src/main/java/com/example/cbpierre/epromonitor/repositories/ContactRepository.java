@@ -51,8 +51,8 @@ public class ContactRepository {
         new NewContactTask(contactDao).execute();
     }
 
-    public void updateNewcontactAfterSync() {
-        new UpdateNewcontactAfterSyncTask(contactDao).execute();
+    public void deleteNewcontactAfterSyncTask() {
+        new DeleteNewcontactAfterSyncTask(contactDao).execute();
     }
 
     //****************************** ASYNC CLASS*******************************************
@@ -94,16 +94,16 @@ public class ContactRepository {
         }
     }
 
-    private static class UpdateNewcontactAfterSyncTask extends AsyncTask<Void, Void, Void> {
+    private static class DeleteNewcontactAfterSyncTask extends AsyncTask<Void, Void, Void> {
         private ContactDao contactDao;
 
-        public UpdateNewcontactAfterSyncTask(ContactDao contactDao) {
+        public DeleteNewcontactAfterSyncTask(ContactDao contactDao) {
             this.contactDao = contactDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            contactDao.updateNewcontactAfterSync();
+            contactDao.deleteNewcontactAfterSync();
             return null;
         }
     }

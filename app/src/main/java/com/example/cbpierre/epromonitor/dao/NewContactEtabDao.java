@@ -12,6 +12,6 @@ public interface NewContactEtabDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(NewContactETab newContactETab);
 
-    @Query("update new_contact_etab set sync_data =1 where sync_data=0")
-    void updateNewContactEtabAfterSync();
+    @Query("delete from new_contact_etab  where sync_data=0")
+    void deleteNewContactEtabAfterSync();
 }
