@@ -18,8 +18,8 @@
         android:layout_marginBottom="6dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Nouvelle Adresse"
-        android:textColor="@color/input_register_bg"
-        android:textSize="46sp" />
+        android:textColor="#5467b3"
+        android:textSize="36sp" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cvLocalite"
@@ -125,7 +125,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingStart="4dp"
         android:paddingEnd="4dp">
 
@@ -136,17 +136,20 @@
             android:background="@drawable/bcg_soummettre_button"
             android:text="soummettre"
             android:textColor="@color/white"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
+            android:layout_marginEnd="8dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/bcg_annuler_button"
             android:text="Annuler"
             android:textColor="@color/white"
+            android:layout_weight="1"
             android:textStyle="bold" />
     </LinearLayout>
 

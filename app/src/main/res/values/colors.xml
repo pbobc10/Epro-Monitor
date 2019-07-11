@@ -22,6 +22,7 @@
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
     <color name="btn_download">#e61a5f</color>
+    <color name="bg_secondary">#5467b3</color>
 
 </resources>
 

@@ -129,6 +129,7 @@ public class EtabsRegisterFragment extends Fragment {
             public void onClick(View v) {
                 insertNewEtab();
                 Toast.makeText(getContext(), "enregistrement de données d'établissement", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {

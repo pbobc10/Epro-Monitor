@@ -44,7 +44,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="4dp"
                     android:text="Test Entreprise"
-                    android:textColor="#5467b3"
+                    android:textColor="@color/bg_secondary"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 

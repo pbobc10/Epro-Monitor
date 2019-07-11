@@ -26,7 +26,7 @@
             android:layout_marginBottom="6dp"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/contact_nouveau"
-            android:textColor="@color/input_login"
+            android:textColor="@color/bg_secondary"
             android:textSize="36sp" />
 
         <android.support.v7.widget.CardView
@@ -260,13 +260,15 @@
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/button_contact"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/register_btn"
             android:textColor="@color/bg_lightPrimary"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

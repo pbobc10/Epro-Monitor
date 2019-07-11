@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,12 +181,14 @@ public class TelechargementFragment extends Fragment {
                 //show dialog
                 showDialog();
 
+
                 //Async Old Etabs
                 etablissementViewModel.getOldEtabs();
                 //Async New Etabs
                 etablissementViewModel.getNewEtabs();
                 //Async New Contact
                 contactViewModel.getNewContacts();
+
                 //  Log.d("-test", toJSON(createSendNewContactEtabsObject()));
             }
         });
@@ -451,7 +454,7 @@ public class TelechargementFragment extends Fragment {
         contactViewModel.setOnNewContactListener(new ContactRepository.OnNewcontactListener() {
             @Override
             public void newContact(List<Contact> contacts) {
-                if (contacts != null) {
+                if (contacts != null && oldEtabs != null && newEtab != null) {
                     if (contacts.size() > 0) {
                         sendContactEtabList.clear();
                         for (Contact contact : contacts) {
@@ -508,10 +511,14 @@ public class TelechargementFragment extends Fragment {
                         // Log.d("---test", "" + sendContactEtabList.size());
                         Log.d("-test", toJSON(sendContactEtabList));
                         syncContactData(toJSON(sendContactEtabList));
+                    } else {
+                        hideDialog();
+                        Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
                     }
-                } else
+                } else {
                     hideDialog();
-                Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Il n'y pas de nouveau contact", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -535,19 +542,20 @@ public class TelechargementFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         // Do something with the response
-                        if (response.equals("\"Succès\"")) {
+                        if (response.replace("\"", "").equals("Succès")) {
                             // update after sync "Succès"
                             newContactEtabViewModel.deleteNewContactEtabAfterSync();
                             etablissementViewModel.deleteNewEtabsAfterSync();
                             contactViewModel.deleteNewcontactAfterSyncTask();
                             hideDialog();
                             Toast.makeText(getContext(), "Les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_LONG).show();
-                            Log.d("volley", response);
+                            Log.d("volley ok", response.replace("\"", ""));
+                            Log.d("volley ok", response);
                         } else {
                             hideDialog();
                             Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_LONG).show();
-                            Log.d("volley", response);
-                            Log.d("volley", "\"Succès\"");
+                            Log.d("volley fail", response);
+                            Log.d("volley fail", response.replace("\"", ""));
                         }
                     }
                 },
@@ -597,6 +605,10 @@ public class TelechargementFragment extends Fragment {
                 }
             }
         };
-        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+        AppVolleySingleton.getInstance(
+
+                getContext()).
+
+                addToRequestQueue(stringRequest);
     }
 }

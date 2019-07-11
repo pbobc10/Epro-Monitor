@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtUsername;
     private EditText edtPassword;
     private Button btnLogin, btnSign;
+    private String username, password;
     private ProgressDialog pDialog;
 
     @Override
@@ -90,16 +91,28 @@ public class LoginActivity extends AppCompatActivity {
         pDialog.setMessage("Please wait.");
         showDialog();
 
-        String username = edtUsername.getText().toString().trim();
-        String password = edtPassword.getText().toString().trim();
+        username = edtUsername.getText().toString().trim();
+        password = edtPassword.getText().toString().trim();
 
         //mLoginViewModel.findLoginUser(username, password);
-        if (!(TextUtils.isEmpty(username) && TextUtils.isEmpty(password))) {
+        if (isValidate()) {
             mLoginViewModel.findCountUser(username, password);
         } else {
             Toast.makeText(getApplicationContext(), "Please enter your Username and Password ", Toast.LENGTH_LONG).show();
         }
         hideDialog();
+    }
+
+    public boolean isValidate() {
+        boolean validate = true;
+        if (TextUtils.isEmpty(username)) {
+            edtUsername.setError("Merci d'entrer votre nom D'utilisateur!");
+            validate = false;
+        } else if (TextUtils.isEmpty(password)) {
+            edtPassword.setError("Merci d'entrer votre mot de passe!");
+            validate = false;
+        }
+        return validate;
     }
 
     public void showDialog() {

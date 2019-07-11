@@ -89,7 +89,7 @@ public class SignInActivity extends AppCompatActivity {
                 imei1 = getImeiId();
                 imei2 = "";
 
-                if (!(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword) || TextUtils.isEmpty(mCodMob))) {
+                if (isValidate()) {
                     //set title of the dialog
                     pDialog.setTitle("Sign in ...");
                     //set message of the dialog
@@ -120,6 +120,21 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean isValidate() {
+        boolean validate = true;
+        if (TextUtils.isEmpty(mUsername)) {
+            username.setError("Merci d'entrer votre nom D'utilisateur!");
+            validate = false;
+        } else if (TextUtils.isEmpty(mPassword)) {
+            password.setError("Merci d'entrer votre mot de passe!");
+            validate = false;
+        } else if (TextUtils.isEmpty(mCodMob)) {
+            codMob.setError("Merci d'entrer le code du mobile!");
+            validate = false;
+        }
+        return validate;
     }
 
     public void insertUserToLocal() {
