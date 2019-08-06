@@ -39,23 +39,23 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnDownloadData"
+                    android:id="@+id/btnSyncContactData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_solid_tel"
-                    android:text="Download"
+                    android:background="@drawable/button_telechargement"
+                    android:text="Transfert"
                     android:textColor="@color/white" />
 
                 <Button
-                    android:id="@+id/btnSyncContactData"
+                    android:id="@+id/btnDownloadData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_telechargement"
-                    android:text="Sync"
+                    android:background="@drawable/button_solid_tel"
+                    android:text="Téléchargement "
                     android:textColor="@color/white" />
 
             </LinearLayout>
@@ -88,28 +88,19 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnDownloadDataEta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_solid_tel"
-                    android:text="Download"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="22dp"
+                    android:text="Téléchargement "
                     android:textColor="@color/white" />
 
-                <Button
-                    android:id="@+id/btnSynEtabsData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_telechargement"
-                    android:text="Sync"
-                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
 

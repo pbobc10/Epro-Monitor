@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -33,7 +35,7 @@ import com.example.cbpierre.epromonitor.viewModels.SharedViewModel;
  * to handle interaction events.
  */
 public class ContactDetailFragment extends Fragment {
-    TextView titre, specialite, nature, secteur, tel, tel2, tel3, email, creePar, creeLe, modifiePar, modifieLe, validePar, valideLe, adresse;
+    TextView titre, specialite, nature, secteur, tel, tel2, tel3, email, creePar, creeLe, modifiePar, modifieLe, validePar, valideLe, adresse, modifier;
 
     private OnContactDetailInteractionListener mListener;
     private SharedViewModel sharedViewModel;
@@ -73,6 +75,8 @@ public class ContactDetailFragment extends Fragment {
         modifieLe = view.findViewById(R.id.txtModifiedDate);
         validePar = view.findViewById(R.id.txtValidePar);
         valideLe = view.findViewById(R.id.txtValidatedDate);
+        modifier = view.findViewById(R.id.txtModify);
+        modifier.setVisibility(View.GONE);
 
         sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
             @Override
@@ -80,10 +84,24 @@ public class ContactDetailFragment extends Fragment {
                 populateContactDetail(completeContact);
             }
         });
+
+        modifier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new ModifyContactFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
     }
 
     public void populateContactDetail(CompleteContact completeContact) {
         //Toast.makeText(getContext(), "===TEST TEST " + completeContact.getNom(), Toast.LENGTH_SHORT).show();
+        if (completeContact.getConId() == null)
+            modifier.setVisibility(View.VISIBLE);
         String phone1 = completeContact.getPhone1() == null ? "" : completeContact.getPhone1();
         String phone2 = completeContact.getPhone2() == null ? "" : "/ " + completeContact.getPhone2();
         String phone3 = completeContact.getPhone3() == null ? "" : "/ " + completeContact.getPhone3();
@@ -110,7 +128,7 @@ public class ContactDetailFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Integer id) {
         if (mListener != null) {
-          //  mListener.onFragmentInteraction(id);
+            //  mListener.onFragmentInteraction(id);
         }
     }
 

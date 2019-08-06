@@ -128,8 +128,6 @@ public class EtabsRegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 insertNewEtab();
-                Toast.makeText(getContext(), "enregistrement de données d'établissement", Toast.LENGTH_SHORT).show();
-                getActivity().onBackPressed();
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -265,16 +263,23 @@ public class EtabsRegisterFragment extends Fragment {
             if (isValidate()) {
                 etablissementViewModel.insertEtablissement(new Etablissement(null, nom, zone.getZoneHtId(), adresse, null, null, 0, false, null, null, creePar, creeLe, transferePar, transfereLe, true));
                 etablissementViewModel.finMaxEtab();
+                Toast.makeText(getContext(), "enregistrement réussi!", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
             } else {
-                Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "l'enregistrement échoué!", Toast.LENGTH_LONG).show();
             }
 
         } // its in the list
         else {
-            if (contact.getConId() != null)
+            if (contact.getConId() != null) {
                 contactEtabViewModel.insert(new NewContactETab(contact.getConId(), etablissement.getEtId(), null));
-            else
+                Toast.makeText(getContext(), "enregistrement réussi!", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
+            } else {
                 contactEtabViewModel.insert(new NewContactETab(contact.getContactId(), etablissement.getEtId(), null));
+                Toast.makeText(getContext(), "enregistrement réussi!", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
+            }
         }
     }
 

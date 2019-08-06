@@ -46,6 +46,16 @@
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
+                <TextView
+                    android:id="@+id/txtModify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txtContactTitre"
+                    android:layout_alignParentEnd="true"
+                    android:text="Modifier"
+                    android:textSize="24dp"
+                    android:textColor="#e61a5f"
+                    android:textStyle="bold|italic" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -80,7 +90,7 @@
                 android:layout_below="@id/line1"
                 android:layout_alignParentStart="true"
                 android:layout_centerHorizontal="false"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="PRESCRIPTEUR"
                 android:textColor="@color/input_login"
@@ -110,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtLabelSecteur"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="NON APLLICABLE"
                 android:textColor="@color/input_login"
@@ -141,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/line3"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="(509)"
                 android:textColor="@color/input_login"
@@ -155,7 +165,7 @@
                 android:layout_below="@id/line3"
                 android:layout_alignParentEnd="false"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:layout_toEndOf="@+id/txtContactTel"
                 android:fontFamily="sans-serif-condensed"
                 android:text="(509)"
@@ -170,7 +180,7 @@
                 android:layout_below="@id/line3"
                 android:layout_alignParentEnd="false"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:layout_toEndOf="@+id/txtContactTel2"
                 android:fontFamily="sans-serif-condensed"
                 android:text="(509)"
@@ -215,7 +225,7 @@
                 android:layout_centerHorizontal="false"
                 android:layout_marginTop="10dp"
                 android:labelFor="@+id/txtCreatedDate"
-                android:text="Créé"
+                android:text="Création"
                 android:textSize="18sp" />
 
             <View
@@ -229,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line6"
                 android:layout_centerHorizontal="false"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:text="Jean Pierre"
                 android:textColor="@color/input_login"
                 android:textSize="18sp" />
@@ -256,7 +266,7 @@
                 android:layout_centerHorizontal="false"
                 android:layout_marginTop="10dp"
                 android:labelFor="@+id/txtModifiedDate"
-                android:text="Modifie"
+                android:text="Modification"
                 android:textSize="18sp" />
 
 
@@ -272,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line7"
                 android:layout_centerHorizontal="false"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:labelFor="@+id/txtModifiedDate"
                 android:text="Jude Jean"
                 android:textColor="@color/input_login"
@@ -299,7 +309,7 @@
                 android:layout_centerHorizontal="false"
                 android:layout_marginTop="10dp"
                 android:labelFor="@+id/txtModifiedDate"
-                android:text="Valide"
+                android:text="Validation"
                 android:textSize="18sp" />
 
             <View
@@ -313,7 +323,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line8"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:labelFor="@+id/txtModifiedDate"
                 android:text="Henry Christophe"
                 android:textColor="@color/input_login"

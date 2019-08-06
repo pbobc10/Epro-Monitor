@@ -19,6 +19,8 @@ public class ContactViewModel extends AndroidViewModel {
     private ContactRepository contactRepository;
     private LiveData<List<Contact>> mAllContact;
     private MutableLiveData<String> contactByNom = new MutableLiveData<>();
+    //private LiveData<List<Contact>> mNewContactById;
+    private MutableLiveData<Integer> newContactById = new MutableLiveData<>();
     private LiveData<List<CompleteContact>> completeContact;
     private ContactRepository.OnNewcontactListener contactListener;
 
@@ -50,6 +52,20 @@ public class ContactViewModel extends AndroidViewModel {
         return completeContact;
     }
 
+    public LiveData<List<Contact>> getNewContactById() {
+        return Transformations.switchMap(newContactById, new Function<Integer, LiveData<List<Contact>>>() {
+            @Override
+            public LiveData<List<Contact>> apply(Integer input) {
+                return contactRepository.getNewContactById(input);
+            }
+        });
+    }
+
+    public void setNewContactById(Integer contactById) {
+        newContactById.setValue(contactById);
+    }
+
+
     public void insertContact(Contact contact) {
         contactRepository.insertContact(contact);
     }
@@ -65,5 +81,9 @@ public class ContactViewModel extends AndroidViewModel {
 
     public void deleteNewcontactAfterSyncTask() {
         contactRepository.deleteNewcontactAfterSyncTask();
+    }
+
+    public void updateNewContact(Contact contact) {
+        contactRepository.updateNewContact(contact);
     }
 }

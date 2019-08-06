@@ -1,5 +1,6 @@
 package com.example.cbpierre.epromonitor;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,12 +13,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactEtabsFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
+import com.example.cbpierre.epromonitor.fragments.ContactRegisterFragment;
 import com.example.cbpierre.epromonitor.fragments.EtablissementFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsRegisterFragment;
@@ -179,5 +185,4 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
     public void onFragmentInteraction(Uri uri) {
 
     }
-
 }

@@ -39,6 +39,7 @@ import com.example.cbpierre.epromonitor.adapters.NatureSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.SecteurSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.SpecialiteSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.TitreSpinnerAdapter;
+import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.Nature;
@@ -50,6 +51,7 @@ import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ForceViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NatureViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SecteurViewModel;
+import com.example.cbpierre.epromonitor.viewModels.SharedViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.TitreViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ZoneViewModel;
@@ -62,8 +64,9 @@ import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
+ * create an instance of this fragment.
  */
-public class ContactRegisterFragment extends Fragment {
+public class ModifyContactFragment extends Fragment {
     ContactRepository contactRepository;
     private Spinner spNature;
     private Spinner spTitre;
@@ -79,8 +82,6 @@ public class ContactRegisterFragment extends Fragment {
     private String natureId, titreId, secteurId, specialiteId, forceId, nom, prenom, email, tel, tel2, tel3, etatTel2, etatTel3;
     private LinearLayout parentContactRegisterLayout;
     private int fieldCounter = 1;
-    private ImageButton deleteImageBtn, deleteImageBtn2;
-
 
     private ContactViewModel mContactViewModel;
     private ForceViewModel forceViewModel;
@@ -88,6 +89,7 @@ public class ContactRegisterFragment extends Fragment {
     private SecteurViewModel secteurViewModel;
     private SpecialiteViewModel specialiteViewModel;
     private TitreViewModel titreViewModel;
+    private SharedViewModel sharedViewModel;
     private ZoneViewModel zoneViewModel;
 
     private ForceSpinnerAdapter forceSpinnerAdapter;
@@ -101,8 +103,10 @@ public class ContactRegisterFragment extends Fragment {
     private String creeLe, creePar, modifieLe, modifiePar, transfereLe, transferePar;
     private EditText etPhone2, etPhone3;
 
+    private Contact contact;
 
-    public ContactRegisterFragment() {
+
+    public ModifyContactFragment() {
         // Required empty public constructor
     }
 
@@ -116,6 +120,7 @@ public class ContactRegisterFragment extends Fragment {
         secteurViewModel = ViewModelProviders.of(this).get(SecteurViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
         titreViewModel = ViewModelProviders.of(this).get(TitreViewModel.class);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         //SharePreference
         userSessionPreferences = new UserSessionPreferences(getContext());
@@ -128,6 +133,8 @@ public class ContactRegisterFragment extends Fragment {
         // tel
         tel = tel2 = tel3 = null;
         etatTel2 = etatTel3 = "attente";
+        //
+        contact = new Contact();
     }
 
     @Override
@@ -136,60 +143,59 @@ public class ContactRegisterFragment extends Fragment {
         //enable back arrow
         showBackButton();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact_register, container, false);
+        return inflater.inflate(R.layout.fragment_modify_contact, container, false);
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toast.makeText(getContext(), "Modify Screen", Toast.LENGTH_SHORT).show();
         //Spinner
-        spNature = view.findViewById(R.id.spNature);
-        spTitre = view.findViewById(R.id.spTitre);
-        spSecteur = view.findViewById(R.id.spSecteur);
-        spSpecialite = view.findViewById(R.id.spSpecialite);
-        spForce = view.findViewById(R.id.spForce);
+        spNature = view.findViewById(R.id.spNatureModify);
+        spTitre = view.findViewById(R.id.spTitreModify);
+        spSecteur = view.findViewById(R.id.spSecteurModify);
+        spSpecialite = view.findViewById(R.id.spSpecialiteModify);
+        spForce = view.findViewById(R.id.spForceModify);
 
         parentContactRegisterLayout = view.findViewById(R.id.parent_contact_register_layout);
-        btnAddField = view.findViewById(R.id.btnAddField);
-        mNom = view.findViewById(R.id.etNom);
-        mPrenom = view.findViewById(R.id.etPrenom);
-        mEmail = view.findViewById(R.id.etEmail);
-        mTel = view.findViewById(R.id.etPhone);
-        btnRegister = view.findViewById(R.id.btnRegister);
+        mNom = view.findViewById(R.id.etNomModify);
+        mPrenom = view.findViewById(R.id.etPrenomModify);
+        mEmail = view.findViewById(R.id.etEmailModify);
+        mTel = view.findViewById(R.id.etPhoneModify);
+        btnRegister = view.findViewById(R.id.btnModify);
+        etPhone2 = view.findViewById(R.id.etPhone2);
+        etPhone3 = view.findViewById(R.id.etPhone3);
         //populate Spinner
         getSpinnerItem(view);
+        ////
+        sharedViewModel.getContactMutableLiveData().observe(this, new Observer<CompleteContact>() {
+            @Override
+            public void onChanged(@Nullable CompleteContact completeContact) {
+                // populateContactDetail(completeContact);
+                //Log.d("tel3", "modify : "+completeContact);
+                mContactViewModel.setNewContactById(completeContact.getContactId());
+            }
+        });
+        mContactViewModel.getNewContactById().observe(this, new Observer<List<Contact>>() {
+            @Override
+            public void onChanged(@Nullable List<Contact> contacts) {
+                Log.d("tel3", "modify : " + contacts.size());
+                contact = contacts.get(0);
+                setDefaultTextView();
+                Log.d("tel3", "modify : " + contact.getContactId());
+            }
+        });
+        setDefaultTextView();
+        ////
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fieldCounter == 1 && etatTel3.equals("effacer"))
-                    tel2 = tel3 = null;
-                else if (fieldCounter == 2 && etatTel2.equals("creer")) {
-                    //tel2 = etPhone2 == null ? null : etPhone2.getText().toString();
-                    tel2 = etPhone2.getText().toString();
-                    tel3 = null;
-                } else if (fieldCounter == 1 && etatTel2.equals("effacer") && etatTel3.equals("creer")) {
-                    tel2 = null;
-                    tel3 = etPhone3.getText().toString();
-                } else if (fieldCounter == 3 && etatTel3.equals("creer")) {
-                    tel2 = etPhone2.getText().toString();
-                    tel3 = etPhone3.getText().toString();
-                }
                 Log.d("tel3", "tel2: " + tel2 + ' ' + "tel3: " + tel3);
                 Log.d("tel3", "fieldCounter: " + fieldCounter);
-                contactRegister();
+                modifieContact();
                 // contactRepository.populateContact();
-            }
-        });
-
-        btnAddField.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (fieldCounter < 3) {
-                    onAddField();
-                    fieldCounter++;
-                }
             }
         });
 
@@ -199,120 +205,21 @@ public class ContactRegisterFragment extends Fragment {
         backArrow();
     }
 
-    public void onDeleteField(View v) {
-        // parentContactRegisterLayout.removeView((View) v.getParent());
-        if (deleteImageBtn == v) {
-            etPhone2.setText("");
-            etatTel2 = "effacer";
-            if (etatTel3.equals("creer"))
-                fieldCounter--;
-            fieldCounter--;
-        } else if ((deleteImageBtn2 == v)) {
-            etPhone3.setText("");
-            etatTel3 = "effacer";
-            fieldCounter--;
-        }
-        parentContactRegisterLayout.removeView((View) v.getParent());
-    }
-
-    public void onAddField() {
-        //LinearLayout
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        LinearLayout.LayoutParams linearParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        linearLayout.setLayoutParams(linearParam);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        //CardView
-        CardView cardView;
-        cardView = new CardView(getContext());
-        //FrameLayout.LayoutParams cardViewParam = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams cardViewParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        cardViewParam.weight = 1.1f;
-        cardView.setLayoutParams(cardViewParam);
-        cardView.setRadius(5);
-        cardView.setCardElevation(2);
-        cardView.setUseCompatPadding(true);
-        //Relative
-        RelativeLayout relativeLayout = new RelativeLayout(getContext());
-        RelativeLayout.LayoutParams layoutRelative = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        relativeLayout.setLayoutParams(layoutRelative);
-        //
-        linearLayout.addView(cardView);
-        cardView.addView(relativeLayout);
-        //
-        // EditText etPhone2 = new EditText(getContext());
-        if (fieldCounter == 1) {
-            etatTel2 = "creer";
-            etPhone2 = new EditText(getContext());
-            etPhone2.setId(fieldCounter);
-            LinearLayout.LayoutParams editTextParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            etPhone2.setLayoutParams(editTextParam);
-            etPhone2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.border_contact));
-            etPhone2.setEms(10);
-            etPhone2.setHint(R.string.hint_tel);
-            etPhone2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
-            etPhone2.setPadding(10, 10, 10, 10);
-            etPhone2.setTextSize(18);
-            etPhone2.setHintTextColor(getResources().getColor(R.color.input_login_hint));
-            etPhone2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
-            relativeLayout.addView(etPhone2);
-            //
-            deleteImageBtn = new ImageButton(getContext());
-            LinearLayout.LayoutParams imageBtnParam1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            imageBtnParam1.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER;
-            imageBtnParam1.weight = 12.0f;
-            deleteImageBtn.setLayoutParams(imageBtnParam1);
-            deleteImageBtn.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_close_black_24dp));
-            deleteImageBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDeleteField(v);
-                }
-            });
-            //
-            if (etatTel3.equals("creer"))
-                fieldCounter++;
-            //
-            linearLayout.addView(deleteImageBtn);
-        } else if (fieldCounter == 2 && etatTel2.equals("creer")) {
-            etatTel3 = "creer";
-            etPhone3 = new EditText(getContext());
-            etPhone3.setId(fieldCounter);
-            LinearLayout.LayoutParams editTextParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            etPhone3.setLayoutParams(editTextParam);
-            etPhone3.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.border_contact));
-            etPhone3.setEms(10);
-            etPhone3.setHint(R.string.hint_tel);
-            etPhone3.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
-            etPhone3.setPadding(10, 10, 10, 10);
-            etPhone3.setTextSize(18);
-            etPhone3.setHintTextColor(getResources().getColor(R.color.input_login_hint));
-            etPhone3.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
-            relativeLayout.addView(etPhone3);
-            //
-            deleteImageBtn2 = new ImageButton(getContext());
-            LinearLayout.LayoutParams imageBtnParam2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            imageBtnParam2.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER;
-            imageBtnParam2.weight = 12.0f;
-            deleteImageBtn2.setLayoutParams(imageBtnParam2);
-            deleteImageBtn2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_close_black_24dp));
-            deleteImageBtn2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDeleteField(v);
-                }
-            });
-            //
-            linearLayout.addView(deleteImageBtn2);
-        }
-
-        parentContactRegisterLayout.addView(linearLayout, parentContactRegisterLayout.getChildCount() - 2);
-    }
-
-    public void contactRegister() {
+    public void modifieContact() {
         initialize();
         if (isValidate()) {
-            // tel3 = etPhone2.getText().toString();
-            mContactViewModel.insertContact(new Contact(null, titreId, nom, prenom, natureId, secteurId, specialiteId, forceId, tel, tel2, tel3, email, 0, transferePar, transfereLe, creePar, creeLe, modifiePar, modifieLe, false, null, null, true));
+            contact.setTitre(titreId);
+            contact.setNom(nom);
+            contact.setPrenom(prenom);
+            contact.setNature(natureId);
+            contact.setSecteur(secteurId);
+            contact.setSpecialite(specialiteId);
+            contact.setForce(forceId);
+            contact.setPhone1(tel);
+            contact.setPhone2(tel2);
+            contact.setPhone3(tel3);
+            contact.setEmail(email);
+            mContactViewModel.updateNewContact(contact);
             getActivity().getSupportFragmentManager().popBackStack(getActivity().getSupportFragmentManager().getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
             Log.d("tel3", tel2 + ' ' + tel3);
 
@@ -326,6 +233,23 @@ public class ContactRegisterFragment extends Fragment {
         prenom = mPrenom.getText().toString().trim();
         email = mEmail.getText().toString().trim();
         tel = mTel.getText().toString().trim();
+        tel2 = etPhone2.getText().toString().trim();
+        tel3 = etPhone3.getText().toString().trim();
+
+        if (tel2.isEmpty() && !tel3.isEmpty()) {
+            tel2 = tel3;
+            tel3 = "";
+        }
+
+    }
+
+    public void setDefaultTextView() {
+        mNom.setText(contact.getNom());
+        mPrenom.setText(contact.getPrenom());
+        mEmail.setText(contact.getEmail());
+        mTel.setText(contact.getPhone1());
+        etPhone2.setText(contact.getPhone2());
+        etPhone3.setText(contact.getPhone3());
     }
 
     public boolean isValidate() {
@@ -369,16 +293,12 @@ public class ContactRegisterFragment extends Fragment {
         } else if (tel.isEmpty() || !isValidePhoneNumber(tel)) {
             mTel.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
             valid = false;
-        } else if (etatTel2.equals("creer")) {
-            if (tel2.isEmpty() || !isValidePhoneNumber(tel2)) {
-                etPhone2.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
-                valid = false;
-            }
-        } else if (etatTel3.equals("creer")) {
-            if (tel3.isEmpty() || !isValidePhoneNumber(tel3)) {
-                etPhone3.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
-                valid = false;
-            }
+        } else if (!tel2.isEmpty() && !isValidePhoneNumber(tel2)) {
+            etPhone2.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
+            valid = false;
+        } else if (!tel3.isEmpty() && !isValidePhoneNumber(tel3)) {
+            etPhone3.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
+            valid = false;
         } else if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError("Merci d'entrer un email valide");
             valid = false;
@@ -395,36 +315,19 @@ public class ContactRegisterFragment extends Fragment {
     }
 
     public void spinnerObservers() {
-        forceViewModel.getAllForce().observe(this, new Observer<List<Force>>() {
-            @Override
-            public void onChanged(@Nullable List<Force> forces) {
-                forceSpinnerAdapter = new ForceSpinnerAdapter(getContext(), R.layout.spinner_item, forces);
-                forceSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spForce.setAdapter(forceSpinnerAdapter);
-            }
-        });
         natureViewModel.getAllNature().observe(this, new Observer<List<Nature>>() {
             @Override
             public void onChanged(@Nullable List<Nature> natures) {
                 natureSpinnerAdapter = new NatureSpinnerAdapter(getContext(), R.layout.spinner_item, natures);
                 natureSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spNature.setAdapter(natureSpinnerAdapter);
-            }
-        });
-        secteurViewModel.getsAllSecteur().observe(this, new Observer<List<Secteur>>() {
-            @Override
-            public void onChanged(@Nullable List<Secteur> secteurs) {
-                secteurSpinnerAdapter = new SecteurSpinnerAdapter(getContext(), R.layout.spinner_item, secteurs);
-                secteurSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spSecteur.setAdapter(secteurSpinnerAdapter);
-            }
-        });
-        specialiteViewModel.getAllSpecialite().observe(this, new Observer<List<Specialite>>() {
-            @Override
-            public void onChanged(@Nullable List<Specialite> specialites) {
-                specialiteSpinnerAdapter = new SpecialiteSpinnerAdapter(getContext(), R.layout.spinner_item, specialites);
-                specialiteSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spSpecialite.setAdapter(specialiteSpinnerAdapter);
+                // Nature Spinner Default value
+                for (int i = 0; i < natureSpinnerAdapter.getCount(); i++) {
+                    if (natureSpinnerAdapter.getItem(i).getNatId().equals(contact.getNature())) {
+                        spNature.setSelection(i);
+                        break;
+                    }
+                }
             }
         });
         titreViewModel.getmAllTitre().observe(this, new Observer<List<Titre>>() {
@@ -433,6 +336,59 @@ public class ContactRegisterFragment extends Fragment {
                 titreSpinnerAdapter = new TitreSpinnerAdapter(getContext(), R.layout.spinner_item, titres);
                 titreSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spTitre.setAdapter(titreSpinnerAdapter);
+                // Titre Spinner Default value
+                for (int i = 0; i < titreSpinnerAdapter.getCount(); i++) {
+                    if (titreSpinnerAdapter.getItem(i).getTid().equals(contact.getTitre())) {
+                        spTitre.setSelection(i);
+                        break;
+                    }
+                }
+            }
+        });
+        secteurViewModel.getsAllSecteur().observe(this, new Observer<List<Secteur>>() {
+            @Override
+            public void onChanged(@Nullable List<Secteur> secteurs) {
+                secteurSpinnerAdapter = new SecteurSpinnerAdapter(getContext(), R.layout.spinner_item, secteurs);
+                secteurSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spSecteur.setAdapter(secteurSpinnerAdapter);
+                // Secteur Spinner Default value
+                for (int i = 0; i < secteurSpinnerAdapter.getCount(); i++) {
+                    if (secteurSpinnerAdapter.getItem(i).getSecId().equals(contact.getSecteur())) {
+                        spSecteur.setSelection(i);
+                        break;
+                    }
+                }
+            }
+        });
+        specialiteViewModel.getAllSpecialite().observe(this, new Observer<List<Specialite>>() {
+            @Override
+            public void onChanged(@Nullable List<Specialite> specialites) {
+                specialiteSpinnerAdapter = new SpecialiteSpinnerAdapter(getContext(), R.layout.spinner_item, specialites);
+                specialiteSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spSpecialite.setAdapter(specialiteSpinnerAdapter);
+                // Specialite Spinner Default value
+                for (int i = 0; i < specialiteSpinnerAdapter.getCount(); i++) {
+                    if (specialiteSpinnerAdapter.getItem(i).getSpId().equals(contact.getSpecialite())) {
+                        spSpecialite.setSelection(i);
+                        break;
+                    }
+                }
+
+            }
+        });
+        forceViewModel.getAllForce().observe(this, new Observer<List<Force>>() {
+            @Override
+            public void onChanged(@Nullable List<Force> forces) {
+                forceSpinnerAdapter = new ForceSpinnerAdapter(getContext(), R.layout.spinner_item, forces);
+                forceSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spForce.setAdapter(forceSpinnerAdapter);
+                // Force Spinner Default value
+                for (int i = 0; i < forceSpinnerAdapter.getCount(); i++) {
+                    if (forceSpinnerAdapter.getItem(i).getFid().equals(contact.getForce())) {
+                        spForce.setSelection(i);
+                        break;
+                    }
+                }
             }
         });
     }
@@ -440,9 +396,7 @@ public class ContactRegisterFragment extends Fragment {
     /**
      * Spinner
      */
-
     public void getSpinnerItem(@NonNull View view) {
-
         // Nature spinner
         spNature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

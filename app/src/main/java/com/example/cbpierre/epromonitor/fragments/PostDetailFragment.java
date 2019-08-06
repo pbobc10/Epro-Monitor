@@ -116,7 +116,7 @@ public class PostDetailFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<PostLogin> postLogins) {
                 Log.d("postman", "" + postLogins.size());
-                Log.d("postman", "" + postLogins.get(0).getCieId());
+                //Log.d("postman", "" + postLogins.get(0).getCieId());
                 populateItem(postLogins);
             }
         });

@@ -57,7 +57,7 @@ public class Zone {
             this.typeZone = jsonObject.getString("TYPE_ZONE");
             this.departement = jsonObject.getString("DEPARTEMENT");
             this.commune = jsonObject.getString("COMMUNE");
-            this.localite = jsonObject.getString("LOCALITE");
+            this.localite = jsonObject.getString("LOCALITE").equals("null") ? null : jsonObject.getString("LOCALITE");
         } catch (JSONException e) {
             e.printStackTrace();
         }
