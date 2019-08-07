@@ -48,6 +48,7 @@
     <string name="contact_secteur">NON APLLICABLE</string>
     <string name="contact_email">email@yourmail.com</string>
     <string name="contact_nouveau">Nouveau Contact</string>
+    <string name="contact_modifier">Modifier Contact</string>
     <string name="hint_nom">Nom</string>
     <string name="hint_prenom">Prenom</string>
     <string name="hint_email">Email</string>

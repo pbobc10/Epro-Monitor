@@ -46,4 +46,9 @@ public interface EtablissementDao {
 
     @Query("delete from etablissement_table where etId is null and is_new_etab=1")
     void deleteNewEtabsAfterSync();
+
+    ////////
+    @Query("delete from etablissement_table where etId is null and is_new_etab=1 and etabId=:etabId")
+    void deleteNewEtabById(Integer etabId);
+
 }

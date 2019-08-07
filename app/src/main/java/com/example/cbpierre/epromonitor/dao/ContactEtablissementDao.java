@@ -17,12 +17,12 @@ public interface ContactEtablissementDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ContactEtablissement... contactEtablissement);
 
-    @Query("select etablissement_table.nom_Etablissement,etablissement_table.adresse,zone_table.description_zone_ht from contact_etablissement,etablissement_table,zone_table " +
+    @Query("select etablissement_table.nom_Etablissement,etablissement_table.adresse,zone_table.description_zone_ht,etablissement_table.etabId,etablissement_table.is_new_etab,etablissement_table.etId,0 modified from contact_etablissement,etablissement_table,zone_table " +
             "where contact_etablissement.conIds = :conIds and contact_etablissement.etIds=etablissement_table.etId " +
             "and etablissement_table.localite=zone_table.zone_ht_id")
     LiveData<List<JoinContactEtablissementData>> getAllEtablissementByContactId(Integer conIds);
 
-    @Query("select etablissement_table.nom_Etablissement,etablissement_table.adresse,zone_table.description_zone_ht" +
+    @Query("select etablissement_table.nom_Etablissement,etablissement_table.adresse,zone_table.description_zone_ht,etablissement_table.etabId,etablissement_table.is_new_etab,etablissement_table.etId,1 modified" +
             " from new_contact_etab,etablissement_table,zone_table " +
             "  where (new_contact_etab.new_etab_id = etablissement_table.etabId or new_contact_etab.etab_id=etablissement_table.etId)" +
             " and etablissement_table.localite = zone_table.zone_ht_id " +

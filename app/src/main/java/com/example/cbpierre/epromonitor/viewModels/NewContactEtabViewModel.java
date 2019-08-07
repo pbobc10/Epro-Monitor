@@ -22,4 +22,12 @@ public class NewContactEtabViewModel extends AndroidViewModel {
     public void deleteNewContactEtabAfterSync() {
         contactEtabRepository.deleteNewContactEtabAfterSync();
     }
+
+    public void deleteNewContactEtabById(Integer contactId, Integer etabId) {
+        contactEtabRepository.deleteNewContactEtabById(contactId, etabId);
+    }
+
+    public void deleteNewContactNewEtabById(Integer contactId, Integer etabId) {
+        contactEtabRepository.deleteNewContactNewEtabById(contactId, etabId);
+    }
 }

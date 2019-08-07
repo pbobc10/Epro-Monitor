@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.models.JoinContactEtablissementData;
@@ -23,10 +24,10 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
 
     // listener interface
     public interface OnEtablissementListener {
-        void onContactClick(List<JoinContactEtablissementData> _etablissement, int position);
+        void onEtablissementClick(List<JoinContactEtablissementData> _etablissement, int position);
     }
 
-    public void setOnContactClickListener(OnEtablissementListener listener) {
+    public void setOnEtablissementClickListener(OnEtablissementListener listener) {
         this.listener = listener;
     }
 
@@ -34,16 +35,19 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
         private final TextView txtNom;
         private final TextView txtLocalite;
         private final TextView txtAdresse;
+        private final TextView txtSupprimer;
 
 
         public JoinContactEtablissementDataViewHolder(@NonNull final View itemView) {
             super(itemView);
-            txtNom = itemView.findViewById(R.id.txtNomTablissement);
-            txtAdresse = itemView.findViewById(R.id.txtAdressef);
-            txtLocalite = itemView.findViewById(R.id.txtLocalite);
+            txtNom = itemView.findViewById(R.id.txtNomTablissementModify);
+            txtAdresse = itemView.findViewById(R.id.txtAdressefModify);
+            txtLocalite = itemView.findViewById(R.id.txtLocaliteModify);
+            txtSupprimer = itemView.findViewById(R.id.txtSupprimer);
+            txtSupprimer.setVisibility(View.GONE);
 
             // Attach a click listener to the entire row view
-            itemView.setOnClickListener(new View.OnClickListener() {
+            txtSupprimer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("=====testclick 1", "yes");
@@ -53,8 +57,8 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             Log.d("=====testclick 3", "yes");
-                            listener.onContactClick(mEtablissement, position);
-                            //  Toast.makeText(view.getContext(), "===test " + mEtablissement.get(position).getNom(), Toast.LENGTH_SHORT).show();
+                            listener.onEtablissementClick(mEtablissement, position);
+                            Toast.makeText(view.getContext(), "===test " + mEtablissement.get(position).getNom_Etablissement(), Toast.LENGTH_SHORT).show();
                             Log.d("=====testclick 4", "yes");
 
                         }
@@ -75,7 +79,7 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
     @Override
     public JoinContactEtablissementAdapter.JoinContactEtablissementDataViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         // Inflate the custom layout
-        View itemView = mInflater.inflate(R.layout.recyclerview_etablissement_item, viewGroup, false);
+        View itemView = mInflater.inflate(R.layout.recyclerview_etablissement_item_modify, viewGroup, false);
         // Return a new holder instance
         return new JoinContactEtablissementDataViewHolder(itemView);
     }
@@ -86,6 +90,8 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
         if (mEtablissement != null) {
             // Get the data model based on position
             JoinContactEtablissementData current = mEtablissement.get(i);
+            if (current.getModified())
+                viewHolder.txtSupprimer.setVisibility(View.VISIBLE);
             viewHolder.txtNom.setText(current.getNom_Etablissement());
             viewHolder.txtLocalite.setText(current.getDescription_zone_ht());
             viewHolder.txtAdresse.setText(current.getAdresse());

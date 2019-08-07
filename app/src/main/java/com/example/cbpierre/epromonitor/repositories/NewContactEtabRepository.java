@@ -23,6 +23,14 @@ public class NewContactEtabRepository {
         new DeleteNewContactEtabAfterSync(newContactEtabDao).execute();
     }
 
+    public void deleteNewContactEtabById(Integer contactId, Integer etabId) {
+        new DeleteNewContactEtabById(newContactEtabDao).execute(contactId, etabId);
+    }
+
+    public void deleteNewContactNewEtabById(Integer contactId, Integer etabId) {
+        new DeleteNewContactNewEtabById(newContactEtabDao).execute(contactId, etabId);
+    }
+
     /**
      * AsyncTask
      */
@@ -51,6 +59,34 @@ public class NewContactEtabRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             newContactEtabDao.deleteNewContactEtabAfterSync();
+            return null;
+        }
+    }
+
+    private static class DeleteNewContactEtabById extends AsyncTask<Integer, Void, Void> {
+        private NewContactEtabDao newContactEtabDao;
+
+        public DeleteNewContactEtabById(NewContactEtabDao newContactEtabDao) {
+            this.newContactEtabDao = newContactEtabDao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            newContactEtabDao.deleteNewContactEtabById(integers[0], integers[1]);
+            return null;
+        }
+    }
+
+    private static class DeleteNewContactNewEtabById extends AsyncTask<Integer, Void, Void> {
+        private NewContactEtabDao newContactEtabDao;
+
+        public DeleteNewContactNewEtabById(NewContactEtabDao newContactEtabDao) {
+            this.newContactEtabDao = newContactEtabDao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            newContactEtabDao.deleteNewContactNewEtabById(integers[0], integers[1]);
             return null;
         }
     }

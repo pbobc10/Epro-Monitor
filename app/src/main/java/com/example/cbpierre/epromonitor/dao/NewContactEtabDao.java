@@ -14,4 +14,11 @@ public interface NewContactEtabDao {
 
     @Query("delete from new_contact_etab  where sync_data=0")
     void deleteNewContactEtabAfterSync();
+
+    //////
+    @Query("delete from new_contact_etab where etab_id=:etabId and contact_id=:contactId")
+    void deleteNewContactEtabById(Integer contactId, Integer etabId);
+
+    @Query("delete from new_contact_etab where etab_id=:etabId and contact_id=:contactId")
+    void deleteNewContactNewEtabById(Integer contactId, Integer etabId);
 }

@@ -52,6 +52,10 @@ public class EtablissementRepository {
         new InsertAsyncTask(etablissementDao).execute(etablissement);
     }
 
+    public void deleteNewEtabById(Integer etabId) {
+        new DeleteNewEtabById(etablissementDao).execute(etabId);
+    }
+
     /**
      * @param max
      */
@@ -181,6 +185,21 @@ public class EtablissementRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             etablissementDao.deleteNewEtabsAfterSync();
+            return null;
+        }
+    }
+
+    private static class DeleteNewEtabById extends AsyncTask<Integer, Void, Void> {
+        private EtablissementDao etablissementDao;
+
+        public DeleteNewEtabById(EtablissementDao etablissementDao) {
+            this.etablissementDao = etablissementDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            etablissementDao.deleteNewEtabById(integers[0]);
             return null;
         }
     }

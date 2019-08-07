@@ -114,4 +114,8 @@ public class EtablissementViewModel extends AndroidViewModel {
         etablissementRepository.setOnOldEtadListener(onOldEtadListener);
         etablissementRepository.getOldEtabs();
     }
+
+    public void deleteNewEtabById(Integer etabId) {
+        etablissementRepository.deleteNewEtabById(etabId);
+    }
 }

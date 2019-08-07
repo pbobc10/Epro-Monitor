@@ -53,9 +53,9 @@
                     android:layout_alignBaseline="@+id/txtContactTitre"
                     android:layout_alignParentEnd="true"
                     android:text="Modifier"
-                    android:textSize="24dp"
+                    android:textSize="18sp"
                     android:textColor="#e61a5f"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="italic" />
             </RelativeLayout>
         </LinearLayout>
 
