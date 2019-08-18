@@ -342,10 +342,16 @@ public class ContactRegisterFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Titre est vide!");
             valid = false;
+        } else if (!(natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) && titreId.equals("NA")) {/////
+            TextView errorText = (TextView) spTitre.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Titre doit avoir une valeur autre que Non Applicable!");
+            valid = false;
         } else if (nom.isEmpty() || nom.length() < 3) {
             mNom.setError("Merci d'entrer un nom valide");
             valid = false;
-        } else if (!(natureId.equals("CP") || natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) && (prenom.isEmpty() || prenom.length() < 3)) {
+        } else if (!(natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) && (prenom.isEmpty() || prenom.length() < 3)) {
             mPrenom.setError("Merci d'entrer un prenom valide");
             valid = false;
         } else if (TextUtils.isEmpty(secteurId) || secteurId == null) {
@@ -354,11 +360,23 @@ public class ContactRegisterFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Secteur est vide!");
             valid = false;
+        } else if (!(natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP") || natureId.equals("P")) && secteurId.equals("NA")) {//////
+            TextView errorText = (TextView) spSecteur.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Secteur doit avoir une valeur autre que Non Applicable!");
+            valid = false;
         } else if (TextUtils.isEmpty(specialiteId) || specialiteId == null) {
             TextView errorText = (TextView) spSpecialite.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Specialite est vide!");
+            valid = false;
+        } else if ((natureId.equals("P") || natureId.equals("CP")) && specialiteId.equals("NA")) {
+            TextView errorText = (TextView) spSpecialite.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Specialite doit avoir une valeur autre que Non Applicable!");
             valid = false;
         } else if (TextUtils.isEmpty(forceId) || forceId == null) {
             TextView errorText = (TextView) spForce.getSelectedView();
@@ -366,7 +384,9 @@ public class ContactRegisterFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Force est vide!");
             valid = false;
-        } else if (tel.isEmpty() || !isValidePhoneNumber(tel)) {
+        } else if (tel.isEmpty() || !
+
+                isValidePhoneNumber(tel)) {
             mTel.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
             valid = false;
         } else if (etatTel2.equals("creer")) {
@@ -379,7 +399,9 @@ public class ContactRegisterFragment extends Fragment {
                 etPhone3.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
                 valid = false;
             }
-        } else if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).
+
+                matches()) {
             mEmail.setError("Merci d'entrer un email valide");
             valid = false;
         }
@@ -472,7 +494,7 @@ public class ContactRegisterFragment extends Fragment {
                 } else {
                     Log.d("spinner_test", "test 1");
                     natureId = nature.getNatId();
-                    if (natureId.equals("CP") || natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) {
+                    if (natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) {
                         for (int i = 0; i < titreSpinnerAdapter.getCount(); i++) {
                             if (titreSpinnerAdapter.getItem(i).getTid().equals("NA")) {
                                 spTitre.setSelection(i);

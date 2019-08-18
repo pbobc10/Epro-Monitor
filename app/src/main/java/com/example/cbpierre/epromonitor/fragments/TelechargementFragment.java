@@ -105,7 +105,7 @@ public class TelechargementFragment extends Fragment {
 
     private ArrayList<Integer> etabExistant;
     private ArrayList<JoinNewEtabNewContact> newEtabList;
-
+private String transfere_le;
 
     public TelechargementFragment() {
         // Required empty public constructor
@@ -126,6 +126,10 @@ public class TelechargementFragment extends Fragment {
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
         newContactEtabViewModel = ViewModelProviders.of(this).get(NewContactEtabViewModel.class);
+        //Date
+        String parttern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
+        transfere_le = simpleDateFormat.format(new Date());
     }
 
     @Override
@@ -504,7 +508,7 @@ public class TelechargementFragment extends Fragment {
 
                             sendNewContactEtabs.setTransferePar(contact.getTransfere_par());
 
-                            sendNewContactEtabs.setTransfereLe(contact.getTransfere_le());
+                            sendNewContactEtabs.setTransfereLe(transfere_le);
 
                             sendContactEtabList.add(sendNewContactEtabs);
                         }

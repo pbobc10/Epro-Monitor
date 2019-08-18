@@ -202,7 +202,7 @@ public class EtabsRegisterFragment extends Fragment {
                     spEtab.setVisibility(View.VISIBLE);
                     etablissementViewModel.setEtabByLocalite(zoneHtId);
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + zoneHtId, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Selected: " + zoneHtId, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -241,7 +241,7 @@ public class EtabsRegisterFragment extends Fragment {
                     etAdresse.setText(etablissement.getAdresse());
                     //etablissementViewModel.setEtabByLocalite(zoneHtId);
                     // show selected spinner item
-                    Toast.makeText(getContext(), "Selected: " + nomEtab, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Selected: " + nomEtab, Toast.LENGTH_LONG).show();
                 }
             }
 

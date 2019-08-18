@@ -105,9 +105,11 @@ public class ContactEtabsFragment extends Fragment {
                 JoinContactEtablissementData joinContactEtablissementData = _etablissement.get(position);
                 if (joinContactEtablissementData.getEtId() != null) {
                     newContactEtabViewModel.deleteNewContactEtabById(newContactId, joinContactEtablissementData.getEtId());
+                    Toast.makeText(getContext(), "Adresse supprimée avec succès!", Toast.LENGTH_SHORT).show();
                 } else if (joinContactEtablissementData.getEtabId() != null) {
                     newContactEtabViewModel.deleteNewContactNewEtabById(newContactId, joinContactEtablissementData.getEtabId());
                     etablissementViewModel.deleteNewEtabById(joinContactEtablissementData.getEtabId());
+                    Toast.makeText(getContext(), "Adresse supprimée avec succès!", Toast.LENGTH_SHORT).show();
                 }
 
             }

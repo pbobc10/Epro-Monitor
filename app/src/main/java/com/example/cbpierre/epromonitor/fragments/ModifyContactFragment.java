@@ -129,7 +129,7 @@ public class ModifyContactFragment extends Fragment {
         //Date
         String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
-        creeLe = modifieLe = transfereLe = simpleDateFormat.format(new Date());
+        modifieLe = simpleDateFormat.format(new Date());
         // tel
         tel = tel2 = tel3 = null;
         etatTel2 = etatTel3 = "attente";
@@ -219,6 +219,7 @@ public class ModifyContactFragment extends Fragment {
             contact.setPhone2(tel2);
             contact.setPhone3(tel3);
             contact.setEmail(email);
+            contact.setModifie_le(modifieLe);
             mContactViewModel.updateNewContact(contact);
             getActivity().getSupportFragmentManager().popBackStack(getActivity().getSupportFragmentManager().getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
             Log.d("tel3", tel2 + ' ' + tel3);
@@ -266,10 +267,16 @@ public class ModifyContactFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Titre est vide!");
             valid = false;
+        } else if (!(natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) && titreId.equals("NA")) {/////
+            TextView errorText = (TextView) spTitre.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Titre doit avoir une valeur autre que Non Applicable!");
+            valid = false;
         } else if (nom.isEmpty() || nom.length() < 3) {
             mNom.setError("Merci d'entrer un nom valide");
             valid = false;
-        } else if (!(natureId.equals("CP") || natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) && (prenom.isEmpty() || prenom.length() < 3)) {
+        } else if (!(natureId.equals("IC") || natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP")) && (prenom.isEmpty() || prenom.length() < 3)) {
             mPrenom.setError("Merci d'entrer un prenom valide");
             valid = false;
         } else if (TextUtils.isEmpty(secteurId) || secteurId == null) {
@@ -278,11 +285,23 @@ public class ModifyContactFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Secteur est vide!");
             valid = false;
+        } else if (!(natureId.equals("ICH") || natureId.equals("IE") || natureId.equals("IP") || natureId.equals("P")) && secteurId.equals("NA")) {//////
+            TextView errorText = (TextView) spSecteur.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Secteur doit avoir une valeur autre que Non Applicable!");
+            valid = false;
         } else if (TextUtils.isEmpty(specialiteId) || specialiteId == null) {
             TextView errorText = (TextView) spSpecialite.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Specialite est vide!");
+            valid = false;
+        } else if ((natureId.equals("P") || natureId.equals("CP")) && specialiteId.equals("NA")) {
+            TextView errorText = (TextView) spSpecialite.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Specialite doit avoir une valeur autre que Non Applicable!");
             valid = false;
         } else if (TextUtils.isEmpty(forceId) || forceId == null) {
             TextView errorText = (TextView) spForce.getSelectedView();
@@ -290,16 +309,24 @@ public class ModifyContactFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Le fileur Force est vide!");
             valid = false;
-        } else if (tel.isEmpty() || !isValidePhoneNumber(tel)) {
+        } else if (tel.isEmpty() || !
+
+                isValidePhoneNumber(tel)) {
             mTel.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
             valid = false;
-        } else if (!tel2.isEmpty() && !isValidePhoneNumber(tel2)) {
-            etPhone2.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
-            valid = false;
-        } else if (!tel3.isEmpty() && !isValidePhoneNumber(tel3)) {
-            etPhone3.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
-            valid = false;
-        } else if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (etatTel2.equals("creer")) {
+            if (tel2.isEmpty() || !isValidePhoneNumber(tel2)) {
+                etPhone2.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
+                valid = false;
+            }
+        } else if (etatTel3.equals("creer")) {
+            if (tel3.isEmpty() || !isValidePhoneNumber(tel3)) {
+                etPhone3.setError("Merci d'entrer un numero de telephone valide. ex: ###-####-####");
+                valid = false;
+            }
+        } else if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).
+
+                matches()) {
             mEmail.setError("Merci d'entrer un email valide");
             valid = false;
         }

@@ -58,7 +58,7 @@ public class JoinContactEtablissementAdapter extends RecyclerView.Adapter<JoinCo
                         if (position != RecyclerView.NO_POSITION) {
                             Log.d("=====testclick 3", "yes");
                             listener.onEtablissementClick(mEtablissement, position);
-                            Toast.makeText(view.getContext(), "===test " + mEtablissement.get(position).getNom_Etablissement(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(view.getContext(), "===test " + mEtablissement.get(position).getNom_Etablissement(), Toast.LENGTH_SHORT).show();
                             Log.d("=====testclick 4", "yes");
 
                         }
