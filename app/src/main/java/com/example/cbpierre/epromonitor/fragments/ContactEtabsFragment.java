@@ -12,18 +12,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
-import com.example.cbpierre.epromonitor.adapters.EtablissementAdapter;
 import com.example.cbpierre.epromonitor.adapters.JoinContactEtablissementAdapter;
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.JoinContactEtablissementData;
-import com.example.cbpierre.epromonitor.repositories.ContactEtablissementRepository;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NewContactEtabViewModel;

@@ -17,7 +17,11 @@ import com.example.cbpierre.epromonitor.dao.ForceDao;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
 import com.example.cbpierre.epromonitor.dao.NatureDao;
 import com.example.cbpierre.epromonitor.dao.NewContactEtabDao;
+import com.example.cbpierre.epromonitor.dao.PaContactDao;
+import com.example.cbpierre.epromonitor.dao.PaContactProduitDao;
+import com.example.cbpierre.epromonitor.dao.PlanActionDao;
 import com.example.cbpierre.epromonitor.dao.PostLoginDao;
+import com.example.cbpierre.epromonitor.dao.ProduitDao;
 import com.example.cbpierre.epromonitor.dao.SecteurDao;
 import com.example.cbpierre.epromonitor.dao.SpecialiteDao;
 import com.example.cbpierre.epromonitor.dao.TitreDao;
@@ -29,14 +33,18 @@ import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.Login;
 import com.example.cbpierre.epromonitor.models.Nature;
 import com.example.cbpierre.epromonitor.models.NewContactETab;
+import com.example.cbpierre.epromonitor.models.PaContact;
+import com.example.cbpierre.epromonitor.models.PaContactProduit;
+import com.example.cbpierre.epromonitor.models.PlanAction;
 import com.example.cbpierre.epromonitor.models.PostLogin;
+import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.Specialite;
 import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 
 
-@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
@@ -97,6 +105,17 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
     public abstract PostLoginDao postLoginDao();
 
+    /**
+     * Plan d'Action  PA
+     **/
+    public abstract PlanActionDao planActionDao();
+
+    public abstract PaContactDao paContactDao();
+
+    public abstract PaContactProduitDao paContactProduitDao();
+
+    public abstract ProduitDao produitDao();
+
 
     public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
@@ -122,7 +141,7 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             //insert Etablissement
-            Etablissement eta = new Etablissement(0, "N'EST PAS DANS LA LISTE", null, null, null, null, 0, false, null, null, null,null,null, null, false);
+            Etablissement eta = new Etablissement(0, "N'EST PAS DANS LA LISTE", null, null, null, null, 0, false, null, null, null, null, null, null, false);
             etablissementDao.insert(eta);
 
             //insert Zone

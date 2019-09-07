@@ -5,16 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
-import com.example.cbpierre.epromonitor.fragments.ContactEtabsFragment;
+import com.example.cbpierre.epromonitor.fragments.PaContactFragment;
 
+public class PaContactPagerAdapter extends FragmentPagerAdapter {
+    private int NUM_ITEMS = 2;
 
-public class MyPagerAdapter extends FragmentPagerAdapter {
-    private int numItem = 2;
-
-    public MyPagerAdapter(FragmentManager fm) {
+    public PaContactPagerAdapter(FragmentManager fm) {
         super(fm);
-
     }
 
     // Returns the fragment to display for that page
@@ -22,18 +19,21 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return new ContactDetailFragment();
+                //return null;
+                return new PaContactFragment();
             case 1:
-                return new ContactEtabsFragment();
+                //return null;
+                return new PaContactFragment();
             default:
                 return null;
         }
+
     }
 
     // Returns total number of pages
     @Override
     public int getCount() {
-        return numItem;
+        return NUM_ITEMS;
     }
 
     // Returns the page title for the top indicator
@@ -41,10 +41,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         super.getPageTitle(position);
-        if (position == 0) {
-            return "Contact";
-        } else {
-            return "Adresse";
-        }
+        if (position == 0)
+            return "PA Contact";
+        else
+            return "Produit";
     }
 }

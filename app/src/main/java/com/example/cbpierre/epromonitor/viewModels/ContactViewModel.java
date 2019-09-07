@@ -10,8 +10,8 @@ import android.support.annotation.NonNull;
 
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.JoinContactPaContact;
 import com.example.cbpierre.epromonitor.repositories.ContactRepository;
-import com.example.cbpierre.epromonitor.repositories.EtablissementRepository;
 
 import java.util.List;
 
@@ -86,4 +86,12 @@ public class ContactViewModel extends AndroidViewModel {
     public void updateNewContact(Contact contact) {
         contactRepository.updateNewContact(contact);
     }
+
+    /**
+     * PA
+     */
+    public LiveData<List<JoinContactPaContact>> getAllContactPA() {
+        return contactRepository.getAllPaContact();
+    }
 }
+

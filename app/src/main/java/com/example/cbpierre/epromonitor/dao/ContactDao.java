@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.JoinContactPaContact;
 
 import java.util.List;
 
@@ -52,4 +53,17 @@ public interface ContactDao {
             "and TITRE_TABLE.tid=CONTACT_TABLE.titre " +
             "order by contact_table.nom")
     LiveData<List<CompleteContact>> getAllCompleteContacts();
+
+    /**
+     * PA
+     */
+    @Query("Select contact_table.titre,contact_table.nom,contact_table.prenom,nature_table.nomNature,specialite_table.nomSpecialite,pa_contact.force,pa_contact.quota,pa_contact.con_id from pa_contact,contact_table , NATURE_TABLE,SPECIALITE_TABLE,TITRE_TABLE " +
+            " where NATURE_TABLE.natId=CONTACT_TABLE.nature  " +
+            "and SPECIALITE_TABLE.spId=CONTACT_TABLE.specialite   " +
+            "and TITRE_TABLE.tid=CONTACT_TABLE.titre " +
+            "and pa_contact.con_id=contact_table.conId " +
+            "order by contact_table.nom")
+    LiveData<List<JoinContactPaContact>> getAllContactPA();
+
+
 }

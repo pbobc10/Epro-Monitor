@@ -32,4 +32,12 @@ public class AppConfig {
     //Server Etablissement url
     public static final String URL_ETABLISSEMENT = "https://disprophar.net/webAPI/Prospection/GetEtablissement?date=1/1/2018";
 
+    /**
+     * Plan d'Action PA
+     **/
+
+    //Server produit url
+    public static final String URL_PRODUIT_REF = "https://disprophar.net/webAPI/Visite/GetProduit?cieId=";
+    //Server PA, PA_CONTACT et PA_CONTACT_PRODUIT
+    public static final String URL_PA = "https://disprophar.net/webAPI/Visite/GetPA?cieId=";
 }

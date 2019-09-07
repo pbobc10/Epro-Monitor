@@ -2,13 +2,13 @@ package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.ContactDao;
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.JoinContactPaContact;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ public class ContactRepository {
     private LiveData<List<Contact>> mAllContact;
     private LiveData<List<CompleteContact>> completeContact;
     private LiveData<List<Contact>> newContactById;
+    private LiveData<List<JoinContactPaContact>> allPaContact;
     private static OnNewcontactListener contactListener;
 
 
@@ -25,6 +26,7 @@ public class ContactRepository {
         contactDao = db.contactDao();
         mAllContact = contactDao.getAllContacts();
         completeContact = contactDao.getAllCompleteContacts();
+        allPaContact = contactDao.getAllContactPA();
     }
 
 
@@ -34,6 +36,10 @@ public class ContactRepository {
 
     public LiveData<List<CompleteContact>> getCompleteContact() {
         return completeContact;
+    }
+
+    public LiveData<List<JoinContactPaContact>> getAllPaContact() {
+        return allPaContact;
     }
 
     public LiveData<List<CompleteContact>> getContactNomRepo(String nom) {
@@ -64,7 +70,6 @@ public class ContactRepository {
         new UpdateNewContactTask(contactDao).execute(contact);
     }
 
-
     //****************************** ASYNC CLASS*******************************************
     private static class InsertContactTask extends AsyncTask<Contact, Void, Void> {
 
@@ -79,6 +84,7 @@ public class ContactRepository {
             mContact.insert(contacts[0]);
             return null;
         }
+
     }
 
     /**

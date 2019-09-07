@@ -1,8 +1,8 @@
 package com.example.cbpierre.epromonitor;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,28 +11,21 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
-import com.example.cbpierre.epromonitor.fragments.ContactEtabsFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
-import com.example.cbpierre.epromonitor.fragments.ContactRegisterFragment;
 import com.example.cbpierre.epromonitor.fragments.EtablissementFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsRegisterFragment;
+import com.example.cbpierre.epromonitor.fragments.PaContactFragment;
+import com.example.cbpierre.epromonitor.fragments.PlanActionFragment;
 import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
 import com.example.cbpierre.epromonitor.fragments.TelechargementFragment;
-import com.example.cbpierre.epromonitor.fragments.UserFragment;
 
-public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener, EtabsDetailFragment.OnFragmentInteractionListener, EtabsRegisterFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener, EtabsDetailFragment.OnFragmentInteractionListener, EtabsRegisterFragment.OnFragmentInteractionListener,PlanActionFragment.OnFragmentInteractionListener, PaContactFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -103,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
                 break;
             case R.id.nav_etablissement_fragment:
                 fragmentClass = EtablissementFragment.class;
+                break;
+            case R.id.nav_pa_fragment:
+                fragmentClass = PlanActionFragment.class;
                 break;
             case R.id.nav_gh_fragment:
                 fragmentClass = PostDetailFragment.class;

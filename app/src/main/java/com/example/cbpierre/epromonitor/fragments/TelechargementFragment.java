@@ -3,13 +3,11 @@ package com.example.cbpierre.epromonitor.fragments;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -26,16 +23,11 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.cbpierre.epromonitor.AppConfig;
 import com.example.cbpierre.epromonitor.AppVolleySingleton;
 import com.example.cbpierre.epromonitor.CustomArrayRequest;
-import com.example.cbpierre.epromonitor.CustomRequest;
 import com.example.cbpierre.epromonitor.R;
-import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.ContactEtablissement;
 import com.example.cbpierre.epromonitor.models.Etablissement;
@@ -43,6 +35,11 @@ import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.JoinNewEtabNewContact;
 import com.example.cbpierre.epromonitor.models.Nature;
 import com.example.cbpierre.epromonitor.models.OldEtablissement;
+import com.example.cbpierre.epromonitor.models.PaContact;
+import com.example.cbpierre.epromonitor.models.PaContactProduit;
+import com.example.cbpierre.epromonitor.models.PlanAction;
+import com.example.cbpierre.epromonitor.models.PostLogin;
+import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.SendNewContactEtabs;
 import com.example.cbpierre.epromonitor.models.Specialite;
@@ -50,15 +47,17 @@ import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 import com.example.cbpierre.epromonitor.repositories.ContactRepository;
 import com.example.cbpierre.epromonitor.repositories.EtablissementRepository;
-import com.example.cbpierre.epromonitor.repositories.NatureRepository;
-import com.example.cbpierre.epromonitor.repositories.SecteurRepository;
-import com.example.cbpierre.epromonitor.repositories.SpecialiteRepository;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ForceViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NatureViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NewContactEtabViewModel;
+import com.example.cbpierre.epromonitor.viewModels.PaContactProduitViewModel;
+import com.example.cbpierre.epromonitor.viewModels.PaContactViewModel;
+import com.example.cbpierre.epromonitor.viewModels.PlanActionViewModel;
+import com.example.cbpierre.epromonitor.viewModels.PostViewModel;
+import com.example.cbpierre.epromonitor.viewModels.ProduitViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SecteurViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.TitreViewModel;
@@ -67,17 +66,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,18 +88,23 @@ public class TelechargementFragment extends Fragment {
     private EtablissementViewModel etablissementViewModel;
     private ContactEtablissementViewModel contactEtablissementViewModel;
     private NewContactEtabViewModel newContactEtabViewModel;
+    private PlanActionViewModel planActionViewModel;
+    private PaContactViewModel paContactViewModel;
+    private PaContactProduitViewModel paContactProduitViewModel;
+    private ProduitViewModel produitViewModel;
+    private PostViewModel postViewModel;
 
     private ArrayList<OldEtablissement> oldEtabs;
     private ArrayList<JoinNewEtabNewContact> newEtab;
 
-    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement;
+    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement, btnDownloadPaData;
     private List<SendNewContactEtabs> sendContactEtabList;
     private SendNewContactEtabs sendNewContactEtabs;
     private ProgressDialog pDialog;
 
     private ArrayList<Integer> etabExistant;
     private ArrayList<JoinNewEtabNewContact> newEtabList;
-private String transfere_le;
+    private String transfere_le, paramCieID;
 
     public TelechargementFragment() {
         // Required empty public constructor
@@ -116,6 +115,7 @@ private String transfere_le;
         super.onCreate(savedInstanceState);
 
         // ViewModelProviders
+        postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
         forceViewModel = ViewModelProviders.of(this).get(ForceViewModel.class);
         secteurViewModel = ViewModelProviders.of(this).get(SecteurViewModel.class);
         natureViewModel = ViewModelProviders.of(this).get(NatureViewModel.class);
@@ -126,6 +126,10 @@ private String transfere_le;
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
         newContactEtabViewModel = ViewModelProviders.of(this).get(NewContactEtabViewModel.class);
+        planActionViewModel = ViewModelProviders.of(this).get(PlanActionViewModel.class);
+        paContactViewModel = ViewModelProviders.of(this).get(PaContactViewModel.class);
+        paContactProduitViewModel = ViewModelProviders.of(this).get(PaContactProduitViewModel.class);
+        produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
         //Date
         String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
@@ -151,6 +155,15 @@ private String transfere_le;
         btnDownloadEtablissement = view.findViewById(R.id.btnDownloadDataEta);
         btnSyncContact = view.findViewById(R.id.btnSyncContactData);
 
+        btnDownloadPaData = view.findViewById(R.id.btnDownloadPAData);
+
+        postViewModel.getAllPostLOgin().observe(this, new Observer<List<PostLogin>>() {
+            @Override
+            public void onChanged(@Nullable List<PostLogin> postLogins) {
+                assert postLogins != null;
+                paramCieID = postLogins.get(0).getCieId();
+            }
+        });
         /**
          * Contact button
          */
@@ -214,6 +227,24 @@ private String transfere_le;
                 zoneRequest(AppConfig.URL_ZONE);
                 etablissementRequest(AppConfig.URL_ETABLISSEMENT);
 
+            }
+        });
+
+        /**
+         * Plan d'Action PA button
+         */
+        btnDownloadPaData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set title of the dialog
+                pDialog.setTitle("Téléchargement des données du PA ...");
+                //set message of the dialog
+                pDialog.setMessage("S'il vous plaît, attendez ...");
+                //show dialog
+                showDialog();
+
+                planActionRequest(AppConfig.URL_PA);
+                produitRequest(AppConfig.URL_PRODUIT_REF);
             }
         });
 
@@ -413,6 +444,56 @@ private String transfere_le;
             }
         });
 
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void planActionRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (PlanAction pa : PlanAction.fromJson(response)) {
+                    planActionViewModel.insertPlanAction(pa);
+                }
+                for (PaContact paC : PlanAction.fromJsonPAContact(response)) {
+                    paContactViewModel.insertPaContact(paC);
+                }
+                for (PaContactProduit paCP : PlanAction.fromJsonPaContactProduit(response)) {
+                    paContactProduitViewModel.insertPaContactProduit(paCP);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void produitRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (Produit pro : Produit.fromJson(response)) {
+                    produitViewModel.insertProduit(pro);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+            }
+        });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
 

@@ -8,15 +8,12 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 @Entity(tableName = "contact_table",
         foreignKeys = {
@@ -169,15 +166,15 @@ public class Contact implements Serializable {
             this.phone3 = jsonObject.getString("PHONE3").equals("null") ? null : jsonObject.getString("PHONE3");
             this.email = jsonObject.getString("EMAIL").equals("null") ? null : jsonObject.getString("EMAIL");
             this.statut = jsonObject.getInt("STATUT");
-            this.transfere_par = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
-            this.transfere_le = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
-            this.cree_par = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
-            this.cree_le = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.transfere_par = jsonObject.getString("TRANSFERE_PAR").equals("null") ? null : jsonObject.getString("TRANSFERE_PAR");
+            this.transfere_le = jsonObject.getString("TRANSFERE_LE").equals("null") ? null : jsonObject.getString("TRANSFERE_LE");
+            this.cree_par = jsonObject.getString("CREE_PAR").equals("null") ? null : jsonObject.getString("CREE_PAR");
+            this.cree_le = jsonObject.getString("CREE_LE").equals("null") ? null : jsonObject.getString("CREE_LE");
             this.modifie_par = jsonObject.getString("MODIFIE_PAR");
             this.modifie_le = jsonObject.getString("MODIFIE_LE");
             this.valide = jsonObject.getBoolean("VALIDE");
-            this.validateur = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
-            this.date_maj_valide = jsonObject.getString("").equals("null") ? null : jsonObject.getString("");
+            this.validateur = jsonObject.getString("VALIDATEUR").equals("null") ? null : jsonObject.getString("VALIDATEUR");
+            this.date_maj_valide = jsonObject.getString("DATE_MAJ_VALIDE").equals("null") ? null : jsonObject.getString("DATE_MAJ_VALIDE");
             this.isNewContact = false;
 
         } catch (JSONException e) {
