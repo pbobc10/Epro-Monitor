@@ -104,10 +104,12 @@ public class PlanActionFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<PlanAction> planActions) {
                 if (planActions != null) {
-                    PlanAction planAction = planActions.get(0);
-                    populatePa(planAction);
-                } else
-                    Toast.makeText(getContext(), "Pas de PA actif", Toast.LENGTH_SHORT).show();
+                    if (planActions.size() > 0) {
+                        PlanAction planAction = planActions.get(0);
+                        populatePa(planAction);
+                    } else
+                        Toast.makeText(getContext(), "S'il vous plaît Téléchargement le PA", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

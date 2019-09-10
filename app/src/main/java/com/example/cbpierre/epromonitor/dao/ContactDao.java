@@ -57,13 +57,11 @@ public interface ContactDao {
     /**
      * PA
      */
-    @Query("Select contact_table.titre,contact_table.nom,contact_table.prenom,nature_table.nomNature,specialite_table.nomSpecialite,pa_contact.force,pa_contact.quota,pa_contact.con_id from pa_contact,contact_table , NATURE_TABLE,SPECIALITE_TABLE,TITRE_TABLE " +
-            " where NATURE_TABLE.natId=CONTACT_TABLE.nature  " +
-            "and SPECIALITE_TABLE.spId=CONTACT_TABLE.specialite   " +
-            "and TITRE_TABLE.tid=CONTACT_TABLE.titre " +
+    @Query("Select contact_visite.nom_ratio,nature_table.nomNature,specialite_table.nomSpecialite,pa_contact.force,pa_contact.quota,pa_contact.con_id from pa_contact,contact_visite ,contact_table, NATURE_TABLE,SPECIALITE_TABLE " +
+            "where  SPECIALITE_TABLE.spId=contact_visite.specialite " +
             "and pa_contact.con_id=contact_table.conId " +
-            "order by contact_table.nom")
+            "and contact_table.conId=contact_visite.con_id " +
+            "and NATURE_TABLE.natId=CONTACT_TABLE.nature " +
+            "order by contact_visite.nom_ratio")
     LiveData<List<JoinContactPaContact>> getAllContactPA();
-
-
 }

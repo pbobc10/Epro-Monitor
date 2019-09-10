@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,10 +99,12 @@ public class PaContactFragment extends Fragment {
         rvPaContact = view.findViewById(R.id.rvPaContact);
         // Create adapter passing in the sample user data
         paContactAdapter = new JoinContactPaContactAdapter(getContext());
+        Log.d("pa_contact", "test1" );
         // Initialize PaContacts
         contactViewModel.getAllContactPA().observe(this, new Observer<List<JoinContactPaContact>>() {
             @Override
             public void onChanged(@Nullable List<JoinContactPaContact> joinContactPaContacts) {
+                Log.d("pa_contact", "" + joinContactPaContacts);
                 paContactAdapter.setJoinContactPaContacts(joinContactPaContacts);
             }
         });
@@ -109,17 +112,18 @@ public class PaContactFragment extends Fragment {
         rvPaContact.setAdapter(paContactAdapter);
         // Set layout manager to position the items
         rvPaContact.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        Log.d("pa_contact", "test2" );
         paContactAdapter.setPaClickLIstener(new JoinContactPaContactAdapter.OnContactPaClickLIstener() {
             @Override
-            public void onClickPaContact(int conID) {
-                shareProduitContactViewModel.setProduitContact(conID);
+            public void onClickPaContact(JoinContactPaContact paContact) {
+                shareProduitContactViewModel.setProduitContact(paContact);
                 ProduitFragment produitFragment = new ProduitFragment();
                 replaceFragment(produitFragment);
             }
         });
         //call onBackPress/ back arrow
         backArrow();
+        Log.d("pa_contact", "test3" );
     }
 
     public void replaceFragment(Fragment fragment) {

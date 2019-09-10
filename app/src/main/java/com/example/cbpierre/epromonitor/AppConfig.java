@@ -40,4 +40,6 @@ public class AppConfig {
     public static final String URL_PRODUIT_REF = "https://disprophar.net/webAPI/Visite/GetProduit?cieId=";
     //Server PA, PA_CONTACT et PA_CONTACT_PRODUIT
     public static final String URL_PA = "https://disprophar.net/webAPI/Visite/GetPA?cieId=";
+    //server Contact Visite
+    public static final String URL_CONTACT_VISITE = "https://disprophar.net/webAPI/Visite/GetContactVisite?cieId=";
 }

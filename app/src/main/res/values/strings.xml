@@ -23,8 +23,8 @@
 
     <!-- Menu -->
     <string name="nav_contact_fragment">Contact</string>
-    <string name="nav_pa_fragment">PA</string>
-    <string name="nav_gh_fragment">GH</string>
+    <string name="nav_pa_fragment">Plans d\'Action (PA)</string>
+    <string name="nav_gh_fragment">Gains Hebdomadaires (GH)</string>
     <string name="nav_recommandation_fragment">Recommandation</string>
     <string name="nav_telechargement_fragment">Telechargement</string>
     <string name="nav_nettoyage_fragment">Nettoyage</string>

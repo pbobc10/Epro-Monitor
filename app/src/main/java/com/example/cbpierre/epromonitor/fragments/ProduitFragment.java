@@ -14,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.ProduitContactAdapter;
+import com.example.cbpierre.epromonitor.models.JoinContactPaContact;
 import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.viewModels.PaContactProduitViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareProduitContactViewModel;
@@ -31,6 +33,7 @@ public class ProduitFragment extends Fragment {
     private ProduitContactAdapter produitContactAdapter;
     private PaContactProduitViewModel paContactProduitViewModel;
     private ShareProduitContactViewModel shareProduitContactViewModel;
+    private TextView nomContact;
 
     public ProduitFragment() {
         // Required empty public constructor
@@ -55,14 +58,17 @@ public class ProduitFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        nomContact = view.findViewById(R.id.title);
         rvProduitContact = view.findViewById(R.id.rvProduitContact);
         produitContactAdapter = new ProduitContactAdapter(getContext());
         rvProduitContact.setAdapter(produitContactAdapter);
 
-        shareProduitContactViewModel.getProduitContact().observe(this, new Observer<Integer>() {
+        shareProduitContactViewModel.getProduitContact().observe(this, new Observer<JoinContactPaContact>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
-                paContactProduitViewModel.setProduitByContactId(integer);
+            public void onChanged(@Nullable JoinContactPaContact paContact) {
+                assert paContact != null;
+                paContactProduitViewModel.setProduitByContactId(paContact.getCon_id());
+                nomContact.setText(paContact.getNom_ratio());
             }
         });
         //paContactProduitViewModel.setProduitByContactId(686);

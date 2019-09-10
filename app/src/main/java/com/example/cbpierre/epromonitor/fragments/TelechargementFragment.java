@@ -30,6 +30,7 @@ import com.example.cbpierre.epromonitor.CustomArrayRequest;
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.ContactEtablissement;
+import com.example.cbpierre.epromonitor.models.ContactVisite;
 import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.JoinNewEtabNewContact;
@@ -49,6 +50,7 @@ import com.example.cbpierre.epromonitor.repositories.ContactRepository;
 import com.example.cbpierre.epromonitor.repositories.EtablissementRepository;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
+import com.example.cbpierre.epromonitor.viewModels.ContactVisiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ForceViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NatureViewModel;
@@ -93,6 +95,7 @@ public class TelechargementFragment extends Fragment {
     private PaContactProduitViewModel paContactProduitViewModel;
     private ProduitViewModel produitViewModel;
     private PostViewModel postViewModel;
+    private ContactVisiteViewModel contactVisiteViewModel;
 
     private ArrayList<OldEtablissement> oldEtabs;
     private ArrayList<JoinNewEtabNewContact> newEtab;
@@ -130,6 +133,7 @@ public class TelechargementFragment extends Fragment {
         paContactViewModel = ViewModelProviders.of(this).get(PaContactViewModel.class);
         paContactProduitViewModel = ViewModelProviders.of(this).get(PaContactProduitViewModel.class);
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
+        contactVisiteViewModel = ViewModelProviders.of(this).get(ContactVisiteViewModel.class);
         //Date
         String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
@@ -245,6 +249,7 @@ public class TelechargementFragment extends Fragment {
 
                 planActionRequest(AppConfig.URL_PA);
                 produitRequest(AppConfig.URL_PRODUIT_REF);
+                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
             }
         });
 
@@ -481,6 +486,28 @@ public class TelechargementFragment extends Fragment {
             public void onResponse(JSONArray response) {
                 for (Produit pro : Produit.fromJson(response)) {
                     produitViewModel.insertProduit(pro);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void contactVisiteRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (ContactVisite contactVisite : ContactVisite.fromJson(response)) {
+                    contactVisiteViewModel.insertContactVisite(contactVisite);
                 }
                 //dismiss dialog
                 hideDialog();

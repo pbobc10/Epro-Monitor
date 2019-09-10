@@ -1,9 +1,7 @@
 package com.example.cbpierre.epromonitor.models;
 
 public class JoinContactPaContact {
-    private String titre;
-    private String nom;
-    private String prenom;
+    private String nom_ratio;
     private String nomNature;
     private String nomSpecialite;
     private String force;
@@ -13,6 +11,13 @@ public class JoinContactPaContact {
     public JoinContactPaContact() {
     }
 
+    public String getNom_ratio() {
+        return nom_ratio;
+    }
+
+    public void setNom_ratio(String nom_ratio) {
+        this.nom_ratio = nom_ratio;
+    }
 
     public int getCon_id() {
         return con_id;
@@ -20,30 +25,6 @@ public class JoinContactPaContact {
 
     public void setCon_id(int con_id) {
         this.con_id = con_id;
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
     }
 
     public String getForce() {

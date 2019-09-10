@@ -33,7 +33,7 @@
                 android:text="556 - BRIMONI DT gouttes 5ml Brimonidine Dorzolamide Timolol"
                 android:textColor="@color/input_register_bg"
                 android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="italic" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.example.cbpierre.epromonitor.dao.ContactDao;
 import com.example.cbpierre.epromonitor.dao.ContactEtablissementDao;
+import com.example.cbpierre.epromonitor.dao.ContactVisiteDao;
 import com.example.cbpierre.epromonitor.dao.EtablissementDao;
 import com.example.cbpierre.epromonitor.dao.ForceDao;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
@@ -28,6 +29,7 @@ import com.example.cbpierre.epromonitor.dao.TitreDao;
 import com.example.cbpierre.epromonitor.dao.ZoneDao;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.ContactEtablissement;
+import com.example.cbpierre.epromonitor.models.ContactVisite;
 import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.models.Force;
 import com.example.cbpierre.epromonitor.models.Login;
@@ -44,7 +46,7 @@ import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 
 
-@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class, ContactVisite.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
@@ -115,6 +117,8 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
     public abstract PaContactProduitDao paContactProduitDao();
 
     public abstract ProduitDao produitDao();
+
+    public abstract ContactVisiteDao contactVisiteDao();
 
 
     public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {

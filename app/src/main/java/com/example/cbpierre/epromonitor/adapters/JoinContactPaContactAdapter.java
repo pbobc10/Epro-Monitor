@@ -45,7 +45,7 @@ public class JoinContactPaContactAdapter extends RecyclerView.Adapter<JoinContac
                     if (paClickLIstener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION)
-                            paClickLIstener.onClickPaContact(joinContactPaContacts.get(position).getCon_id());
+                            paClickLIstener.onClickPaContact(joinContactPaContacts.get(position));
                     }
 
                 }
@@ -64,9 +64,7 @@ public class JoinContactPaContactAdapter extends RecyclerView.Adapter<JoinContac
     public void onBindViewHolder(@NonNull JoinContactPaContactAdapter.JoinContactPaContactHolder joinContactPaContactHolder, int i) {
         if (joinContactPaContacts != null) {
             JoinContactPaContact paContact = joinContactPaContacts.get(i);
-            String titre = paContact.getTitre().equals("NA") ? "" : paContact.getTitre() + " ";
-            String prenom = paContact.getPrenom() == null ? "" : paContact.getPrenom();
-            joinContactPaContactHolder.txtNom.setText(titre + paContact.getNom() + " " + prenom);
+            joinContactPaContactHolder.txtNom.setText(paContact.getNom_ratio());
             joinContactPaContactHolder.txtSpecialite.setText(paContact.getNomSpecialite().equals("NON APPLICABLE") ? "" : paContact.getNomSpecialite());
             joinContactPaContactHolder.txtNature.setText(paContact.getNomNature());
             joinContactPaContactHolder.txtForce.setText("Force: " + paContact.getForce());
@@ -89,7 +87,7 @@ public class JoinContactPaContactAdapter extends RecyclerView.Adapter<JoinContac
     }
 
     public interface OnContactPaClickLIstener {
-        void onClickPaContact(int conID);
+        void onClickPaContact(JoinContactPaContact paContact);
     }
 
     public void setPaClickLIstener(OnContactPaClickLIstener paClickLIstener) {
