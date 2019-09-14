@@ -19,8 +19,8 @@ public class ContactVisiteRepository {
         new InsertContactVisite(contactVisiteDao).execute(contactVisite);
     }
 
-    public void deleteCotactVisite(ContactVisite contactVisite) {
-        new InsertContactVisite(contactVisiteDao).execute(contactVisite);
+    public void deleteCotactVisite() {
+        new DeleteCotactVisiteTask(contactVisiteDao).execute();
     }
 
     /******************* Async Task ********************************/
@@ -38,16 +38,16 @@ public class ContactVisiteRepository {
         }
     }
 
-    private static class DeleteCotactVisite extends AsyncTask<ContactVisite, Void, Void> {
+    private static class DeleteCotactVisiteTask extends AsyncTask<Void, Void, Void> {
         private ContactVisiteDao contactVisiteDao;
 
-        public DeleteCotactVisite(ContactVisiteDao contactVisiteDao) {
+        public DeleteCotactVisiteTask(ContactVisiteDao contactVisiteDao) {
             this.contactVisiteDao = contactVisiteDao;
         }
 
         @Override
-        protected Void doInBackground(ContactVisite... contactVisites) {
-            contactVisiteDao.deleteContatVisite(contactVisites[0]);
+        protected Void doInBackground(Void... voids) {
+            contactVisiteDao.deleteContatVisite();
             return null;
         }
     }

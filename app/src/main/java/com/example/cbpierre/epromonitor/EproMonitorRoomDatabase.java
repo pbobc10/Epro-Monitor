@@ -10,11 +10,17 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.cbpierre.epromonitor.dao.AcceptabiliteDao;
+import com.example.cbpierre.epromonitor.dao.CommuneLocaliteContactDao;
 import com.example.cbpierre.epromonitor.dao.ContactDao;
 import com.example.cbpierre.epromonitor.dao.ContactEtablissementDao;
 import com.example.cbpierre.epromonitor.dao.ContactVisiteDao;
 import com.example.cbpierre.epromonitor.dao.EtablissementDao;
 import com.example.cbpierre.epromonitor.dao.ForceDao;
+import com.example.cbpierre.epromonitor.dao.GHDao;
+import com.example.cbpierre.epromonitor.dao.GHJourContactDao;
+import com.example.cbpierre.epromonitor.dao.GHJourContactProduitDao;
+import com.example.cbpierre.epromonitor.dao.GHJourDao;
 import com.example.cbpierre.epromonitor.dao.LoginDao;
 import com.example.cbpierre.epromonitor.dao.NatureDao;
 import com.example.cbpierre.epromonitor.dao.NewContactEtabDao;
@@ -25,13 +31,21 @@ import com.example.cbpierre.epromonitor.dao.PostLoginDao;
 import com.example.cbpierre.epromonitor.dao.ProduitDao;
 import com.example.cbpierre.epromonitor.dao.SecteurDao;
 import com.example.cbpierre.epromonitor.dao.SpecialiteDao;
+import com.example.cbpierre.epromonitor.dao.StatutJourDao;
+import com.example.cbpierre.epromonitor.dao.StatutVisiteDao;
 import com.example.cbpierre.epromonitor.dao.TitreDao;
 import com.example.cbpierre.epromonitor.dao.ZoneDao;
+import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
+import com.example.cbpierre.epromonitor.models.CommuneLocaliteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.ContactEtablissement;
 import com.example.cbpierre.epromonitor.models.ContactVisite;
 import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.models.Force;
+import com.example.cbpierre.epromonitor.models.GH;
+import com.example.cbpierre.epromonitor.models.GHJour;
+import com.example.cbpierre.epromonitor.models.GHJourContact;
+import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.Login;
 import com.example.cbpierre.epromonitor.models.Nature;
 import com.example.cbpierre.epromonitor.models.NewContactETab;
@@ -42,11 +56,13 @@ import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.Specialite;
+import com.example.cbpierre.epromonitor.models.StatutJourRef;
+import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
 import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 
 
-@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class, ContactVisite.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class, ContactVisite.class, GH.class, GHJour.class, GHJourContact.class, GHJourContactProduit.class, StatutVisiteRef.class, StatutJourRef.class, AcceptabiliteRef.class, CommuneLocaliteContact.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
@@ -119,6 +135,25 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
     public abstract ProduitDao produitDao();
 
     public abstract ContactVisiteDao contactVisiteDao();
+
+    /**
+     * GH
+     */
+    public abstract GHDao ghDao();
+
+    public abstract GHJourDao ghJourDao();
+
+    public abstract GHJourContactDao ghJourContactDao();
+
+    public abstract GHJourContactProduitDao ghJourContactProduitDao();
+
+    public abstract StatutJourDao statutJourDao();
+
+    public abstract StatutVisiteDao statutVisiteDao();
+
+    public abstract AcceptabiliteDao acceptabiliteDao();
+
+    public abstract CommuneLocaliteContactDao communeLocaliteContactDao();
 
 
     public static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {

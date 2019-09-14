@@ -456,6 +456,12 @@ public class TelechargementFragment extends Fragment {
         CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                //suprimer les PA
+                planActionViewModel.deletePlanAction();
+                paContactViewModel.deletePaContact();
+                paContactProduitViewModel.deletePaContactProduit();
+
+                //telecharger les PA
                 for (PlanAction pa : PlanAction.fromJson(response)) {
                     planActionViewModel.insertPlanAction(pa);
                 }
@@ -484,6 +490,10 @@ public class TelechargementFragment extends Fragment {
         CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                //delete produit
+                produitViewModel.deleteProduit();
+
+                //telecharger produit
                 for (Produit pro : Produit.fromJson(response)) {
                     produitViewModel.insertProduit(pro);
                 }
@@ -506,6 +516,10 @@ public class TelechargementFragment extends Fragment {
         CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                //delete contact visite
+                contactVisiteViewModel.deleteContactVisite();
+
+                //telechager contact visite
                 for (ContactVisite contactVisite : ContactVisite.fromJson(response)) {
                     contactVisiteViewModel.insertContactVisite(contactVisite);
                 }
@@ -535,7 +549,6 @@ public class TelechargementFragment extends Fragment {
             pDialog.dismiss();
         }
     }
-
 
     public void fromAsyncReposeCreateJsonString() {
         sendContactEtabList = new ArrayList<>();

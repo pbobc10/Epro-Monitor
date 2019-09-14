@@ -5,14 +5,13 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.cbpierre.epromonitor.models.ContactVisite;
+import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
 
 @Dao
-public interface ContactVisiteDao {
+public interface AcceptabiliteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertContactVisite(ContactVisite contactVisite);
+    void insertAcceptabilite(AcceptabiliteRef acceptabiliteRef);
 
-    @Query("delete from contact_visite")
-    void deleteContatVisite();
-
+    @Query("delete from acceptabilite_ref")
+    void delteAcceptabilite();
 }

@@ -28,6 +28,10 @@ public class ProduitRepository {
         new InsertProduitTask(produitDao).execute(produit);
     }
 
+    public void deleteProduit() {
+        new DeleteProduitTask(produitDao).execute();
+    }
+
     /**
      * Async Task
      */
@@ -41,6 +45,20 @@ public class ProduitRepository {
         @Override
         protected Void doInBackground(Produit... produits) {
             produitDao.insert(produits[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteProduitTask extends AsyncTask<Void, Void, Void> {
+        private ProduitDao produitDao;
+
+        public DeleteProduitTask(ProduitDao produitDao) {
+            this.produitDao = produitDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            produitDao.deletePrduit();
             return null;
         }
     }

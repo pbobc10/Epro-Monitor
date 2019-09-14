@@ -23,4 +23,8 @@ public class PaContactViewModel extends AndroidViewModel {
     public void insertPaContact(PaContact paContact) {
         paContactRepository.insertPaContact(paContact);
     }
+
+    public void deletePaContact() {
+        paContactRepository.deletePaContact();
+    }
 }

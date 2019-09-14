@@ -28,6 +28,10 @@ public class PaContactRepository {
         new InsertAlPaContactTask(paContactDao).execute(paContact);
     }
 
+    public void deletePaContact() {
+        new DeletePaContactTask(paContactDao).execute();
+    }
+
     /**
      * Async Task
      */
@@ -42,6 +46,20 @@ public class PaContactRepository {
         @Override
         protected Void doInBackground(PaContact... paContacts) {
             paContactDao.insertPaContact(paContacts[0]);
+            return null;
+        }
+    }
+
+    private static class DeletePaContactTask extends AsyncTask<Void, Void, Void> {
+        private PaContactDao paContactDao;
+
+        public DeletePaContactTask(PaContactDao paContactDao) {
+            this.paContactDao = paContactDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            paContactDao.deleteAllPaContact();
             return null;
         }
     }

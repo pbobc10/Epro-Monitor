@@ -19,7 +19,7 @@ public class ContactVisiteViewModel extends AndroidViewModel {
         contactVisiteRepository.insetContactVisite(contactVisite);
     }
 
-    public void deleteContactVisite(ContactVisite contactVisite) {
-        contactVisiteRepository.deleteCotactVisite(contactVisite);
+    public void deleteContactVisite() {
+        contactVisiteRepository.deleteCotactVisite();
     }
 }

@@ -5,14 +5,13 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.cbpierre.epromonitor.models.ContactVisite;
+import com.example.cbpierre.epromonitor.models.GH;
 
 @Dao
-public interface ContactVisiteDao {
+public interface GHDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertContactVisite(ContactVisite contactVisite);
+    void insertGH(GH gh);
 
-    @Query("delete from contact_visite")
-    void deleteContatVisite();
-
+    @Query("delete from gh")
+    void deleteGH();
 }

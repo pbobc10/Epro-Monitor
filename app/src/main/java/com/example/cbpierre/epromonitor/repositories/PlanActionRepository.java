@@ -28,6 +28,10 @@ public class PlanActionRepository {
         new InsertPlanActionTask(planActionDao).execute(planAction);
     }
 
+    public void deletePlanAction() {
+        new DeletePlanActionTask(planActionDao).execute();
+    }
+
     /**
      * Async Task
      */
@@ -41,6 +45,20 @@ public class PlanActionRepository {
         @Override
         protected Void doInBackground(PlanAction... planActions) {
             planActionDao.insertPlanAction(planActions[0]);
+            return null;
+        }
+    }
+
+    private class DeletePlanActionTask extends AsyncTask<Void, Void, Void> {
+        private PlanActionDao planActionDao;
+
+        public DeletePlanActionTask(PlanActionDao planActionDao) {
+            this.planActionDao = planActionDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            planActionDao.deleteAllPlanAction();
             return null;
         }
     }

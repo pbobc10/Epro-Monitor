@@ -2,7 +2,6 @@ package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
@@ -25,6 +24,10 @@ public class PaContactProduitRepository {
         new InsertPaContactProduitTask(paContactProduitDao).execute(paContactProduit);
     }
 
+    public void deletePaContactProduit() {
+        new DeletePaContactProduitTask(paContactProduitDao).execute();
+    }
+
     public LiveData<List<Produit>> getAllProduit(Integer contactId) {
         return paContactProduitDao.allPaContactProduit(contactId);
     }
@@ -42,6 +45,20 @@ public class PaContactProduitRepository {
         @Override
         protected Void doInBackground(PaContactProduit... paContactProduits) {
             paContactProduitDao.insertPaContactProduit(paContactProduits[0]);
+            return null;
+        }
+    }
+
+    private static class DeletePaContactProduitTask extends AsyncTask<Void, Void, Void> {
+        private PaContactProduitDao paContactProduitDao;
+
+        public DeletePaContactProduitTask(PaContactProduitDao paContactProduitDao) {
+            this.paContactProduitDao = paContactProduitDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            paContactProduitDao.deleteAllPaContactProduit();
             return null;
         }
     }
