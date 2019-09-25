@@ -1,115 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardUseCompatPadding="true"
+    tools:ignore="MissingConstraints">
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        card_view:cardBackgroundColor="?android:attr/windowBackground"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="4dp"
-        card_view:cardUseCompatPadding="true"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/txtNom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/colorLineContact"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="Dr. Pierre Bob Charlemagne "
+            android:textColor="@color/input_register_bg"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <View
-                android:id="@+id/colorLineContact"
-                android:layout_width="wrap_content"
-                android:layout_height="6dp"
-                android:layout_marginTop="0dp"
-                android:background="@android:color/holo_orange_light" />
+        <TextView
+            android:id="@+id/txtSpecialite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtNom"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="MEDECINE GENERALE"
+            android:textColor="@color/input_login"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/txtNom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/colorLineContact"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="center_horizontal"
-                android:maxLines="2"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="Dr. Pierre Bob Charlemagne "
-                android:textColor="@color/input_register_bg"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtNature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSpecialite"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="PRESCRIPTEUR"
+            android:textColor="@color/input_login"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/txtSpecialite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtNom"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="MEDECINE GENERALE"
-                android:textColor="@color/input_login"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/txtSecteur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtNature"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="NON APLLICABLE"
+            android:textColor="@color/input_login"
+            android:textSize="16sp"
+            android:textStyle="italic" />
 
-            <TextView
-                android:id="@+id/txtNature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtSpecialite"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="PRESCRIPTEUR"
-                android:textColor="@color/input_login"
-                android:textSize="16sp" />
+        <TextView
+            android:id="@+id/txtTel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/txtSecteur"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="45dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Tel: (509)"
+            android:textColor="@color/input_login"
+            android:textSize="16sp"
+            android:textStyle="italic" />
 
-            <TextView
-                android:id="@+id/txtSecteur"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtNature"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="45dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="NON APLLICABLE"
-                android:textColor="@color/input_login"
-                android:textSize="16sp"
-                android:textStyle="italic" />
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSecteur"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="45dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="email@yourmail.com"
+            android:textColor="@color/input_login"
+            android:textSize="16sp"
+            android:textStyle="italic" />
 
-            <TextView
-                android:id="@+id/txtTel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/txtSecteur"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="45dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Tel: (509)"
-                android:textColor="@color/input_login"
-                android:textSize="16sp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/txtEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtSecteur"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="45dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="email@yourmail.com"
-                android:textColor="@color/input_login"
-                android:textSize="16sp"
-                android:textStyle="italic" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-</android.support.constraint.ConstraintLayout>
+        <View
+            android:id="@+id/colorLineContact"
+            android:layout_width="wrap_content"
+            android:layout_height="6dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_orange_light" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

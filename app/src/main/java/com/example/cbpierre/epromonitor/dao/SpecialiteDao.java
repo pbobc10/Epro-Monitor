@@ -7,6 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.example.cbpierre.epromonitor.models.Specialite;
+import com.example.cbpierre.epromonitor.models.SpecialiteGH;
 
 import java.util.List;
 
@@ -17,4 +18,10 @@ public interface SpecialiteDao {
 
     @Query("select * from specialite_table order by nomSpecialite asc")
     LiveData<List<Specialite>> getAllSpecialite();
- }
+
+    @Query("select distinct specialite_table.nomSpecialite,specialite_table.spId from specialite_table,contact_visite\n" +
+            "where specialite_table.spId=contact_visite.specialite\n" +
+            "and specialite_table.spId<>'NA'\n" +
+            "order by specialite_table.nomSpecialite")
+    LiveData<List<SpecialiteGH>> getAllSpecialiteGH();
+}

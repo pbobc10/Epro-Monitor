@@ -42,4 +42,19 @@ public class AppConfig {
     public static final String URL_PA = "https://disprophar.net/webAPI/Visite/GetPA?cieId=";
     //server Contact Visite
     public static final String URL_CONTACT_VISITE = "https://disprophar.net/webAPI/Visite/GetContactVisite?cieId=";
+
+    /**
+     * GH
+     */
+
+    //server GH url
+    public static final String URL_GH = "https://disprophar.net/webAPI/Visite/GetGH?cieId=";
+    //server STATUT_JOUR
+    public static final String URL_STATUT_JOUR = "https://disprophar.net/webAPI/Visite/GetStatutJour?cieId=";
+    //server STATUT_VISITE
+    public static final String URL_STATUT_VISITE = "https://disprophar.net/webAPI/Visite/GetStatutVisite?cieId=";
+    //server ACCEPTABILITE
+    public static final String URL_ACCEPTABILITE = "https://disprophar.net/webAPI/Visite/Acceptabilite";
+    //server COMMUNE_LOCALITE_CONTACT
+    public static final String URL_COMMUNE_LOCALITE_CONTACT = "https://disprophar.net/webAPI/Visite/GetCommuneLocaliteContact?cieId=";
 }

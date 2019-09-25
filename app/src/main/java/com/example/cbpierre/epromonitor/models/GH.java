@@ -6,8 +6,11 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 @Entity(tableName = "gh")
 public class GH {
@@ -72,26 +75,88 @@ public class GH {
     @ColumnInfo(name = "intro_version")
     private Integer introwVersion;
 
+    public GH() {
+    }
+
     protected GH(JSONObject jsonObject) {
         try {
             ghId = jsonObject.getInt("GHID");
             paId = jsonObject.getInt("PAID");
-            debut = jsonObject.getString("DEBUT");
-            fin = jsonObject.getString("FIN");
-            creePar = jsonObject.getString("CREE_PAR");
-            creePle = jsonObject.getString("CREE_LE");
-            modifiePar = jsonObject.getString("MODIFIE_PAR");
-            modifieLe = jsonObject.getString("MODIFIE_LE");
-            transferePar = jsonObject.getString("TRANSFERE_PAR");
-            transfereLe = jsonObject.getString("TRANSFERE_LE");
+            debut = jsonNullRemoval(jsonObject.getString("DEBUT"));
+            fin = jsonNullRemoval(jsonObject.getString("FIN"));
+            creePar = jsonNullRemoval(jsonObject.getString("CREE_PAR"));
+            creePle = jsonNullRemoval(jsonObject.getString("CREE_LE"));
+            modifiePar = jsonNullRemoval(jsonObject.getString("MODIFIE_PAR"));
+            modifieLe = jsonNullRemoval(jsonObject.getString("MODIFIE_LE"));
+            transferePar = jsonNullRemoval(jsonObject.getString("TRANSFERE_PAR"));
+            transfereLe = jsonNullRemoval(jsonObject.getString("TRANSFERE_LE"));
             ghComplete = jsonObject.getBoolean("GH_COMPLETE");
-            completePar = jsonObject.getString("COMPLETE_PAR");
-            completeLe = jsonObject.getString("COMPLETE_LE");
-            rowVersion = jsonObject.getString("ROW_VERSION");
+            completePar = jsonNullRemoval(jsonObject.getString("COMPLETE_PAR"));
+            completeLe = jsonNullRemoval(jsonObject.getString("COMPLETE_LE"));
+            rowVersion = jsonNullRemoval(jsonObject.getString("ROW_VERSION"));
             introwVersion = jsonObject.getInt("INTROWVERSION");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<GH> fromJSONGH(JSONArray jsonArray) {
+        ArrayList<GH> ghs = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                ghs.add(new GH(jsonArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return ghs;
+    }
+
+    public static ArrayList<GHJour> fromJSONGhJour(JSONArray jsonArray) {
+        ArrayList<GHJour> ghJours = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                for (int j = 0; j < jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").length(); j++) {
+                    ghJours.add(new GHJour(jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").getJSONObject(j)));
+                }
+            } catch (JSONException e) {
+            }
+
+        }
+        return ghJours;
+    }
+
+    public static ArrayList<GHJourContact> fromJSONGHJourContact(JSONArray jsonArray) throws JSONException {
+        ArrayList<GHJourContact> ghJourContacts = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            for (int j = 0; j < jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").length(); j++) {
+                for (int k = 0; k < jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").getJSONObject(j).getJSONArray("GH_JOUR_CONTACT").length(); k++) {
+                    ghJourContacts.add(new GHJourContact(jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").getJSONObject(j).getJSONArray("GH_JOUR_CONTACT").getJSONObject(k)));
+                }
+            }
+
+        }
+        return ghJourContacts;
+    }
+
+    public static ArrayList<GHJourContactProduit> fromJSONGHJourContactProduit(JSONArray jsonArray) throws JSONException {
+        ArrayList<GHJourContactProduit> ghJourContactProduits = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            for (int j = 0; j < jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").length(); j++) {
+                for (int k = 0; k < jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").getJSONObject(j).getJSONArray("GH_JOUR_CONTACT").length(); k++) {
+                    for (int l = 0; l < jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").getJSONObject(j).getJSONArray("GH_JOUR_CONTACT").getJSONObject(k).getJSONArray("GH_JOUR_CONTACT_PRODUIT").length(); l++) {
+                        ghJourContactProduits.add(new GHJourContactProduit(jsonArray.getJSONObject(i).getJSONArray("GH_JOUR").getJSONObject(j).getJSONArray("GH_JOUR_CONTACT").getJSONObject(k).getJSONArray("GH_JOUR_CONTACT_PRODUIT").getJSONObject(l)));
+                    }
+                }
+            }
+
+        }
+        return ghJourContactProduits;
+    }
+
+    // remove null from the json String element
+    public String jsonNullRemoval(String jsonElement) {
+        return jsonElement.equals("null") ? null : jsonElement;
     }
 
     @NonNull

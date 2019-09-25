@@ -15,17 +15,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
-import com.example.cbpierre.epromonitor.adapters.PaContactPagerAdapter;
+import com.example.cbpierre.epromonitor.adapters.GHCourantPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PaContactViewPagerFragment extends Fragment {
+public class GHCourantViewPagerFragment extends Fragment {
     private ViewPager vpPaContact;
     private TabLayout tabLayout;
-    private PaContactPagerAdapter paContactPagerAdapter;
+    private GHCourantPagerAdapter GHCourantPagerAdapter;
 
-    public PaContactViewPagerFragment() {
+    public GHCourantViewPagerFragment() {
         // Required empty public constructor
     }
 
@@ -36,7 +36,7 @@ public class PaContactViewPagerFragment extends Fragment {
         //enable back arrow
         showBackButton();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pa_contact_view_pager, container, false);
+        return inflater.inflate(R.layout.fragment_gh_courant_view_pager, container, false);
     }
 
     @Override
@@ -44,9 +44,9 @@ public class PaContactViewPagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         vpPaContact = view.findViewById(R.id.vpPaContact);
         tabLayout = view.findViewById(R.id.tlPaTabs);
-        paContactPagerAdapter = new PaContactPagerAdapter(this.getChildFragmentManager());
+        GHCourantPagerAdapter = new GHCourantPagerAdapter(this.getChildFragmentManager());
         tabLayout.setupWithViewPager(vpPaContact);
-        vpPaContact.setAdapter(paContactPagerAdapter);
+        vpPaContact.setAdapter(GHCourantPagerAdapter);
 
         vpPaContact.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             // This method will be invoked when the current page is scrolled
@@ -60,10 +60,25 @@ public class PaContactViewPagerFragment extends Fragment {
             public void onPageSelected(int i) {
                 switch (i) {
                     case 0:
-                        Toast.makeText(getContext(), "Page: PA Contact", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Page: Lundi", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(getContext(), "Page: Produit", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Page: Mardi", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(getContext(), "Page: Mercredi", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(getContext(), "Page: Jeudi", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:
+                        Toast.makeText(getContext(), "Page: Vendredi", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 5:
+                        Toast.makeText(getContext(), "Page: Samedi", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 6:
+                        Toast.makeText(getContext(), "Page: Dimanche", Toast.LENGTH_SHORT).show();
                         break;
 
                 }

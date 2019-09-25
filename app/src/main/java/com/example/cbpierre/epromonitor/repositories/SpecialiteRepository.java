@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.SpecialiteDao;
 import com.example.cbpierre.epromonitor.models.Specialite;
+import com.example.cbpierre.epromonitor.models.SpecialiteGH;
 
 import java.util.List;
 
@@ -22,6 +23,10 @@ public class SpecialiteRepository {
 
     public LiveData<List<Specialite>> getsAllSpecialite() {
         return sAllSpecialite;
+    }
+
+    public LiveData<List<SpecialiteGH>> getAllSpecialiteGH() {
+        return specialiteDao.getAllSpecialiteGH();
     }
 
     public void insert(Specialite specialite) {

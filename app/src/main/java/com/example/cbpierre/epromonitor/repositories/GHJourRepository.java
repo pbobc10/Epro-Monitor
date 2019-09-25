@@ -1,11 +1,15 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.GHJourDao;
 import com.example.cbpierre.epromonitor.models.GHJour;
+import com.example.cbpierre.epromonitor.models.JoinGHJourStatutRef;
+
+import java.util.List;
 
 public class GHJourRepository {
     private GHJourDao ghJourDao;
@@ -13,6 +17,10 @@ public class GHJourRepository {
     public GHJourRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
         ghJourDao = database.ghJourDao();
+    }
+
+    public LiveData<List<JoinGHJourStatutRef>> getAllJour(Integer ghId) {
+        return ghJourDao.allJour(ghId);
     }
 
     public void insertGHJour(GHJour ghJour) {

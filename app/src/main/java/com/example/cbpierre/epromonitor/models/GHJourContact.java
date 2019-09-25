@@ -50,7 +50,7 @@ public class GHJourContact {
     @ColumnInfo(name = "fin")
     private String fin;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "lieu")
     private String lieu;
 
@@ -102,35 +102,43 @@ public class GHJourContact {
     @ColumnInfo(name = "motif_annulation")
     private String motifAnnulation;
 
+    public GHJourContact() {
+    }
+
     public GHJourContact(JSONObject jsonObject) {
         try {
             ghId = jsonObject.getInt("GHID");
-            jour = jsonObject.getString("JOUR");
+            jour = jsonNullRemoval(jsonObject.getString("JOUR"));
             conId = jsonObject.getInt("CONID");
-            statut = jsonObject.getString("STATUT");
+            statut = jsonNullRemoval(jsonObject.getString("STATUT"));
             promotion = jsonObject.getBoolean("PROMOTION");
             livraison = jsonObject.getBoolean("LIVRAISON");
             recouvrement = jsonObject.getBoolean("RECOUVREMENT");
             autre = jsonObject.getBoolean("AUTRE");
-            debut = jsonObject.getString("DEBUT");
-            fin = jsonObject.getString("FIN");
-            lieu = jsonObject.getString("LIEU");
-            autreLieu = jsonObject.getString("AUTRE_LIEU");
-            latitude = jsonObject.getString("LATITUDE");
-            longitude = jsonObject.getString("LONGITUDE");
-            note = jsonObject.getString("NOTE");
-            creePar = jsonObject.getString("CREE_PAR");
-            creele = jsonObject.getString("CREE_LE");
-            modifiePar = jsonObject.getString("MODIFIE_PAR");
-            modifieLe = jsonObject.getString("MODIFIE_LE");
+            debut = jsonNullRemoval(jsonObject.getString("DEBUT"));
+            fin = jsonNullRemoval(jsonObject.getString("FIN"));
+            lieu = jsonNullRemoval(jsonObject.getString("LIEU"));
+            autreLieu = jsonNullRemoval(jsonObject.getString("AUTRE_LIEU"));
+            latitude = jsonNullRemoval(jsonObject.getString("LATITUDE"));
+            longitude = jsonNullRemoval(jsonObject.getString("LONGITUDE"));
+            note = jsonNullRemoval(jsonObject.getString("NOTE"));
+            creePar = jsonNullRemoval(jsonObject.getString("CREE_PAR"));
+            creele = jsonNullRemoval(jsonObject.getString("CREE_LE"));
+            modifiePar = jsonNullRemoval(jsonObject.getString("MODIFIE_PAR"));
+            modifieLe = jsonNullRemoval(jsonObject.getString("MODIFIE_LE"));
             annule = jsonObject.getBoolean("ANNULE");
-            annulePar = jsonObject.getString("ANNULE_PAR");
-            annuleLe = jsonObject.getString("ANNULE_LE");
-            motifAnnulation = jsonObject.getString("MOTIF_ANNULATION");
+            annulePar = jsonNullRemoval(jsonObject.getString("ANNULE_PAR"));
+            annuleLe = jsonNullRemoval(jsonObject.getString("ANNULE_LE"));
+            motifAnnulation = jsonNullRemoval(jsonObject.getString("MOTIF_ANNULATION"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    // remove null from the json String element
+    public String jsonNullRemoval(String jsonElement) {
+        return jsonElement.equals("null") ? null : jsonElement;
     }
 
     @NonNull

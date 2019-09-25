@@ -14,18 +14,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.cbpierre.epromonitor.fragments.ChoiceContactGHFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.ContactFragment;
+import com.example.cbpierre.epromonitor.fragments.DimancheGHFragment;
 import com.example.cbpierre.epromonitor.fragments.EtablissementFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.EtabsRegisterFragment;
+import com.example.cbpierre.epromonitor.fragments.GHFragment;
+import com.example.cbpierre.epromonitor.fragments.JeudiFragment;
+import com.example.cbpierre.epromonitor.fragments.LundiGHFragment;
+import com.example.cbpierre.epromonitor.fragments.MardiGHFragment;
+import com.example.cbpierre.epromonitor.fragments.MercrediGHFragment;
 import com.example.cbpierre.epromonitor.fragments.PaContactFragment;
 import com.example.cbpierre.epromonitor.fragments.PlanActionFragment;
 import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
+import com.example.cbpierre.epromonitor.fragments.RapportFragment;
+import com.example.cbpierre.epromonitor.fragments.SamediFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
 import com.example.cbpierre.epromonitor.fragments.TelechargementFragment;
+import com.example.cbpierre.epromonitor.fragments.VendrediGHFragment;
 
-public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener, EtabsDetailFragment.OnFragmentInteractionListener, EtabsRegisterFragment.OnFragmentInteractionListener,PlanActionFragment.OnFragmentInteractionListener, PaContactFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SignInFragment.OnFragmentInteractionListener, ContactFragment.OnFragmentInteractionListener, ContactDetailFragment.OnContactDetailInteractionListener, PostDetailFragment.OnFragmentInteractionListener, EtabsDetailFragment.OnFragmentInteractionListener, EtabsRegisterFragment.OnFragmentInteractionListener, PlanActionFragment.OnFragmentInteractionListener, PaContactFragment.OnFragmentInteractionListener, LundiGHFragment.OnFragmentInteractionListener, MardiGHFragment.OnFragmentInteractionListener, MercrediGHFragment.OnFragmentInteractionListener, JeudiFragment.OnFragmentInteractionListener, VendrediGHFragment.OnFragmentInteractionListener, SamediFragment.OnFragmentInteractionListener, DimancheGHFragment.OnFragmentInteractionListener, RapportFragment.OnFragmentInteractionListener, ChoiceContactGHFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -101,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
                 fragmentClass = PlanActionFragment.class;
                 break;
             case R.id.nav_gh_fragment:
-                fragmentClass = PostDetailFragment.class;
+                fragmentClass = GHFragment.class;
                 break;
 
             case R.id.nav_user_fragment:

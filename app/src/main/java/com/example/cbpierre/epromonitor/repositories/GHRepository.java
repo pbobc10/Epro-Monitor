@@ -1,18 +1,27 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.GHDao;
 import com.example.cbpierre.epromonitor.models.GH;
 
+import java.util.List;
+
 public class GHRepository {
     private GHDao ghDao;
+    private LiveData<List<GH>> gh;
 
     public GHRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
         ghDao = database.ghDao();
+        gh = ghDao.allGH();
+    }
+
+    public LiveData<List<GH>> getAllGH() {
+        return gh;
     }
 
     public void insertGH(GH gh) {

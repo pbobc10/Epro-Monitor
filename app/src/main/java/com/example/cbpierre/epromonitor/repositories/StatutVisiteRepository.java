@@ -1,18 +1,27 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.StatutVisiteDao;
 import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
 
+import java.util.List;
+
 public class StatutVisiteRepository {
     private StatutVisiteDao statutVisiteDao;
+    private LiveData<List<StatutVisiteRef>> allStatVisite;
 
     public StatutVisiteRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
         statutVisiteDao = database.statutVisiteDao();
+        allStatVisite = statutVisiteDao.getAllStatutVisite();
+    }
+
+    public LiveData<List<StatutVisiteRef>> getAllStatutVisite() {
+        return allStatVisite;
     }
 
     public void insertStatutVisite(StatutVisiteRef statutVisiteRef) {

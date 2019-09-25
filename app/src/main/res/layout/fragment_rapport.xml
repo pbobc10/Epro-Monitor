@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RapportFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:orientation="vertical"
+        android:gravity="center|top">
+
+        <TextView
+            android:id="@+id/txtTitreRapport"
+            android:layout_width="360dp"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:text="Rapport à la date du 9/19/2019"
+            android:textColor="#3079ab"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+        <TextView
+            android:id="@+id/txtRapportJourComplete"
+            android:layout_width="360dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="Rapport Complété"
+            android:textColor="@android:color/holo_red_light"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/txtVisiteADrX"
+            android:layout_width="360dp"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="Visite à Dr SAMBOURG Kéthia (0/3)"
+            android:layout_height="wrap_content"
+            android:textColor="#7d669e"
+            android:layout_marginTop="40dp"/>
+        <Spinner
+            android:id="@+id/spStatutVisite"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etRapport"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="360dp"
+            android:layout_height="360dp"
+            android:background="#ffffff"
+            android:elevation="2dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine|textCapSentences" />
+        <Button
+            android:id="@+id/btnSubmitRapport"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:background="#637a91"
+            android:text="Soumettre"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="36dp"/>
+        <Button
+            android:id="@+id/btnCancelRapport"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:text="Annuler"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"/>
+    </LinearLayout>
+</ScrollView>

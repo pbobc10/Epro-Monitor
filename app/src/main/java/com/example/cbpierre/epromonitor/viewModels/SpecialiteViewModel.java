@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.example.cbpierre.epromonitor.models.Specialite;
+import com.example.cbpierre.epromonitor.models.SpecialiteGH;
 import com.example.cbpierre.epromonitor.repositories.SpecialiteRepository;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class SpecialiteViewModel extends AndroidViewModel {
 
     public LiveData<List<Specialite>> getAllSpecialite() {
         return allSpecialite;
+    }
+
+    public LiveData<List<SpecialiteGH>> getAllSpecialiteGH() {
+        return specialiteRepository.getAllSpecialiteGH();
     }
 
     public void insertSpecialite(Specialite specialite) {

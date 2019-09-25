@@ -1,19 +1,37 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.ContactVisiteDao;
+import com.example.cbpierre.epromonitor.models.ChoiceContactGH;
 import com.example.cbpierre.epromonitor.models.ContactVisite;
+
+import java.util.List;
 
 public class ContactVisiteRepository {
     private ContactVisiteDao contactVisiteDao;
+    // private LiveData<List<ChoiceContactGH>> allChoiceContactGh;
 
     public ContactVisiteRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
         contactVisiteDao = database.contactVisiteDao();
     }
+
+    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite) {
+        return contactVisiteDao.allChoiceContactGH(specialite);
+    }
+
+    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite, String commnune) {
+        return contactVisiteDao.allChoiceContactGH(specialite, commnune);
+    }
+
+    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite, String commnune, String localite) {
+        return contactVisiteDao.allChoiceContactGH(specialite, commnune, localite);
+    }
+
 
     public void insetContactVisite(ContactVisite contactVisite) {
         new InsertContactVisite(contactVisiteDao).execute(contactVisite);

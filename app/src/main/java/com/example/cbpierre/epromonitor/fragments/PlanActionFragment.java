@@ -125,22 +125,21 @@ public class PlanActionFragment extends Fragment {
     public void populatePa(PlanAction planAction) {
         txtCapitalVisites.setText(planAction.getCapVisite().toString());
         txtTotalVisites.setText(planAction.getTotalVisite().toString());
-        txtDateDebut.setText(date(planAction.getDebut()).toString());
-        txtDateFin.setText(date(planAction.getFin()).toString());
+        txtDateDebut.setText(date(planAction.getDebut()));
+        txtDateFin.setText(date(planAction.getFin()));
         Log.d("--date", date("2019-09-27T00:00:00").toString());
     }
 
-    public Date date(String x) {
+    public String date(String x) {
         //2019-09-27T00:00:00
         Date dat = null;
-        x = x.substring(1, 10);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.FRENCH);
         try {
             dat = simpleDateFormat.parse(x);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return dat;
+        return simpleDateFormat.format(dat);
     }
 
     public void replaceFragment(Fragment fragment) {

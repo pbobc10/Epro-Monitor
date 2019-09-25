@@ -28,11 +28,17 @@ import com.example.cbpierre.epromonitor.AppConfig;
 import com.example.cbpierre.epromonitor.AppVolleySingleton;
 import com.example.cbpierre.epromonitor.CustomArrayRequest;
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
+import com.example.cbpierre.epromonitor.models.CommuneLocaliteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
 import com.example.cbpierre.epromonitor.models.ContactEtablissement;
 import com.example.cbpierre.epromonitor.models.ContactVisite;
 import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.models.Force;
+import com.example.cbpierre.epromonitor.models.GH;
+import com.example.cbpierre.epromonitor.models.GHJour;
+import com.example.cbpierre.epromonitor.models.GHJourContact;
+import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.JoinNewEtabNewContact;
 import com.example.cbpierre.epromonitor.models.Nature;
 import com.example.cbpierre.epromonitor.models.OldEtablissement;
@@ -44,15 +50,23 @@ import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.SendNewContactEtabs;
 import com.example.cbpierre.epromonitor.models.Specialite;
+import com.example.cbpierre.epromonitor.models.StatutJourRef;
+import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
 import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 import com.example.cbpierre.epromonitor.repositories.ContactRepository;
 import com.example.cbpierre.epromonitor.repositories.EtablissementRepository;
+import com.example.cbpierre.epromonitor.viewModels.AcceptabiliteViewModel;
+import com.example.cbpierre.epromonitor.viewModels.CommuneLocaliteContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactVisiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ForceViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHJourContactProduitViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHJourViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NatureViewModel;
 import com.example.cbpierre.epromonitor.viewModels.NewContactEtabViewModel;
 import com.example.cbpierre.epromonitor.viewModels.PaContactProduitViewModel;
@@ -62,12 +76,15 @@ import com.example.cbpierre.epromonitor.viewModels.PostViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ProduitViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SecteurViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
+import com.example.cbpierre.epromonitor.viewModels.StatutJourViewModel;
+import com.example.cbpierre.epromonitor.viewModels.StatutVisiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.TitreViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ZoneViewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -96,11 +113,19 @@ public class TelechargementFragment extends Fragment {
     private ProduitViewModel produitViewModel;
     private PostViewModel postViewModel;
     private ContactVisiteViewModel contactVisiteViewModel;
+    private GHViewModel ghViewModel;
+    private GHJourViewModel ghJourViewModel;
+    private GHJourContactViewModel ghJourContactViewModel;
+    private GHJourContactProduitViewModel ghJourContactProduitViewModel;
+    private StatutJourViewModel statutJourViewModel;
+    private StatutVisiteViewModel statutVisiteViewModel;
+    private AcceptabiliteViewModel acceptabiliteViewModel;
+    private CommuneLocaliteContactViewModel communeLocaliteContactViewModel;
 
     private ArrayList<OldEtablissement> oldEtabs;
     private ArrayList<JoinNewEtabNewContact> newEtab;
 
-    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement, btnDownloadPaData;
+    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement, btnDownloadPaData, btnDownloadGHData, btnSyncGHData;
     private List<SendNewContactEtabs> sendContactEtabList;
     private SendNewContactEtabs sendNewContactEtabs;
     private ProgressDialog pDialog;
@@ -134,6 +159,14 @@ public class TelechargementFragment extends Fragment {
         paContactProduitViewModel = ViewModelProviders.of(this).get(PaContactProduitViewModel.class);
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
         contactVisiteViewModel = ViewModelProviders.of(this).get(ContactVisiteViewModel.class);
+        ghViewModel = ViewModelProviders.of(this).get(GHViewModel.class);
+        ghJourViewModel = ViewModelProviders.of(this).get(GHJourViewModel.class);
+        ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
+        ghJourContactProduitViewModel = ViewModelProviders.of(this).get(GHJourContactProduitViewModel.class);
+        statutJourViewModel = ViewModelProviders.of(this).get(StatutJourViewModel.class);
+        statutVisiteViewModel = ViewModelProviders.of(this).get(StatutVisiteViewModel.class);
+        acceptabiliteViewModel = ViewModelProviders.of(this).get(AcceptabiliteViewModel.class);
+        communeLocaliteContactViewModel = ViewModelProviders.of(this).get(CommuneLocaliteContactViewModel.class);
         //Date
         String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
@@ -160,6 +193,8 @@ public class TelechargementFragment extends Fragment {
         btnSyncContact = view.findViewById(R.id.btnSyncContactData);
 
         btnDownloadPaData = view.findViewById(R.id.btnDownloadPAData);
+        btnDownloadGHData = view.findViewById(R.id.btnDownloadGHData);
+        btnSyncGHData = view.findViewById(R.id.btnSyncGHData);
 
         postViewModel.getAllPostLOgin().observe(this, new Observer<List<PostLogin>>() {
             @Override
@@ -176,9 +211,9 @@ public class TelechargementFragment extends Fragment {
             public void onClick(View v) {
 
                 //set title of the dialog
-                pDialog.setTitle("Obtenir les données de contact du serveur  ...");
+                pDialog.setTitle("Téléchargement des Contacts ...");
                 //set message of the dialog
-                pDialog.setMessage("S'il vous plaît, attendez...");
+                pDialog.setMessage("S'il vous plaît, attendez ...");
                 //show dialog
                 showDialog();
 
@@ -254,6 +289,26 @@ public class TelechargementFragment extends Fragment {
         });
 
         /**
+         * Gains Hebdomadaires
+         */
+        btnDownloadGHData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set title of the dialog
+                pDialog.setTitle("Téléchargement des données du GH ...");
+                //set message of the dialog
+                pDialog.setMessage("S'il vous plaît, attendez ...");
+                //show dialog
+                showDialog();
+                ghRequest(AppConfig.URL_GH);
+                statutJourRequest(AppConfig.URL_STATUT_JOUR);
+                statutVisiteRequest(AppConfig.URL_STATUT_VISITE);
+                //  acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
+                communeLocaliteContactRequest(AppConfig.URL_COMMUNE_LOCALITE_CONTACT);
+            }
+        });
+
+        /**
          * Async Response
          */
         fromAsyncReposeCreateJsonString();
@@ -275,7 +330,7 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -298,7 +353,7 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -321,7 +376,7 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -344,7 +399,7 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -367,7 +422,7 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -390,7 +445,7 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -412,14 +467,14 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -438,14 +493,14 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -473,14 +528,14 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
@@ -499,14 +554,14 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
@@ -525,19 +580,171 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
             }
         });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
 
+    /**
+     * All GH
+     */
+    public void ghRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                //delete
+                ghViewModel.deleteGH();
+                ghJourViewModel.deleteGHJour();
+                ghJourContactViewModel.deleteGHJourContact();
+                ghJourContactProduitViewModel.deleteGHJourContactProduit();
+
+                //download
+                for (GH gh : GH.fromJSONGH(response)) {
+                    ghViewModel.insertGH(gh);
+                }
+
+                for (GHJour ghJour : GH.fromJSONGhJour(response)) {
+                    ghJourViewModel.insertGHJour(ghJour);
+                }
+                try {
+                    for (GHJourContact ghJourContact : GH.fromJSONGHJourContact(response)) {
+                        ghJourContactViewModel.insertGHJourContact(ghJourContact);
+                    }
+
+                    for (GHJourContactProduit ghJourContactProduit : GH.fromJSONGHJourContactProduit(response)) {
+                        ghJourContactProduitViewModel.insertGHJourContactProduit(ghJourContactProduit);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement du GH terminé", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement du GH annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void statutJourRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                //delete
+                statutJourViewModel.deleteStatutJour();
+
+                //download
+                for (StatutJourRef statutJourRef : StatutJourRef.fromJSON(response)) {
+                    statutJourViewModel.insertStatutJour(statutJourRef);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement SJ terminé", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement SJ annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void statutVisiteRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                //delete
+                statutVisiteViewModel.deleteStatutVisite();
+
+                //download
+                for (StatutVisiteRef statutVisiteRef : StatutVisiteRef.fromJSON(response)) {
+                    statutVisiteViewModel.insertStatutVisite(statutVisiteRef);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement SV terminé", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement SV annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void acceptabiliteRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                //delete
+                acceptabiliteViewModel.deleteAcceptabilite();
+
+                //download
+                for (AcceptabiliteRef acceptabiliteRef : AcceptabiliteRef.fromJSON(response)) {
+                    acceptabiliteViewModel.incertAcceptabilite(acceptabiliteRef);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    public void communeLocaliteContactRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                //delete
+                communeLocaliteContactViewModel.deleteCommuneLocaliteContact();
+
+                //download
+                for (CommuneLocaliteContact communeLocaliteContact : CommuneLocaliteContact.fromJSON(response)) {
+                    communeLocaliteContactViewModel.insertCommuneLocaliteContact(communeLocaliteContact);
+                }
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement CLC terminé", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement CLC annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void showDialog() {
         if (!pDialog.isShowing()) {
             pDialog.show();
@@ -673,12 +880,12 @@ public class TelechargementFragment extends Fragment {
                             etablissementViewModel.deleteNewEtabsAfterSync();
                             contactViewModel.deleteNewcontactAfterSyncTask();
                             hideDialog();
-                            Toast.makeText(getContext(), "Les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Les données s'enregistrent avec succès sur le serveur", Toast.LENGTH_SHORT).show();
                             Log.d("volley ok", response.replace("\"", ""));
                             Log.d("volley ok", response);
                         } else {
                             hideDialog();
-                            Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_SHORT).show();
                             Log.d("volley fail", response);
                             Log.d("volley fail", response.replace("\"", ""));
                         }
@@ -707,10 +914,10 @@ public class TelechargementFragment extends Fragment {
                         } else if (error instanceof TimeoutError) {
                             //dismiss dialog
                             hideDialog();
-                            Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_SHORT).show();
                         } else {
                             hideDialog();
-                            Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_SHORT).show();
                             Log.e("Volley Error", error.toString());
                         }
                     }
@@ -730,10 +937,6 @@ public class TelechargementFragment extends Fragment {
                 }
             }
         };
-        AppVolleySingleton.getInstance(
-
-                getContext()).
-
-                addToRequestQueue(stringRequest);
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 }

@@ -6,8 +6,11 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 @Entity(tableName = "acceptabilite_ref")
 public class AcceptabiliteRef {
@@ -24,14 +27,34 @@ public class AcceptabiliteRef {
     @ColumnInfo(name = "rang")
     private String rang;
 
+    public AcceptabiliteRef() {
+    }
+
     public AcceptabiliteRef(JSONObject jsonObject) {
         try {
-            code = jsonObject.getString("CODE");
-            nom = jsonObject.getString("NOM");
-            rang = jsonObject.getString("RANG");
+            code = jsonNullRemoval(jsonObject.getString("CODE"));
+            nom = jsonNullRemoval(jsonObject.getString("NOM"));
+            rang = jsonNullRemoval(jsonObject.getString("RANG"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<AcceptabiliteRef> fromJSON(JSONArray jsonArray) {
+        ArrayList<AcceptabiliteRef> acceptabiliteRefs = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                acceptabiliteRefs.add(new AcceptabiliteRef(jsonArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return acceptabiliteRefs;
+    }
+
+    // remove null from the json String element
+    public String jsonNullRemoval(String jsonElement) {
+        return jsonElement.equals("null") ? null : jsonElement;
     }
 
     @NonNull

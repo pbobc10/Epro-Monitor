@@ -6,8 +6,11 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 @Entity(tableName = "statut_visite_ref")
 public class StatutVisiteRef {
@@ -24,14 +27,34 @@ public class StatutVisiteRef {
     @ColumnInfo(name = "rang")
     private String rang;
 
+    public StatutVisiteRef() {
+    }
+
     public StatutVisiteRef(JSONObject jsonObject) {
         try {
-            code = jsonObject.getString("CODE");
-            nom = jsonObject.getString("NOM");
-            rang = jsonObject.getString("RANG");
+            code = jsonNullRemoval(jsonObject.getString("CODE"));
+            nom = jsonNullRemoval(jsonObject.getString("NOM"));
+            rang = jsonNullRemoval(jsonObject.getString("RANG"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<StatutVisiteRef> fromJSON(JSONArray jsonArray) {
+        ArrayList<StatutVisiteRef> statutVisiteRefs = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                statutVisiteRefs.add(new StatutVisiteRef(jsonArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return statutVisiteRefs;
+    }
+
+    // remove null from the json String element
+    public String jsonNullRemoval(String jsonElement) {
+        return jsonElement.equals("null") ? null : jsonElement;
     }
 
     @NonNull

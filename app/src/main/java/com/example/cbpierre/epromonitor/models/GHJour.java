@@ -3,6 +3,7 @@ package com.example.cbpierre.epromonitor.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +38,11 @@ public class GHJour {
     @ColumnInfo(name = "modifie_le")
     private String modifieLe;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "transfere_par")
     private String transferePar;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "transfere_le")
     private String transfereLe;
 
@@ -49,31 +50,31 @@ public class GHJour {
     @ColumnInfo(name = "rapport_complete")
     private Boolean rapportComplete;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "complete_par")
     private String completePar;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "complete_le")
     private String completeLe;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "annule")
     private Boolean annule;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "annule_par")
     private String annulePar;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "annule_le")
     private String annuleLe;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "motif_annulation")
     private String motifAnnulation;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "row_version")
     private String rowVersion;
 
@@ -81,29 +82,37 @@ public class GHJour {
     @ColumnInfo(name = "int_row_version")
     private Integer intRowVersion;
 
+    public GHJour() {
+    }
+
     public GHJour(JSONObject jsonObject) {
         try {
             ghId = jsonObject.getInt("GHID");
-            jour = jsonObject.getString("JOUR");
-            statut = jsonObject.getString("STATUT");
-            creePar = jsonObject.getString("CREE_PAR");
-            creeLe = jsonObject.getString("CREE_LE");
-            modifiePar = jsonObject.getString("MODIFIE_PAR");
-            modifieLe = jsonObject.getString("MODIFIE_LE");
-            transferePar = jsonObject.getString("TRANSFERE_PAR");
-            transfereLe = jsonObject.getString("TRANSFERE_LE");
+            jour = jsonNullRemoval(jsonObject.getString("JOUR"));
+            statut = jsonNullRemoval(jsonObject.getString("STATUT"));
+            creePar = jsonNullRemoval(jsonObject.getString("CREE_PAR"));
+            creeLe = jsonNullRemoval(jsonObject.getString("CREE_LE"));
+            modifiePar = jsonNullRemoval(jsonObject.getString("MODIFIE_PAR"));
+            modifieLe = jsonNullRemoval(jsonObject.getString("MODIFIE_LE"));
+            transferePar = jsonNullRemoval(jsonObject.getString("TRANSFERE_PAR"));
+            transfereLe = jsonNullRemoval(jsonObject.getString("TRANSFERE_LE"));
             rapportComplete = jsonObject.getBoolean("RAPPORT_COMPLETE");
-            completePar = jsonObject.getString("COMPLETE_PAR");
-            completeLe = jsonObject.getString("COMPLETE_LE");
+            completePar = jsonNullRemoval(jsonObject.getString("COMPLETE_PAR"));
+            completeLe = jsonNullRemoval(jsonObject.getString("COMPLETE_LE"));
             annule = jsonObject.getBoolean("ANNULE");
-            annulePar = jsonObject.getString("ANNULE_PAR");
-            annuleLe = jsonObject.getString("ANNULE_LE");
-            motifAnnulation = jsonObject.getString("MOTIF_ANNULATION");
-            rowVersion = jsonObject.getString("ROW_VERSION");
+            annulePar = jsonNullRemoval(jsonObject.getString("ANNULE_PAR"));
+            annuleLe = jsonNullRemoval(jsonObject.getString("ANNULE_LE"));
+            motifAnnulation = jsonNullRemoval(jsonObject.getString("MOTIF_ANNULATION"));
+            rowVersion = jsonNullRemoval(jsonObject.getString("ROW_VERSION"));
             intRowVersion = jsonObject.getInt("INTROWVERSION");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    // remove null from the json String element
+    public String jsonNullRemoval(String jsonElement) {
+        return jsonElement.equals("null") ? null : jsonElement;
     }
 
     @NonNull

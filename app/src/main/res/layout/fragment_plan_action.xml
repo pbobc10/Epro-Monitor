@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="36dp"
-                    android:text="Date Debut"
+                    android:text="Date Début"
                     android:textSize="18sp"
                     android:textStyle="italic|normal" />
 

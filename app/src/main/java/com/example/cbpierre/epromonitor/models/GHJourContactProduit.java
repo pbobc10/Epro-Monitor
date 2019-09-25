@@ -34,18 +34,26 @@ public class GHJourContactProduit {
     @ColumnInfo(name = "note")
     private String note;
 
+    public GHJourContactProduit() {
+    }
+
     public GHJourContactProduit(JSONObject jsonObject) {
         try {
             ghId = jsonObject.getInt("GHID");
-            jour = jsonObject.getString("JOUR");
+            jour = jsonNullRemoval(jsonObject.getString("JOUR"));
             conId = jsonObject.getInt("CONID");
             produitId = jsonObject.getInt("PRODUIT_ID");
-            accept = jsonObject.getString("ACCEPT");
-            note = jsonObject.getString("NOTE");
+            accept = jsonNullRemoval(jsonObject.getString("ACCEPT"));
+            note = jsonNullRemoval(jsonObject.getString("NOTE"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+    }
+
+    // remove null from the json String element
+    public String jsonNullRemoval(String jsonElement) {
+        return jsonElement.equals("null") ? null : jsonElement;
     }
 
     @NonNull
