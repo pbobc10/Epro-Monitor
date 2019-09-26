@@ -27,6 +27,7 @@ import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareGHId;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
+import com.example.cbpierre.epromonitor.viewModels.ShareJourInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +46,7 @@ public class LundiGHFragment extends Fragment {
     private GHJourContactViewModel ghJourContactViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
     private ShareGHId shareGHId;
+    private ShareJourInfo shareJourInfo;
     private TextView jour, statutJour, rapportComplete;
     private RecyclerView rvContactGH;
     private JoinContactGhSVAdapter joinContactGhSVAdapter;
@@ -62,6 +64,7 @@ public class LundiGHFragment extends Fragment {
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
         shareGHId = ViewModelProviders.of(getActivity()).get(ShareGHId.class);
         shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
+        shareJourInfo = ViewModelProviders.of(getActivity()).get(ShareJourInfo.class);
     }
 
     @Override
@@ -74,7 +77,7 @@ public class LundiGHFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton fabChoiceContactGH=view.findViewById(R.id.fabChoiceContactGH);
+        FloatingActionButton fabChoiceContactGH = view.findViewById(R.id.fabChoiceContactGH);
         rvContactGH = view.findViewById(R.id.rvJourContact);
         jour = view.findViewById(R.id.txtJour);
         statutJour = view.findViewById(R.id.txtStatutJour);
@@ -107,16 +110,12 @@ public class LundiGHFragment extends Fragment {
                     if (joinGHJourStatutRefs.get(0).getRapport_complete())
                         rapportComplete.setVisibility(View.VISIBLE);
                     ghJourContactViewModel.setAllJourContactMutable(joinGHJourStatutRefs.get(0).getJour());
+                    shareJourInfo.setGhJourInfo(joinGHJourStatutRefs.get(0));
 
                 }
             }
         });
-        ghJourContactViewModel.getAllJourContact().observe(this, new Observer<List<JoinContactGhSV>>() {
-            @Override
-            public void onChanged(@Nullable List<JoinContactGhSV> joinContactGhSVS) {
 
-            }
-        });
 
         //delete gh_jour_contact
         joinContactGhSVAdapter.setOnGHJourContactListener(new JoinContactGhSVAdapter.OnGHJourContactListener() {

@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:padding="8dp"
+        android:background="#53bbb4"
         android:orientation="vertical"
-        android:background="#53bbb4">
+        android:padding="8dp">
 
         <Spinner
             android:id="@+id/spSpecialiteGH"
@@ -31,6 +31,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnSoumettre"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="4dp"
+            android:background="#7d669e"
+            android:text="Soumettre" />
+
+        <Button
+            android:id="@+id/btnAnnuler"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:textColor="@android:color/white"
+            android:background="#e15258"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="Annuler" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

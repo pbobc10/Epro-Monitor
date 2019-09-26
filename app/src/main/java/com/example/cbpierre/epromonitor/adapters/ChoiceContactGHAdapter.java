@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.cbpierre.epromonitor.R;
@@ -34,9 +35,8 @@ public class ChoiceContactGHAdapter extends RecyclerView.Adapter<ChoiceContactGH
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ChoiceContactGH contactGH = choiceContactGHS.get(i);
         viewHolder.nomContact.setText(contactGH.getNom_ratio());
-        if (viewHolder.checkBox.isChecked())
-            if (choiceListener != null)
-                choiceListener.onChoiceContact(contactGH.getCon_id());
+        viewHolder.checkBox.setChecked(false);
+
     }
 
     @Override
@@ -57,14 +57,31 @@ public class ChoiceContactGHAdapter extends RecyclerView.Adapter<ChoiceContactGH
             super(itemView);
             nomContact = itemView.findViewById(R.id.txtNomContactGHChoice);
             checkBox = itemView.findViewById(R.id.cbSelectedGHChoice);
+           /* checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (choiceListener != null)
+                        choiceListener.onChoiceContact(choiceContactGHS.get(getAdapterPosition()).getCon_id(), isChecked);
+                }
+            });*/
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckBox cb=(CheckBox)v;
+                    if (cb.isChecked())
+                        cb.setSelected(false);
+                    else
+                        cb.setSelected(true);
+                }
+            });
         }
     }
 
     public interface OnChoiceContactItemListener {
-        void onChoiceContact(int conId);
+        void onChoiceContact(int conId, boolean isChecked);
     }
 
-    public void setChoiceListener(OnChoiceContactItemListener choiceListener) {
+    public void setOnChoiceContactItemListener(OnChoiceContactItemListener choiceListener) {
         this.choiceListener = choiceListener;
     }
 }

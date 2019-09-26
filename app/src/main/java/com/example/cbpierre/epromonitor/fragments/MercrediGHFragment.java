@@ -112,12 +112,7 @@ public class MercrediGHFragment extends Fragment {
             }
         });
 
-        ghJourContactViewModel.getAllJourContact().observe(this, new Observer<List<JoinContactGhSV>>() {
-            @Override
-            public void onChanged(@Nullable List<JoinContactGhSV> joinContactGhSVS) {
 
-            }
-        });
         //delete gh_jour_contact
         joinContactGhSVAdapter.setOnGHJourContactListener(new JoinContactGhSVAdapter.OnGHJourContactListener() {
             @Override

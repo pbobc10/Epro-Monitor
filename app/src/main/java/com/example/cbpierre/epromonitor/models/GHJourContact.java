@@ -105,6 +105,32 @@ public class GHJourContact {
     public GHJourContact() {
     }
 
+    public GHJourContact(@NonNull Integer ghId, @NonNull String jour, @NonNull Integer conId, @NonNull String statut, @NonNull Boolean promotion, @NonNull Boolean livraison, @NonNull Boolean recouvrement, @NonNull Boolean autre, @Nullable String debut, @Nullable String fin, @Nullable String lieu, @Nullable String autreLieu, @Nullable String latitude, @Nullable String longitude, @Nullable String note, @NonNull String creePar, @NonNull String creele, @NonNull String modifiePar, @NonNull String modifieLe, @NonNull Boolean annule, @Nullable String annulePar, @Nullable String annuleLe, @Nullable String motifAnnulation) {
+        this.ghId = ghId;
+        this.jour = jour;
+        this.conId = conId;
+        this.statut = statut;
+        this.promotion = promotion;
+        this.livraison = livraison;
+        this.recouvrement = recouvrement;
+        this.autre = autre;
+        this.debut = debut;
+        this.fin = fin;
+        this.lieu = lieu;
+        this.autreLieu = autreLieu;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.note = note;
+        this.creePar = creePar;
+        this.creele = creele;
+        this.modifiePar = modifiePar;
+        this.modifieLe = modifieLe;
+        this.annule = annule;
+        this.annulePar = annulePar;
+        this.annuleLe = annuleLe;
+        this.motifAnnulation = motifAnnulation;
+    }
+
     public GHJourContact(JSONObject jsonObject) {
         try {
             ghId = jsonObject.getInt("GHID");
