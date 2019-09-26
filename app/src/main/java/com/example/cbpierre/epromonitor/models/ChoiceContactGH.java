@@ -3,6 +3,7 @@ package com.example.cbpierre.epromonitor.models;
 public class ChoiceContactGH {
     private String nom_ratio;
     private Integer con_id;
+    private boolean isChecked;
 
     public ChoiceContactGH() {
     }
@@ -21,5 +22,13 @@ public class ChoiceContactGH {
 
     public void setCon_id(Integer con_id) {
         this.con_id = con_id;
+    }
+
+    public boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

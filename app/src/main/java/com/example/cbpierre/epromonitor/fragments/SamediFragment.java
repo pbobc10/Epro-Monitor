@@ -27,6 +27,7 @@ import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareGHId;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
+import com.example.cbpierre.epromonitor.viewModels.ShareJourInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,9 +47,11 @@ public class SamediFragment extends Fragment {
     private GHJourContactViewModel ghJourContactViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
     private ShareGHId shareGHId;
+    private ShareJourInfo shareJourInfo;
     private TextView jour, statutJour, rapportComplete;
     private RecyclerView rvContactGH;
     private JoinContactGhSVAdapter joinContactGhSVAdapter;
+    private JoinGHJourStatutRef day;
 
     private SamediFragment.OnFragmentInteractionListener mListener;
 
@@ -63,6 +66,7 @@ public class SamediFragment extends Fragment {
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
         shareGHId = ViewModelProviders.of(getActivity()).get(ShareGHId.class);
         shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
+        shareJourInfo = ViewModelProviders.of(getActivity()).get(ShareJourInfo.class);
     }
 
     @Override
@@ -103,11 +107,13 @@ public class SamediFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<JoinGHJourStatutRef> joinGHJourStatutRefs) {
                 if (joinGHJourStatutRefs != null) {
-                    jour.setText(date(joinGHJourStatutRefs.get(5).getJour()));
-                    statutJour.setText(joinGHJourStatutRefs.get(5).getNom());
-                    if (joinGHJourStatutRefs.get(5).getRapport_complete())
+                    day = joinGHJourStatutRefs.get(5);
+                    jour.setText(date(day.getJour()));
+                    statutJour.setText(day.getNom());
+                    if (day.getRapport_complete())
                         rapportComplete.setVisibility(View.VISIBLE);
-                    ghJourContactViewModel.setAllJourContactMutable(joinGHJourStatutRefs.get(5).getJour());
+                    ghJourContactViewModel.setAllJourContactMutable(day.getJour());
+                    shareJourInfo.setGhJourInfo(day);
                 }
             }
         });
@@ -134,6 +140,7 @@ public class SamediFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 replaceFragment(new ChoiceContactGHFragment());
+                shareJourInfo.setGhJourInfo(day);
             }
         });
     }

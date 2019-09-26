@@ -33,9 +33,21 @@ public class ChoiceContactGHAdapter extends RecyclerView.Adapter<ChoiceContactGH
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        ChoiceContactGH contactGH = choiceContactGHS.get(i);
+        final ChoiceContactGH contactGH = choiceContactGHS.get(i);
         viewHolder.nomContact.setText(contactGH.getNom_ratio());
-        viewHolder.checkBox.setChecked(false);
+
+        //in some cases, it will prevent unwanted situations
+        viewHolder.checkBox.setOnCheckedChangeListener(null);
+        //if true, your checkbox will be selected, else unselected
+        viewHolder.checkBox.setChecked(contactGH.getChecked());
+        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                contactGH.setChecked(isChecked);
+                if (choiceListener != null)
+                    choiceListener.onChoiceContact(contactGH.getCon_id(), isChecked);
+            }
+        });
 
     }
 
@@ -64,16 +76,25 @@ public class ChoiceContactGHAdapter extends RecyclerView.Adapter<ChoiceContactGH
                         choiceListener.onChoiceContact(choiceContactGHS.get(getAdapterPosition()).getCon_id(), isChecked);
                 }
             });*/
-            checkBox.setOnClickListener(new View.OnClickListener() {
+          /*  checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CheckBox cb=(CheckBox)v;
+                   /* CheckBox cb=(CheckBox)v;
                     if (cb.isChecked())
                         cb.setSelected(false);
                     else
                         cb.setSelected(true);
+                    int adapterPosition = getAdapterPosition();
+                    if (choiceContactGHS.get(adapterPosition).getChecked()) {
+                        checkBox.setSelected(false);
+                        choiceContactGHS.get(adapterPosition).setChecked(false);
+                    } else {
+                        checkBox.setSelected(true);
+                        choiceContactGHS.get(adapterPosition).setChecked(true);
+                    }
                 }
             });
+*/
         }
     }
 

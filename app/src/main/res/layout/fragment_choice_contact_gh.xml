@@ -41,7 +41,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btnSoumettre"
+            android:id="@+id/btnSoumettreGH"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_weight="1"
@@ -51,7 +51,7 @@
             android:text="Soumettre" />
 
         <Button
-            android:id="@+id/btnAnnuler"
+            android:id="@+id/btnAnnulerGH"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:textColor="@android:color/white"

@@ -50,6 +50,7 @@ public class LundiGHFragment extends Fragment {
     private TextView jour, statutJour, rapportComplete;
     private RecyclerView rvContactGH;
     private JoinContactGhSVAdapter joinContactGhSVAdapter;
+    private JoinGHJourStatutRef day;
 
     private OnFragmentInteractionListener mListener;
 
@@ -105,13 +106,12 @@ public class LundiGHFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<JoinGHJourStatutRef> joinGHJourStatutRefs) {
                 if (joinGHJourStatutRefs != null) {
-                    jour.setText(date(joinGHJourStatutRefs.get(0).getJour()));
-                    statutJour.setText(joinGHJourStatutRefs.get(0).getNom());
-                    if (joinGHJourStatutRefs.get(0).getRapport_complete())
+                    day = joinGHJourStatutRefs.get(0);
+                    jour.setText(date(day.getJour()));
+                    statutJour.setText(day.getNom());
+                    if (day.getRapport_complete())
                         rapportComplete.setVisibility(View.VISIBLE);
-                    ghJourContactViewModel.setAllJourContactMutable(joinGHJourStatutRefs.get(0).getJour());
-                    shareJourInfo.setGhJourInfo(joinGHJourStatutRefs.get(0));
-
+                    ghJourContactViewModel.setAllJourContactMutable(day.getJour());
                 }
             }
         });
@@ -138,6 +138,8 @@ public class LundiGHFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 replaceFragment(new ChoiceContactGHFragment());
+                shareJourInfo.setGhJourInfo(day);
+                //Toast.makeText(getContext(), "jour: " + day.getJour(), Toast.LENGTH_LONG).show();
             }
         });
     }

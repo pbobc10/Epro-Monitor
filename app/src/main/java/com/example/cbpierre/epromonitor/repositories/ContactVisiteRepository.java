@@ -20,16 +20,16 @@ public class ContactVisiteRepository {
         contactVisiteDao = database.contactVisiteDao();
     }
 
-    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite) {
-        return contactVisiteDao.allChoiceContactGH(specialite);
+    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite,Integer ghId,String jour) {
+        return contactVisiteDao.allChoiceContactGH(specialite,ghId,jour);
     }
 
-    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite, String commnune) {
-        return contactVisiteDao.allChoiceContactGH(specialite, commnune);
+    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite, String commnune,Integer ghId,String jour) {
+        return contactVisiteDao.allChoiceContactGH(specialite, commnune,ghId,jour);
     }
 
-    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite, String commnune, String localite) {
-        return contactVisiteDao.allChoiceContactGH(specialite, commnune, localite);
+    public LiveData<List<ChoiceContactGH>> getAllChoiceContactGH(String specialite, String commnune, String localite,Integer ghId,String jour) {
+        return contactVisiteDao.allChoiceContactGH(specialite, commnune, localite,ghId,jour);
     }
 
 

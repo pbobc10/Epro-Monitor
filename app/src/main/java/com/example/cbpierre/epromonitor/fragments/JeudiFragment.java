@@ -27,6 +27,7 @@ import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareGHId;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
+import com.example.cbpierre.epromonitor.viewModels.ShareJourInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,9 +47,11 @@ public class JeudiFragment extends Fragment {
     private GHJourContactViewModel ghJourContactViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
     private ShareGHId shareGHId;
+    private ShareJourInfo shareJourInfo;
     private TextView jour, statutJour, rapportComplete;
     private RecyclerView rvContactGH;
     private JoinContactGhSVAdapter joinContactGhSVAdapter;
+    private JoinGHJourStatutRef day;
 
     private JeudiFragment.OnFragmentInteractionListener mListener;
 
@@ -62,7 +65,8 @@ public class JeudiFragment extends Fragment {
         ghJourViewModel = ViewModelProviders.of(this).get(GHJourViewModel.class);
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
         shareGHId = ViewModelProviders.of(getActivity()).get(ShareGHId.class);
-        shareJoinContactGhSV=ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
+        shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
+        shareJourInfo = ViewModelProviders.of(getActivity()).get(ShareJourInfo.class);
     }
 
     @Override
@@ -75,7 +79,7 @@ public class JeudiFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton fabChoiceContactGH=view.findViewById(R.id.fabChoiceContactGH);
+        FloatingActionButton fabChoiceContactGH = view.findViewById(R.id.fabChoiceContactGH);
         rvContactGH = view.findViewById(R.id.rvJourContact);
         jour = view.findViewById(R.id.txtJour);
         statutJour = view.findViewById(R.id.txtStatutJour);
@@ -103,11 +107,12 @@ public class JeudiFragment extends Fragment {
             @Override
             public void onChanged(@Nullable List<JoinGHJourStatutRef> joinGHJourStatutRefs) {
                 if (joinGHJourStatutRefs != null) {
-                    jour.setText(date(joinGHJourStatutRefs.get(3).getJour()));
-                    statutJour.setText(joinGHJourStatutRefs.get(3).getNom());
-                    if (joinGHJourStatutRefs.get(3).getRapport_complete())
+                    day = joinGHJourStatutRefs.get(3);
+                    jour.setText(date(day.getJour()));
+                    statutJour.setText(day.getNom());
+                    if (day.getRapport_complete())
                         rapportComplete.setVisibility(View.VISIBLE);
-                    ghJourContactViewModel.setAllJourContactMutable(joinGHJourStatutRefs.get(3).getJour());
+                    ghJourContactViewModel.setAllJourContactMutable(day.getJour());
                 }
             }
         });
@@ -134,14 +139,15 @@ public class JeudiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 replaceFragment(new ChoiceContactGHFragment());
+                shareJourInfo.setGhJourInfo(day);
             }
         });
     }
 
     public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.replace(R.id.flContent,fragment);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flContent, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
