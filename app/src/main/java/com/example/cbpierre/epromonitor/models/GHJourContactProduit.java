@@ -5,31 +5,46 @@ import android.arch.persistence.room.Entity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 @Entity(tableName = "gh_jour_contact_produit", primaryKeys = {"gh_id", "jour", "con_id", "produit_id"})
 public class GHJourContactProduit {
+    @Expose
+    @SerializedName("GHID")
     @NonNull
     @ColumnInfo(name = "gh_id")
     private Integer ghId;
 
+    @Expose
+    @SerializedName("JOUR")
     @NonNull
     @ColumnInfo(name = "jour")
     private String jour;
 
+    @Expose
+    @SerializedName("CONID")
     @NonNull
     @ColumnInfo(name = "con_id")
     private Integer conId;
 
+    @Expose
+    @SerializedName("PRODUIT_ID")
     @NonNull
     @ColumnInfo(name = "produit_id")
     private Integer produitId;
 
+    @Expose
+    @SerializedName("ACCEPT")
     @Nullable
     @ColumnInfo(name = "accept")
     private String accept;
 
+    @Expose
+    @SerializedName("NOTE")
     @Nullable
     @ColumnInfo(name = "note")
     private String note;

@@ -13,6 +13,7 @@ import java.util.List;
 
 public class GHJourContactRepository {
     private GHJourContactDao ghJourContactDao;
+    private static OnGHJourContactListeListener onGHJourContactListeListener;
 
     public GHJourContactRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
@@ -37,6 +38,10 @@ public class GHJourContactRepository {
 
     public void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, String ghId, String conId) {
         new UpdateJourContactTask(ghJourContactDao).execute(statut, note, creePar, creeLe, modifiePar, modifieLe, jour, ghId, conId);
+    }
+
+    public void getGHJourContactList() {
+        new GHJourContactListTask(ghJourContactDao).execute();
     }
 
     /**
@@ -97,5 +102,34 @@ public class GHJourContactRepository {
             ghJourContactDao.updateGHJourContact(strings[0], strings[1], strings[2], strings[3], strings[4], strings[5], strings[6], Integer.parseInt(strings[7]), Integer.parseInt(strings[8]));
             return null;
         }
+    }
+
+    private static class GHJourContactListTask extends AsyncTask<Void, Void, List<GHJourContact>> {
+        private GHJourContactDao ghJourContactDao;
+
+        public GHJourContactListTask(GHJourContactDao ghJourContactDao) {
+            this.ghJourContactDao = ghJourContactDao;
+        }
+
+        @Override
+        protected List<GHJourContact> doInBackground(Void... voids) {
+            return ghJourContactDao.ghJourContactList();
+        }
+
+        @Override
+        protected void onPostExecute(List<GHJourContact> ghJourContacts) {
+            super.onPostExecute(ghJourContacts);
+            if (onGHJourContactListeListener != null)
+                onGHJourContactListeListener.onGHJourContact(ghJourContacts);
+
+        }
+    }
+
+    public interface OnGHJourContactListeListener {
+        void onGHJourContact(List<GHJourContact> ghJourContactList);
+    }
+
+    public void setOnGHJourContactListeListener(OnGHJourContactListeListener onGHJourContactListeListener) {
+        GHJourContactRepository.onGHJourContactListeListener = onGHJourContactListeListener;
     }
 }

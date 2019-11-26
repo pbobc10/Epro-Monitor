@@ -17,6 +17,7 @@ import java.util.List;
 public class GHJourContactViewModel extends AndroidViewModel {
     private GHJourContactRepository ghJourContactRepository;
     private MutableLiveData<String> allJourContact = new MutableLiveData<>();
+    private GHJourContactRepository.OnGHJourContactListeListener onGHJourContactListeListener;
 
     public GHJourContactViewModel(@NonNull Application application) {
         super(application);
@@ -50,5 +51,14 @@ public class GHJourContactViewModel extends AndroidViewModel {
 
     public void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, String ghId, String conId) {
         ghJourContactRepository.updateGHJourContact(statut, note, creePar, creeLe, modifiePar, modifieLe, jour, ghId, conId);
+    }
+
+    public void getGHJourContactList() {
+        ghJourContactRepository.setOnGHJourContactListeListener(onGHJourContactListeListener);
+        ghJourContactRepository.getGHJourContactList();
+    }
+
+    public void setOnGHJourContactListeListener(GHJourContactRepository.OnGHJourContactListeListener onGHJourContactListeListener) {
+        this.onGHJourContactListeListener = onGHJourContactListeListener;
     }
 }

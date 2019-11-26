@@ -44,6 +44,11 @@ public class GHAdapter extends RecyclerView.Adapter<GHAdapter.GHViewHolder> {
             GH gh = ghs.get(i);
             ghViewHolder.dateDebut.setText(date(gh.getDebut()));
             ghViewHolder.dateFin.setText(date(gh.getFin()));
+            ghViewHolder.naturePa.setText(gh.getStatutTemporel());
+
+            if (gh.getGhComplete())
+                ghViewHolder.statutGh.setVisibility(View.VISIBLE);
+
             rnd = new Random();
             ghViewHolder.linearLayout.setBackgroundColor(Color.parseColor(mColors[rnd.nextInt(mColors.length)]));
         }
@@ -60,14 +65,17 @@ public class GHAdapter extends RecyclerView.Adapter<GHAdapter.GHViewHolder> {
     }
 
     public class GHViewHolder extends RecyclerView.ViewHolder {
-        private final TextView dateDebut, dateFin;
+        private final TextView dateDebut, dateFin, naturePa, statutGh;
         private final LinearLayout linearLayout;
 
         public GHViewHolder(@NonNull View itemView) {
             super(itemView);
             dateDebut = itemView.findViewById(R.id.txtDateDebutGH);
             dateFin = itemView.findViewById(R.id.txtDateFinGH);
+            naturePa = itemView.findViewById(R.id.txtNaturePa);
             linearLayout = itemView.findViewById(R.id.llGH);
+            statutGh = itemView.findViewById(R.id.txtStatutGH);
+            statutGh.setVisibility(View.GONE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

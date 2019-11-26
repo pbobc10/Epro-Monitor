@@ -17,6 +17,7 @@ import java.util.List;
 public class GHJourViewModel extends AndroidViewModel {
     private GHJourRepository ghJourRepository;
     private MutableLiveData<Integer> ghId = new MutableLiveData<>();
+    private GHJourRepository.OnGHJourListListener onGHJourListListener;
 
     public GHJourViewModel(@NonNull Application application) {
         super(application);
@@ -42,5 +43,14 @@ public class GHJourViewModel extends AndroidViewModel {
 
     public void deleteGHJour() {
         ghJourRepository.deleteGHJour();
+    }
+
+    public void getGHJourList() {
+        ghJourRepository.setOnGHJourListListener(onGHJourListListener);
+        ghJourRepository.getGHJourList();
+    }
+
+    public void setOnGHJourListListener(GHJourRepository.OnGHJourListListener onGHJourListListener) {
+        this.onGHJourListListener = onGHJourListListener;
     }
 }

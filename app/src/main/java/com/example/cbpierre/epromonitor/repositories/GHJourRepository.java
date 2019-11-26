@@ -13,6 +13,7 @@ import java.util.List;
 
 public class GHJourRepository {
     private GHJourDao ghJourDao;
+    private static OnGHJourListListener onGHJourListListener;
 
     public GHJourRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
@@ -29,6 +30,10 @@ public class GHJourRepository {
 
     public void deleteGHJour() {
         new DeleteGHJourTask(ghJourDao).execute();
+    }
+
+    public void getGHJourList() {
+        new GHJourListTask(ghJourDao).execute();
     }
 
     /**
@@ -61,5 +66,33 @@ public class GHJourRepository {
             ghJourDao.deleteGHJour();
             return null;
         }
+    }
+
+    private static class GHJourListTask extends AsyncTask<Void, Void, List<GHJour>> {
+        private GHJourDao ghJourDao;
+
+        public GHJourListTask(GHJourDao ghJourDao) {
+            this.ghJourDao = ghJourDao;
+        }
+
+        @Override
+        protected List<GHJour> doInBackground(Void... voids) {
+            return ghJourDao.ghJourList();
+        }
+
+        @Override
+        protected void onPostExecute(List<GHJour> ghJours) {
+            super.onPostExecute(ghJours);
+            if (onGHJourListListener != null)
+                onGHJourListListener.onGHJourListe(ghJours);
+        }
+    }
+
+    public interface OnGHJourListListener {
+        void onGHJourListe(List<GHJour> ghJourList);
+    }
+
+    public void setOnGHJourListListener(OnGHJourListListener onGHJourListListener) {
+        GHJourRepository.onGHJourListListener = onGHJourListListener;
     }
 }

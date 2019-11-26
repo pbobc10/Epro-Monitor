@@ -13,6 +13,7 @@ public class JoinGHJourStatutRef {
     private Boolean rapport_complete;
     private String complete_par;
     private String complete_le;
+    private Boolean gh_complete;
 
     public JoinGHJourStatutRef() {
     }
@@ -111,5 +112,13 @@ public class JoinGHJourStatutRef {
 
     public void setComplete_le(String complete_le) {
         this.complete_le = complete_le;
+    }
+
+    public Boolean getGh_complete() {
+        return gh_complete;
+    }
+
+    public void setGh_complete(Boolean gh_complete) {
+        this.gh_complete = gh_complete;
     }
 }

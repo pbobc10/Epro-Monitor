@@ -20,4 +20,10 @@ public interface GHDao {
 
     @Query("select * from gh order by gh.debut")
     LiveData<List<GH>> allGH();
+
+    @Query("select * from gh order by gh.gh_id")
+    List<GH> ghList();
+
+    @Query("update gh  set modifie_par=:modifiePar,midifie_le=:modifieLe where gh.gh_id=:ghId")
+    void updateGH(String ghId,String modifiePar,String modifieLe);
 }

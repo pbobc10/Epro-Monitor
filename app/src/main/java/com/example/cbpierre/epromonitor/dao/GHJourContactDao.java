@@ -36,4 +36,7 @@ public interface GHJourContactDao {
 
     @Query("delete from gh_jour_contact where gh_jour_contact.con_id=:conId and gh_jour_contact.gh_id=:ghId")
     void deleteJourContact(Integer ghId, Integer conId);
+
+    @Query("select * from gh_jour_contact order by gh_id,jour,con_id")
+    List<GHJourContact> ghJourContactList();
 }

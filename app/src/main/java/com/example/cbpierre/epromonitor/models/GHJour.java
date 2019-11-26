@@ -2,85 +2,135 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 @Entity(tableName = "gh_jour", primaryKeys = {"gh_id", "jour"})
 public class GHJour {
+
+    @Expose
+    @SerializedName(value = "GHID")
     @NonNull
     @ColumnInfo(name = "gh_id")
     private Integer ghId;
 
+    @Expose
+    @SerializedName(value = "JOUR")
     @NonNull
     @ColumnInfo(name = "jour")
     private String jour;
 
+    @Expose
+    @SerializedName(value = "STATUT")
     @NonNull
     @ColumnInfo(name = "statut")
     private String statut;
 
+    @Expose
+    @SerializedName(value = "CREE_PAR")
     @NonNull
     @ColumnInfo(name = "cree_par")
     private String creePar;
 
+    @Expose
+    @SerializedName(value = "CREE_LE")
     @NonNull
     @ColumnInfo(name = "cree_le")
     private String creeLe;
 
+    @Expose
+    @SerializedName(value = "MODIFIE_PAR")
     @NonNull
     @ColumnInfo(name = "modifie_par")
     private String modifiePar;
 
+    @Expose
+    @SerializedName(value = "MODIFIE_LE")
     @NonNull
     @ColumnInfo(name = "modifie_le")
     private String modifieLe;
 
+    @Expose
+    @SerializedName(value = "TRANSFERE_PAR")
     @Nullable
     @ColumnInfo(name = "transfere_par")
     private String transferePar;
 
+    @Expose
+    @SerializedName(value = "TRANSFERE_LE")
     @Nullable
     @ColumnInfo(name = "transfere_le")
     private String transfereLe;
 
+    @Expose
+    @SerializedName(value = "RAPPORT_COMPLETE")
     @NonNull
     @ColumnInfo(name = "rapport_complete")
     private Boolean rapportComplete;
 
+    @Expose
+    @SerializedName(value = "COMPLETE_PAR")
     @Nullable
     @ColumnInfo(name = "complete_par")
     private String completePar;
 
+    @Expose
+    @SerializedName(value = "COMPLETE_LE")
     @Nullable
     @ColumnInfo(name = "complete_le")
     private String completeLe;
 
+    @Expose
+    @SerializedName(value = "ANNULE")
     @Nullable
     @ColumnInfo(name = "annule")
     private Boolean annule;
 
+    @Expose
+    @SerializedName(value = "ANNULE_PAR")
     @Nullable
     @ColumnInfo(name = "annule_par")
     private String annulePar;
 
+    @Expose
+    @SerializedName(value = "ANNULE_LE")
     @Nullable
     @ColumnInfo(name = "annule_le")
     private String annuleLe;
 
+    @Expose
+    @SerializedName(value = "MOTIF_ANNULATION")
     @Nullable
     @ColumnInfo(name = "motif_annulation")
     private String motifAnnulation;
 
+    @Expose
+    @SerializedName(value = "ROW_VERSION")
     @Nullable
     @ColumnInfo(name = "row_version")
     private String rowVersion;
 
+    @Expose
+    @SerializedName(value = "INTROWVERSION")
     @NonNull
     @ColumnInfo(name = "int_row_version")
     private Integer intRowVersion;
+
+    //ajouter pour syncroniser les donnees
+    //ne fait pas parti du model
+    @Expose
+    @SerializedName(value = "GH_JOUR_CONTACT")
+    @Ignore
+    private List<GHJourContact> ghJourContactList;
 
     public GHJour() {
     }
@@ -275,5 +325,13 @@ public class GHJour {
 
     public void setIntRowVersion(@NonNull Integer intRowVersion) {
         this.intRowVersion = intRowVersion;
+    }
+
+    public List<GHJourContact> getGhJourContactList() {
+        return ghJourContactList;
+    }
+
+    public void setGhJourContactList(List<GHJourContact> ghJourContactList) {
+        this.ghJourContactList = ghJourContactList;
     }
 }

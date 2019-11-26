@@ -1,5 +1,6 @@
 package com.example.cbpierre.epromonitor.fragments;
 
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.UserSessionPreferences;
@@ -27,6 +30,7 @@ import com.example.cbpierre.epromonitor.viewModels.StatutVisiteViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +54,9 @@ public class RapportFragment extends Fragment {
     private UserSessionPreferences userSessionPreferences;
     private String creePar, creeLe, modifiePar, modifieLe;
     private TextView txtTitreRapport, txtRapportJourComplete, txtVisiteADrX;
+    private EditText etDebut, etFin;
+
+    private TimePickerDialog pickerDialog;
 
 
     public RapportFragment() {
@@ -98,7 +105,11 @@ public class RapportFragment extends Fragment {
         txtTitreRapport = view.findViewById(R.id.txtTitreRapport);
         txtRapportJourComplete = view.findViewById(R.id.txtRapportJourComplete);
         txtVisiteADrX = view.findViewById(R.id.txtVisiteADrX);
+        etDebut = view.findViewById(R.id.etDebut);
+        etFin = view.findViewById(R.id.etFin);
 
+        etDebut.setInputType(InputType.TYPE_NULL);
+        etFin.setInputType(InputType.TYPE_NULL);
         txtRapportJourComplete.setVisibility(View.GONE);
 
         shareJoinContactGhSV.getShareJoinContactGhSV().observe(this, new Observer<JoinContactGhSV>() {
@@ -119,6 +130,20 @@ public class RapportFragment extends Fragment {
                 }
 
                 txtVisiteADrX.setText("Visite à " + joinContactGhSV.getNom_ratio());
+            }
+        });
+
+        // timePicker
+        etDebut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker(etDebut);
+            }
+        });
+        etFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker(etFin);
             }
         });
 
@@ -143,6 +168,20 @@ public class RapportFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+    }
+
+    public void timePicker(final EditText editText) {
+        final Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        pickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Toast.makeText(getContext(), hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+                editText.setText(new StringBuilder().append(hourOfDay).append(":").append(minute).toString());
+            }
+        }, hourOfDay, minute, true);
+        pickerDialog.show();
     }
 
     public void populateSpinner() {

@@ -9,6 +9,7 @@ import com.example.cbpierre.epromonitor.repositories.GHJourContactProduitReposit
 
 public class GHJourContactProduitViewModel extends AndroidViewModel {
     private GHJourContactProduitRepository ghJourContactProduitRepository;
+    private GHJourContactProduitRepository.OnGHJourContactProduitListener onGHJourContactProduitListener;
 
     public GHJourContactProduitViewModel(@NonNull Application application) {
         super(application);
@@ -21,5 +22,14 @@ public class GHJourContactProduitViewModel extends AndroidViewModel {
 
     public void deleteGHJourContactProduit() {
         ghJourContactProduitRepository.deleteGHJourContactProduit();
+    }
+
+    public void getGHJourContactProduit() {
+        ghJourContactProduitRepository.setOnGHJourContactProduitListener(onGHJourContactProduitListener);
+        ghJourContactProduitRepository.getGHJourContactProduitList();
+    }
+
+    public void setOnGHJourContactProduitListener(GHJourContactProduitRepository.OnGHJourContactProduitListener onGHJourContactProduitListener) {
+        this.onGHJourContactProduitListener = onGHJourContactProduitListener;
     }
 }

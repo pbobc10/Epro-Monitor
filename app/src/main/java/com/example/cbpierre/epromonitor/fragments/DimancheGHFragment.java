@@ -20,11 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.adapters.JoinContactGhSVAdapter;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
 import com.example.cbpierre.epromonitor.models.JoinGHJourStatutRef;
 import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareGHId;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
 import com.example.cbpierre.epromonitor.viewModels.ShareJourInfo;
@@ -42,7 +44,7 @@ import java.util.Locale;
  * to handle interaction events.
  */
 public class DimancheGHFragment extends Fragment {
-
+    private GHViewModel ghViewModel;
     private GHJourViewModel ghJourViewModel;
     private GHJourContactViewModel ghJourContactViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
@@ -53,6 +55,8 @@ public class DimancheGHFragment extends Fragment {
     private JoinContactGhSVAdapter joinContactGhSVAdapter;
     private JoinGHJourStatutRef day;
     private DimancheGHFragment.OnFragmentInteractionListener mListener;
+    private UserSessionPreferences userSessionPreferences;
+    private String modifiePar,modifieLe;
 
     public DimancheGHFragment() {
         // Required empty public constructor
@@ -61,11 +65,20 @@ public class DimancheGHFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ghViewModel=ViewModelProviders.of(this).get(GHViewModel.class);
         ghJourViewModel = ViewModelProviders.of(this).get(GHJourViewModel.class);
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
         shareGHId = ViewModelProviders.of(getActivity()).get(ShareGHId.class);
         shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
         shareJourInfo = ViewModelProviders.of(getActivity()).get(ShareJourInfo.class);
+        //SharePreference
+        userSessionPreferences = new UserSessionPreferences(getContext());
+        modifiePar = userSessionPreferences.getUserDetails();
+
+        //Date
+        String parttern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
+        modifieLe = simpleDateFormat.format(new Date());
     }
 
     @Override
@@ -122,6 +135,8 @@ public class DimancheGHFragment extends Fragment {
             @Override
             public void onGhJourContactClick(int ghId, int conId) {
                 ghJourContactViewModel.deleteJourContact(ghId, conId);
+                //update GH apres supression
+                ghViewModel.updateGH(String.valueOf(ghId), modifiePar, modifieLe);
                 Toast.makeText(getContext(), "contact suprime", Toast.LENGTH_SHORT).show();
             }
         });
@@ -137,8 +152,11 @@ public class DimancheGHFragment extends Fragment {
         fabChoiceContactGH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ChoiceContactGHFragment());
-                shareJourInfo.setGhJourInfo(day);
+                if (!day.getGh_complete()) {
+                    replaceFragment(new ChoiceContactGHFragment());
+                    shareJourInfo.setGhJourInfo(day);
+                } else
+                    Toast.makeText(getContext(), "Impossible d'ajouter de nouveau Contact.\n \t\t\t Le GH a  été Complété.", Toast.LENGTH_LONG).show();
             }
         });
     }

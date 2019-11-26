@@ -35,6 +35,7 @@ import com.example.cbpierre.epromonitor.models.SpecialiteGH;
 import com.example.cbpierre.epromonitor.viewModels.CommuneLocaliteContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactVisiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareJourInfo;
 import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
 
@@ -56,6 +57,7 @@ public class ChoiceContactGHFragment extends Fragment {
     private ChoiceContactGHAdapter choiceContactGHAdapter;
     private ArrayList<Integer> ghJourContactArrayList;
 
+    private GHViewModel ghViewModel;
     private ContactVisiteViewModel contactVisiteViewModel;
     private SpecialiteViewModel specialiteViewModel;
     private CommuneLocaliteContactViewModel communeLocaliteContactViewModel;
@@ -79,6 +81,7 @@ public class ChoiceContactGHFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ghViewModel = ViewModelProviders.of(this).get(GHViewModel.class);
         contactVisiteViewModel = ViewModelProviders.of(this).get(ContactVisiteViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
         communeLocaliteContactViewModel = ViewModelProviders.of(this).get(CommuneLocaliteContactViewModel.class);
@@ -165,10 +168,17 @@ public class ChoiceContactGHFragment extends Fragment {
         btnSoumettre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (Integer conId : ghJourContactArrayList) {
-                    ghJourContactViewModel.insertGHJourContact(new GHJourContact(jourStatutRef.getGh_id(), jourStatutRef.getJour(), conId, "VP", false, false, false, false, null, null, null, null, null, null, null, creePar, creeLe, modifiePar, modifieLe, false, null, null, null));
-                }
-                Toast.makeText(getContext(), "jour: " + jourStatutRef.getJour(), Toast.LENGTH_SHORT).show();
+                if (ghJourContactArrayList != null && ghJourContactArrayList.size() > 0) {
+                    for (Integer conId : ghJourContactArrayList) {
+                        // Insert Contact Jour
+                        ghJourContactViewModel.insertGHJourContact(new GHJourContact(jourStatutRef.getGh_id(), jourStatutRef.getJour(), conId, "VP", false, false, false, false, null, null, null, null, null, null, null, creePar, creeLe, modifiePar, modifieLe, false, null, null, null));
+                    }
+                    // update GH apres ajout
+                    ghViewModel.updateGH(jourStatutRef.getGh_id().toString(), modifiePar, modifieLe);
+
+                } else
+                    Toast.makeText(getContext(), "Aucun contact n'a été saisi", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "jour: " + jourStatutRef.getJour(), Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
             }
         });

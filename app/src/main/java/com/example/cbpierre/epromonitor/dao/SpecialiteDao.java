@@ -21,7 +21,6 @@ public interface SpecialiteDao {
 
     @Query("select distinct specialite_table.nomSpecialite,specialite_table.spId from specialite_table,contact_visite\n" +
             "where specialite_table.spId=contact_visite.specialite\n" +
-            "and specialite_table.spId<>'NA'\n" +
             "order by specialite_table.nomSpecialite")
     LiveData<List<SpecialiteGH>> getAllSpecialiteGH();
 }

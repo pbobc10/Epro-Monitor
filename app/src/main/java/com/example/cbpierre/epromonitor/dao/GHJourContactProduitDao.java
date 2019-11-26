@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 
+import java.util.List;
+
 @Dao
 public interface GHJourContactProduitDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -14,4 +16,7 @@ public interface GHJourContactProduitDao {
 
     @Query("delete from gh_jour_contact_produit")
     void deleteGHJourContactProduit();
+
+    @Query("select * from gh_jour_contact_produit order by gh_id,jour,con_id")
+    List<GHJourContactProduit> ghJourContactProduitList();
 }

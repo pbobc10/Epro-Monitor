@@ -39,7 +39,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="Test Entreprise"
                 android:textColor="@color/bg_secondary"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView

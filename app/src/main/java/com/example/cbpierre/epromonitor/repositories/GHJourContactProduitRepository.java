@@ -7,8 +7,11 @@ import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.GHJourContactProduitDao;
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 
+import java.util.List;
+
 public class GHJourContactProduitRepository {
     private GHJourContactProduitDao ghJourContactProduitDao;
+    private static OnGHJourContactProduitListener onGHJourContactProduitListener;
 
     public GHJourContactProduitRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
@@ -21,6 +24,10 @@ public class GHJourContactProduitRepository {
 
     public void deleteGHJourContactProduit() {
         new DeleteGHJourContactProduit(ghJourContactProduitDao).execute();
+    }
+
+    public void getGHJourContactProduitList() {
+        new GHJourContactProduitListTask(ghJourContactProduitDao).execute();
     }
 
     /**
@@ -52,5 +59,33 @@ public class GHJourContactProduitRepository {
             ghJourContactProduitDao.deleteGHJourContactProduit();
             return null;
         }
+    }
+
+    private static class GHJourContactProduitListTask extends AsyncTask<Void, Void, List<GHJourContactProduit>> {
+        private GHJourContactProduitDao ghJourContactProduitDao;
+
+        public GHJourContactProduitListTask(GHJourContactProduitDao ghJourContactProduitDao) {
+            this.ghJourContactProduitDao = ghJourContactProduitDao;
+        }
+
+        @Override
+        protected List<GHJourContactProduit> doInBackground(Void... voids) {
+            return ghJourContactProduitDao.ghJourContactProduitList();
+        }
+
+        @Override
+        protected void onPostExecute(List<GHJourContactProduit> ghJourContactProduits) {
+            super.onPostExecute(ghJourContactProduits);
+            if (onGHJourContactProduitListener != null)
+                onGHJourContactProduitListener.OnGHJourContactProduit(ghJourContactProduits);
+        }
+    }
+
+    public interface OnGHJourContactProduitListener {
+        void OnGHJourContactProduit(List<GHJourContactProduit> ghJourContactProduits);
+    }
+
+    public void setOnGHJourContactProduitListener(OnGHJourContactProduitListener onGHJourContactProduitListener) {
+        GHJourContactProduitRepository.onGHJourContactProduitListener = onGHJourContactProduitListener;
     }
 }

@@ -6,6 +6,9 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,63 +17,98 @@ import java.util.ArrayList;
 
 @Entity(tableName = "gh")
 public class GH {
+    @Expose
+    @SerializedName(value = "GHID")
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "gh_id")
     private Integer ghId;
 
+    @Expose
+    @SerializedName(value = "PAID")
     @NonNull
     @ColumnInfo(name = "pa_id")
     private Integer paId;
 
+    @Expose
+    @SerializedName(value = "DEBUT")
     @NonNull
     @ColumnInfo(name = "debut")
     private String debut;
 
+    @Expose
+    @SerializedName(value = "FIN")
     @NonNull
     @ColumnInfo(name = "fin")
     private String fin;
 
+    @Expose
+    @NonNull
+    @ColumnInfo(name = "statut_temporel")
+    private String statutTemporel;
+
+    @Expose
+    @SerializedName(value = "CREE_PAR")
     @NonNull
     @ColumnInfo(name = "cree_par")
     private String creePar;
 
+    @Expose
+    @SerializedName(value = "CREE_LE")
     @NonNull
     @ColumnInfo(name = "cree_le")
     private String creePle;
 
+    @Expose
+    @SerializedName(value = "MODIFIE_PAR")
     @NonNull
     @ColumnInfo(name = "modifie_par")
     private String modifiePar;
 
+    @Expose
+    @SerializedName(value = "MODIFIE_LE")
     @NonNull
     @ColumnInfo(name = "midifie_le")
     private String modifieLe;
 
+    @Expose
+    @SerializedName(value = "TRANSFERE_PAR")
     @Nullable
     @ColumnInfo(name = "transfere_par")
     private String transferePar;
 
+    @Expose
+    @SerializedName(value = "TRANSFERE_LE")
     @Nullable
     @ColumnInfo(name = "transfere_le")
     private String transfereLe;
 
+    @Expose
+    @SerializedName(value = "GH_COMPLETE")
     @NonNull
     @ColumnInfo(name = "gh_complete")
     private Boolean ghComplete;
 
+    @Expose
+    @SerializedName(value = "COMPLETE_PAR")
     @Nullable
     @ColumnInfo(name = "complete_par")
     private String completePar;
 
+    @Expose
+    @SerializedName(value = "COMPLETE_LE")
     @Nullable
     @ColumnInfo(name = "complete_le")
     private String completeLe;
 
+    @Expose
+    @SerializedName(value = "ROW_VERSION")
     @NonNull
     @ColumnInfo(name = "row_version")
     private String rowVersion;
 
+    @Expose
+    @SerializedName(value = "INTROWVERSION")
     @NonNull
     @ColumnInfo(name = "intro_version")
     private Integer introwVersion;
@@ -84,6 +122,7 @@ public class GH {
             paId = jsonObject.getInt("PAID");
             debut = jsonNullRemoval(jsonObject.getString("DEBUT"));
             fin = jsonNullRemoval(jsonObject.getString("FIN"));
+            statutTemporel = jsonNullRemoval(jsonObject.getString("STATUT_TEMPOREL"));
             creePar = jsonNullRemoval(jsonObject.getString("CREE_PAR"));
             creePle = jsonNullRemoval(jsonObject.getString("CREE_LE"));
             modifiePar = jsonNullRemoval(jsonObject.getString("MODIFIE_PAR"));
@@ -193,6 +232,15 @@ public class GH {
 
     public void setFin(@NonNull String fin) {
         this.fin = fin;
+    }
+
+    @NonNull
+    public String getStatutTemporel() {
+        return statutTemporel;
+    }
+
+    public void setStatutTemporel(@NonNull String statutTemporel) {
+        this.statutTemporel = statutTemporel;
     }
 
     @NonNull

@@ -4,10 +4,13 @@ package com.example.cbpierre.epromonitor.fragments;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,7 @@ import com.example.cbpierre.epromonitor.AppConfig;
 import com.example.cbpierre.epromonitor.AppVolleySingleton;
 import com.example.cbpierre.epromonitor.CustomArrayRequest;
 import com.example.cbpierre.epromonitor.R;
+import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
 import com.example.cbpierre.epromonitor.models.CommuneLocaliteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
@@ -48,6 +52,7 @@ import com.example.cbpierre.epromonitor.models.PlanAction;
 import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.models.Secteur;
+import com.example.cbpierre.epromonitor.models.SendGH;
 import com.example.cbpierre.epromonitor.models.SendNewContactEtabs;
 import com.example.cbpierre.epromonitor.models.Specialite;
 import com.example.cbpierre.epromonitor.models.StatutJourRef;
@@ -56,6 +61,10 @@ import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 import com.example.cbpierre.epromonitor.repositories.ContactRepository;
 import com.example.cbpierre.epromonitor.repositories.EtablissementRepository;
+import com.example.cbpierre.epromonitor.repositories.GHJourContactProduitRepository;
+import com.example.cbpierre.epromonitor.repositories.GHJourContactRepository;
+import com.example.cbpierre.epromonitor.repositories.GHJourRepository;
+import com.example.cbpierre.epromonitor.repositories.GHRepository;
 import com.example.cbpierre.epromonitor.viewModels.AcceptabiliteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.CommuneLocaliteContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
@@ -86,6 +95,11 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -125,14 +139,24 @@ public class TelechargementFragment extends Fragment {
     private ArrayList<OldEtablissement> oldEtabs;
     private ArrayList<JoinNewEtabNewContact> newEtab;
 
-    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtablissement, btnDownloadPaData, btnDownloadGHData, btnSyncGHData;
+    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtabData, btnDownloadPaData, btnSyncPaData, btnDownloadGHData, btnSyncGHData;
     private List<SendNewContactEtabs> sendContactEtabList;
     private SendNewContactEtabs sendNewContactEtabs;
     private ProgressDialog pDialog;
 
     private ArrayList<Integer> etabExistant;
     private ArrayList<JoinNewEtabNewContact> newEtabList;
+    private ArrayList<GH> ghs;
+    private ArrayList<GHJour> ghJours;
+    private ArrayList<GHJourContact> ghJourContacts;
+    private ArrayList<GHJourContactProduit> ghJourContactProduitList;
+
+    UserSessionPreferences userSessionPreferences;
+
     private String transfere_le, paramCieID;
+    private SendGH sendGH;
+    private boolean isCheckedCourant, isCheckedProchain;
+    private String statutTrans;
 
     public TelechargementFragment() {
         // Required empty public constructor
@@ -171,6 +195,7 @@ public class TelechargementFragment extends Fragment {
         String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
         transfere_le = simpleDateFormat.format(new Date());
+
     }
 
     @Override
@@ -184,23 +209,31 @@ public class TelechargementFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //UserSessionPreferences
+        userSessionPreferences = new UserSessionPreferences(getContext());
+
         //Progress Dialog
         pDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
         pDialog.setCancelable(false);
 
         btnDownloadContact = view.findViewById(R.id.btnDownloadData);
         btnDownloadEtablissement = view.findViewById(R.id.btnDownloadDataEta);
+        btnSyncEtabData = view.findViewById(R.id.btnSyncEtabData);
         btnSyncContact = view.findViewById(R.id.btnSyncContactData);
 
         btnDownloadPaData = view.findViewById(R.id.btnDownloadPAData);
+        btnSyncPaData = view.findViewById(R.id.btnSyncPAData);
         btnDownloadGHData = view.findViewById(R.id.btnDownloadGHData);
         btnSyncGHData = view.findViewById(R.id.btnSyncGHData);
+
+        btnSyncEtabData.setVisibility(View.INVISIBLE);
+        btnSyncPaData.setVisibility(View.INVISIBLE);
 
         postViewModel.getAllPostLOgin().observe(this, new Observer<List<PostLogin>>() {
             @Override
             public void onChanged(@Nullable List<PostLogin> postLogins) {
-                assert postLogins != null;
-                paramCieID = postLogins.get(0).getCieId();
+                if (postLogins != null && postLogins.size() > 0)
+                    paramCieID = postLogins.get(0).getCieId();
             }
         });
         /**
@@ -308,10 +341,19 @@ public class TelechargementFragment extends Fragment {
             }
         });
 
+        btnSyncGHData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog();
+
+            }
+        });
+
         /**
          * Async Response
          */
         fromAsyncReposeCreateJsonString();
+        fromGHAsyncTask();
     }
 
     public void forceRequest(String url) {
@@ -757,6 +799,7 @@ public class TelechargementFragment extends Fragment {
         }
     }
 
+    ///////////////////////////////////////////////////   Send  Contact Etablissement    ///////////////////////////////////////////////////////////////
     public void fromAsyncReposeCreateJsonString() {
         sendContactEtabList = new ArrayList<>();
         // Etab Existant Async Response
@@ -939,4 +982,366 @@ public class TelechargementFragment extends Fragment {
         };
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
+
+    //////////////////////////////////////////////////////////////////// Send GH data //////////////////////////////////////////////////////////////////////
+
+    public void fromGHAsyncTask() {
+        final ArrayList<SendGH> sendGHArrayList = new ArrayList<>();
+
+        ghJourContactProduitViewModel.setOnGHJourContactProduitListener(new GHJourContactProduitRepository.OnGHJourContactProduitListener() {
+            @Override
+            public void OnGHJourContactProduit(List<GHJourContactProduit> ghJourContactProduits) {
+                if (ghJourContactProduits != null) {
+                    ghJourContactProduitList = new ArrayList<>();
+                    ghJourContactProduitList.addAll(ghJourContactProduits);
+                }
+            }
+        });
+
+        ghJourContactViewModel.setOnGHJourContactListeListener(new GHJourContactRepository.OnGHJourContactListeListener() {
+            @Override
+            public void onGHJourContact(List<GHJourContact> ghJourContactList) {
+                if (ghJourContactList != null) {
+                    ghJourContacts = new ArrayList<>();
+                    ghJourContacts.addAll(ghJourContactList);
+                }
+            }
+        });
+
+
+        ghJourViewModel.setOnGHJourListListener(new GHJourRepository.OnGHJourListListener() {
+            @Override
+            public void onGHJourListe(List<GHJour> ghJourList) {
+                if (ghJourList != null) {
+                    ghJours = new ArrayList<>();
+                    ghJours.addAll(ghJourList);
+                }
+            }
+        });
+
+        ghViewModel.setOnGHListListener(new GHRepository.OnGHListListener() {
+            @Override
+            public void onGHListe(List<GH> ghList) {
+                if (ghList != null) {
+                    if (ghList.size() > 0) {
+                        sendGHArrayList.clear();
+                        for (GH gh : ghList) {
+                            sendGH = new SendGH();
+                            sendGH.setGhId(gh.getGhId());
+                            sendGH.setPaId(gh.getPaId());
+                            sendGH.setDebut(gh.getDebut());
+                            sendGH.setFin(gh.getFin());
+                            sendGH.setCreePar(gh.getCreePar());
+                            sendGH.setCreePle(gh.getCreePle());
+                            sendGH.setModifiePar(gh.getModifiePar());
+                            sendGH.setModifieLe(gh.getModifieLe());
+                            ////////////////////////////////////////////////////////////////////////
+                            switch (statutTrans) {
+                                case "ALL":
+                                    //cas GH complete
+                                    if (gh.getGhComplete()) {
+                                        sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                        sendGH.setTransfereLe(transfere_le);
+                                        sendGH.setCompletePar(gh.getCompletePar());
+                                        sendGH.setCompleteLe(gh.getCompleteLe());
+                                        sendGH.setGhComplete(true);
+                                    } else {
+                                        sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                        sendGH.setTransfereLe(transfere_le);
+                                        sendGH.setCompletePar(userSessionPreferences.getUserDetails());
+                                        sendGH.setCompleteLe(transfere_le);
+                                        sendGH.setGhComplete(false);
+                                    }
+                                    break;
+                                case "COURANT":
+                                    if (gh.getStatutTemporel().equals("COURANT")) {
+                                        //cas GH complete
+                                        if (gh.getGhComplete()) {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(gh.getCompletePar());
+                                            sendGH.setCompleteLe(gh.getCompleteLe());
+                                            sendGH.setGhComplete(true);
+                                        } else {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setCompleteLe(transfere_le);
+                                            sendGH.setGhComplete(false);
+                                        }
+                                    } else {
+                                        //cas GH complete
+                                        if (gh.getGhComplete()) {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(gh.getCompletePar());
+                                            sendGH.setCompleteLe(gh.getCompleteLe());
+                                            sendGH.setGhComplete(true);
+                                        } else {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(gh.getCompletePar());
+                                            sendGH.setCompleteLe(gh.getCompleteLe());
+                                            sendGH.setGhComplete(false);
+                                        }
+                                    }
+
+                                    break;
+                                case "PROCHAIN":
+                                    if (!gh.getStatutTemporel().equals("COURANT")) {
+                                        //cas GH complete
+                                        if (gh.getGhComplete()) {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(gh.getCompletePar());
+                                            sendGH.setCompleteLe(gh.getCompleteLe());
+                                            sendGH.setGhComplete(true);
+                                        } else {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setCompleteLe(transfere_le);
+                                            sendGH.setGhComplete(false);
+                                        }
+                                    } else {
+                                        //cas GH complete
+                                        if (gh.getGhComplete()) {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(gh.getCompletePar());
+                                            sendGH.setCompleteLe(gh.getCompleteLe());
+                                            sendGH.setGhComplete(true);
+                                        } else {
+                                            sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                            sendGH.setTransfereLe(transfere_le);
+                                            sendGH.setCompletePar(gh.getCompletePar());
+                                            sendGH.setCompleteLe(gh.getCompleteLe());
+                                            sendGH.setGhComplete(false);
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    //cas GH complete
+                                    if (gh.getGhComplete()) {
+                                        sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                        sendGH.setTransfereLe(transfere_le);
+                                        sendGH.setCompletePar(gh.getCompletePar());
+                                        sendGH.setCompleteLe(gh.getCompleteLe());
+                                        sendGH.setGhComplete(true);
+                                    } else {
+                                        sendGH.setTransferePar(userSessionPreferences.getUserDetails());
+                                        sendGH.setTransfereLe(transfere_le);
+                                        sendGH.setCompletePar(gh.getCompletePar());
+                                        sendGH.setCompleteLe(gh.getCompleteLe());
+                                        sendGH.setGhComplete(false);
+                                    }
+                                    break;
+                            }
+
+                            ///////////////////////////////////////////////////////////////////////
+                            sendGH.setRowVersion(gh.getRowVersion());
+                            sendGH.setIntrowVersion(gh.getIntrowVersion());
+                            //logic
+                            if (ghJours.size() > 0) {
+                                ArrayList<GHJour> ghJourArrayList = new ArrayList<>();
+                                for (GHJour ghJour : ghJours) {
+                                    if (gh.getGhId().equals(ghJour.getGhId())) {
+                                        ArrayList<GHJourContact> ghJourContactArrayList = new ArrayList<>();
+                                        for (GHJourContact ghJourContact : ghJourContacts) {
+                                            if (ghJour.getJour().equals(ghJourContact.getJour())) {
+                                                ghJourContactArrayList.add(ghJourContact);
+                                                ArrayList<GHJourContactProduit> ghJourContactProduitArrayList = new ArrayList<>();
+                                                for (GHJourContactProduit produit : ghJourContactProduitList) {
+                                                    if (ghJourContact.getGhId().equals(produit.getGhId()) && ghJourContact.getJour().equals(produit.getJour()) && ghJourContact.getConId().equals(produit.getConId())) {
+                                                        ghJourContactProduitArrayList.add(produit);
+                                                    }
+                                                }
+                                                ghJourContact.setGhJourContactProduitList(ghJourContactProduitArrayList);
+                                            }
+                                        }
+                                        ghJour.setGhJourContactList(ghJourContactArrayList);
+                                        ghJourArrayList.add(ghJour);
+                                    }
+
+                                }
+                                sendGH.setGhJourList(ghJourArrayList);
+                            }
+                            ////
+                            sendGHArrayList.add(sendGH);
+                        }
+                        // Log.d("-test", toJSON(sendGH));
+                        toJsonInternalLog(toJSON(sendGHArrayList));
+                        // hideDialog();
+                        syncGHData(toJSON(sendGHArrayList));
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    public void toJsonInternalLog(String text) {
+        try {
+            FileOutputStream fos = getActivity().openFileOutput("toJsonLog", Context.MODE_PRIVATE);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos));
+            writer.write(text);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * SYNC  GH DATA
+     */
+    private void syncGHData(final String requestBody) {
+        // Formulate the request and handle the response.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_TRANSFERT_GH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("----volley", response);
+                        // Do something with the response
+                        if (response.equals("Succès")) {
+                            // update after sync "Succès"*/
+
+                            //delete GH
+                            communeLocaliteContactViewModel.deleteCommuneLocaliteContact();
+                            ghJourContactProduitViewModel.deleteGHJourContactProduit();
+                            ghJourContactViewModel.deleteGHJourContact();
+                            ghJourViewModel.deleteGHJour();
+                            ghViewModel.deleteGH();
+
+                            //download GH
+                            ghRequest(AppConfig.URL_GH);
+                            statutJourRequest(AppConfig.URL_STATUT_JOUR);
+                            statutVisiteRequest(AppConfig.URL_STATUT_VISITE);
+                            //  acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
+                            communeLocaliteContactRequest(AppConfig.URL_COMMUNE_LOCALITE_CONTACT);
+
+                            hideDialog();
+                            Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                            Log.d("----volleyOK", response);
+                        } else {
+                            hideDialog();
+                            // Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                            Log.d("volley fail", response);
+                            Log.d("volley fail", response.replace("\"", ""));
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                        if (error instanceof AuthFailureError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof NetworkError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ParseError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ServerError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof TimeoutError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_SHORT).show();
+                        } else {
+                            hideDialog();
+                            Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                            Log.e("Volley Error", error.toString());
+                        }
+                    }
+                }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException exception) {
+                    Log.e("ERROR", "exception", exception);
+                    return null;
+                }
+            }
+        };
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+    public void alertDialog() {
+        final CharSequence[] sequences = {"Courant", "Prochain"};
+        final boolean[] choiceInitial = {false, false};
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext())
+                .setTitle("Test")
+                .setNegativeButton("Cancel", null)
+                .setMultiChoiceItems(sequences, choiceInitial, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        for (int i = 0; i < sequences.length; i++) {
+                            if ((0 == i) && choiceInitial[i])
+                                isCheckedCourant = true;
+                            else if ((1 == i) && choiceInitial[i])
+                                isCheckedProchain = true;
+                        }
+                    }
+                })
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (isCheckedCourant && !isCheckedProchain) {
+                            Toast.makeText(getContext(), "Complété GH Courant", Toast.LENGTH_SHORT).show();
+                            statutTrans = "COURANT";
+                            isCheckedCourant = false;
+                        } else if (!isCheckedCourant && isCheckedProchain) {
+                            Toast.makeText(getContext(), "Complété GH Prochain", Toast.LENGTH_SHORT).show();
+                            statutTrans = "PROCHAIN";
+                            isCheckedProchain = false;
+                        } else if (isCheckedCourant && isCheckedProchain) {
+                            Toast.makeText(getContext(), "Complété GH Courant et Prochain", Toast.LENGTH_SHORT).show();
+                            statutTrans = "ALL";
+                            isCheckedCourant = isCheckedProchain = false;
+                        } else {
+                            Toast.makeText(getContext(), "Aucun GH Complété", Toast.LENGTH_SHORT).show();
+                            statutTrans = "AUCUN";
+                        }
+
+                        // Toast.makeText(getContext(), "Statut Transert:" + statutTrans, Toast.LENGTH_SHORT).show();
+
+                        //set title of the dialog
+                        pDialog.setTitle("synchronisation des données du GH ...");
+                        //set message of the dialog
+                        pDialog.setMessage("S'il vous plaît, attendez...");
+                        //show dialog
+                        showDialog();
+
+                        // Async GHJourContactProduit list
+                        ghJourContactProduitViewModel.getGHJourContactProduit();
+                        //Async GH Jour Contact list
+                        ghJourContactViewModel.getGHJourContactList();
+                        //Async GH Jour list
+                        ghJourViewModel.getGHJourList();
+                        //Async GH list
+                        ghViewModel.getGHList();
+
+                    }
+                });
+        alertDialogBuilder.show();
+    }
+
+
 }

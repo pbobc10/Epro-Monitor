@@ -32,7 +32,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:text="Dr.Pierre Bob Charlemagne"
                     android:textColor="@color/white"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView

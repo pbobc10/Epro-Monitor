@@ -2,105 +2,165 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 @Entity(tableName = "gh_jour_contact", primaryKeys = {"gh_id", "jour", "con_id"})
 public class GHJourContact {
+
+    @Expose
+    @SerializedName(value = "GHID")
     @NonNull
     @ColumnInfo(name = "gh_id")
     private Integer ghId;
 
+    @Expose
+    @SerializedName(value = "JOUR")
     @NonNull
     @ColumnInfo(name = "jour")
     private String jour;
 
+    @Expose
+    @SerializedName(value = "CONID")
     @NonNull
     @ColumnInfo(name = "con_id")
     private Integer conId;
 
+    @Expose
+    @SerializedName(value = "STATUT")
     @NonNull
     @ColumnInfo(name = "statut")
     private String statut;
 
+    @Expose
+    @SerializedName(value = "PROMOTION")
     @NonNull
     @ColumnInfo(name = "promotion")
     private Boolean promotion;
 
+    @Expose
+    @SerializedName(value = "LIVRAISON")
     @NonNull
     @ColumnInfo(name = "livraison")
     private Boolean livraison;
 
+    @Expose
+    @SerializedName(value = "RECOUVREMENT")
     @NonNull
     @ColumnInfo(name = "recouvrement")
     private Boolean recouvrement;
 
+    @Expose
+    @SerializedName(value = "AUTRE")
     @NonNull
     @ColumnInfo(name = "autre")
     private Boolean autre;
 
+    @Expose
+    @SerializedName(value = "DEBUT")
     @Nullable
     @ColumnInfo(name = "debut")
     private String debut;
 
+    @Expose
+    @SerializedName(value = "FIN")
     @Nullable
     @ColumnInfo(name = "fin")
     private String fin;
 
+    @Expose
+    @SerializedName(value = "LIEU")
     @Nullable
     @ColumnInfo(name = "lieu")
     private String lieu;
 
+    @Expose
+    @SerializedName(value = "AUTRE_LIEU")
     @Nullable
     @ColumnInfo(name = "autre_lieu")
     private String autreLieu;
 
+    @Expose
+    @SerializedName(value = "LATITUDE")
     @Nullable
     @ColumnInfo(name = "latitude")
     private String latitude;
 
+    @Expose
+    @SerializedName(value = "LONGITUDE")
     @Nullable
     @ColumnInfo(name = "longitude")
     private String longitude;
 
+    @Expose
+    @SerializedName(value = "NOTE")
     @Nullable
     @ColumnInfo(name = "note")
     private String note;
 
+    @Expose
+    @SerializedName(value = "CREE_PAR")
     @NonNull
     @ColumnInfo(name = "cree_par")
     private String creePar;
 
+    @Expose
+    @SerializedName(value = "CREE_LE")
     @NonNull
     @ColumnInfo(name = "cree_le")
     private String creele;
 
+    @Expose
+    @SerializedName(value = "MODIFIE_PAR")
     @NonNull
     @ColumnInfo(name = "modifie_par")
     private String modifiePar;
 
+    @Expose
+    @SerializedName(value = "MODIFIE_LE")
     @NonNull
     @ColumnInfo(name = "modifie_le")
     private String modifieLe;
 
+    @Expose
+    @SerializedName(value = "ANNULE")
     @NonNull
     @ColumnInfo(name = "annule")
     private Boolean annule;
 
+    @Expose
+    @SerializedName(value = "ANNULE_PAR")
     @Nullable
     @ColumnInfo(name = "annule_par")
     private String annulePar;
 
+    @Expose
+    @SerializedName(value = "ANNULE_LE")
     @Nullable
     @ColumnInfo(name = "annule_le")
     private String annuleLe;
 
+    @Expose
+    @SerializedName(value = "MOTIF_ANNULATION")
     @Nullable
     @ColumnInfo(name = "motif_annulation")
     private String motifAnnulation;
+
+    //ajouter pour syncroniser les donnees
+    //ne fait pas parti du model
+    @Expose
+    @SerializedName(value = "GH_JOUR_CONTACT_PRODUIT")
+    @Ignore
+    private List<GHJourContactProduit> ghJourContactProduitList;
 
     public GHJourContact() {
     }
@@ -372,5 +432,13 @@ public class GHJourContact {
 
     public void setMotifAnnulation(@Nullable String motifAnnulation) {
         this.motifAnnulation = motifAnnulation;
+    }
+
+    public List<GHJourContactProduit> getGhJourContactProduitList() {
+        return ghJourContactProduitList;
+    }
+
+    public void setGhJourContactProduitList(List<GHJourContactProduit> ghJourContactProduitList) {
+        this.ghJourContactProduitList = ghJourContactProduitList;
     }
 }
