@@ -1,11 +1,14 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.AcceptabiliteDao;
 import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
+
+import java.util.List;
 
 public class AcceptabiliteRepository {
     private AcceptabiliteDao acceptabiliteDao;
@@ -13,6 +16,10 @@ public class AcceptabiliteRepository {
     public AcceptabiliteRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
         acceptabiliteDao = database.acceptabiliteDao();
+    }
+
+    public LiveData<List<AcceptabiliteRef>> getAllAcceptabiliteRef() {
+        return acceptabiliteDao.getAllAcceptabiliteRef();
     }
 
     public void insertAcceptabilite(AcceptabiliteRef acceptabiliteRef) {

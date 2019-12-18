@@ -30,6 +30,12 @@ public class StatutVisiteRef {
     public StatutVisiteRef() {
     }
 
+    public StatutVisiteRef(@NonNull String code, @Nullable String nom, @Nullable String rang) {
+        this.code = code;
+        this.nom = nom;
+        this.rang = rang;
+    }
+
     public StatutVisiteRef(JSONObject jsonObject) {
         try {
             code = jsonNullRemoval(jsonObject.getString("CODE"));

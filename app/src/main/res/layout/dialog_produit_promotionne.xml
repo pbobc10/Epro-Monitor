@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/txtTitleProduitPromotionne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/prompt_produit_promotionne_min"
+            android:textColor="#000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#53bbb4"
+            android:padding="2dp"
+            android:layout_marginTop="16dp">
+
+            <Spinner
+                android:id="@+id/spProduitPromotionne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/prompt_produit_promotionne_caps"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#53bbb4"
+            android:padding="2dp"
+            android:layout_marginTop="16dp">
+
+            <Spinner
+                android:id="@+id/spAcceptabilite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/promt_acceptabilite"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etProduitPromotionneNote"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/frame"
+            android:hint="Note"
+            android:inputType="textCapSentences|textMultiLine"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llButtonReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnSubmitRapport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="#7d669e"
+            android:text="Soumettre"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnCancelRapport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="#e15258"
+            android:text="Annuler"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>

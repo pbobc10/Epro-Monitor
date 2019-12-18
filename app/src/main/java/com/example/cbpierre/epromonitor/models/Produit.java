@@ -25,6 +25,11 @@ public class Produit {
     public Produit() {
     }
 
+    public Produit(@NonNull Integer produitId, @NonNull String nomProduit) {
+        this.produitId = produitId;
+        this.nomProduit = nomProduit;
+    }
+
     public Produit(JSONObject jsonObject) {
         try {
             produitId = jsonObject.getInt("PRODUIT_ID");

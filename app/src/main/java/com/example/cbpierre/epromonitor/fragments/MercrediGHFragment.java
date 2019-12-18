@@ -66,7 +66,7 @@ public class MercrediGHFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ghViewModel=ViewModelProviders.of(this).get(GHViewModel.class);
+        ghViewModel = ViewModelProviders.of(this).get(GHViewModel.class);
         ghJourViewModel = ViewModelProviders.of(this).get(GHJourViewModel.class);
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
         shareGHId = ViewModelProviders.of(getActivity()).get(ShareGHId.class);
@@ -154,11 +154,11 @@ public class MercrediGHFragment extends Fragment {
         fabChoiceContactGH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!day.getGh_complete()) {
+                if ((!day.getGh_complete() && !day.getRapport_complete()) || ((day.getGh_complete() && !day.getRapport_complete()))) {
                     replaceFragment(new ChoiceContactGHFragment());
                     shareJourInfo.setGhJourInfo(day);
                 } else
-                    Toast.makeText(getContext(), "Impossible d'ajouter de nouveau Contact.\n \t\t\t Le GH a  été Complété.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Impossible d'ajouter de nouveau Contact.\n  Le GH et le Rapport ont été Complété.", Toast.LENGTH_LONG).show();
             }
         });
     }

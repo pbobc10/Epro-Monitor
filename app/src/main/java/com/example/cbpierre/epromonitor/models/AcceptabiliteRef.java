@@ -30,6 +30,12 @@ public class AcceptabiliteRef {
     public AcceptabiliteRef() {
     }
 
+    public AcceptabiliteRef(@NonNull String code, @Nullable String nom, @Nullable String rang) {
+        this.code = code;
+        this.nom = nom;
+        this.rang = rang;
+    }
+
     public AcceptabiliteRef(JSONObject jsonObject) {
         try {
             code = jsonNullRemoval(jsonObject.getString("CODE"));

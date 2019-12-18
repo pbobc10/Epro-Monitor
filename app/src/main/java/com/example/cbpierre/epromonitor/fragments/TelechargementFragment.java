@@ -336,7 +336,7 @@ public class TelechargementFragment extends Fragment {
                 ghRequest(AppConfig.URL_GH);
                 statutJourRequest(AppConfig.URL_STATUT_JOUR);
                 statutVisiteRequest(AppConfig.URL_STATUT_VISITE);
-                //  acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
+                acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
                 communeLocaliteContactRequest(AppConfig.URL_COMMUNE_LOCALITE_CONTACT);
             }
         });

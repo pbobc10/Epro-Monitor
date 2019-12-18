@@ -7,7 +7,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -15,119 +17,333 @@
             android:id="@+id/llHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtTitreRapport"
-                android:layout_width="360dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rapport à la date du 9/19/2019"
                 android:textColor="#3079ab"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/txtRapportJourComplete"
-                android:layout_width="360dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="0dp"
                 android:text="Rapport Complété"
                 android:textColor="@android:color/holo_red_light"
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtVisiteADrX"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Visite à Dr SAMBOURG Kéthia (0/3)"
-            android:textColor="#7d669e"
-            android:textSize="16sp" />
-        <Spinner
-            android:id="@+id/spStatutVisite"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:elevation="2dp" />
-
         <LinearLayout
-            android:id="@+id/llHeure"
+            android:id="@+id/llVisite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtVisiteADrX"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:text="Visite à Dr SAMBOURG Kéthia (0/3)"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#53bbb4">
+
+                <Spinner
+                    android:id="@+id/spStatutVisite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:prompt="@string/prompt_statut_visite"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llLieuVisite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#53bbb4">
+
+                <Spinner
+                    android:id="@+id/spEtabContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:prompt="@string/prompt_etablissement"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etAutreLieu"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/white"
+                android:hint="Autre Lieu"
+                android:inputType="text|textCapSentences"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlHeure"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:background="@android:color/white"
+                android:elevation="1dp"
+                android:padding="4dp"
+                android:text="Heure"
+                android:textSize="18sp"
+                android:textStyle="bold|italic" />
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/frame"
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
-                android:layout_marginTop="8dp">
-
-                <TableRow>
+                <TableRow android:gravity="center_horizontal">
 
                     <TextView
                         android:id="@+id/txtRJDebut"
                         android:layout_marginEnd="16dp"
-                        android:text="Heure de début " />
+                        android:padding="4dp"
+                        android:text="Début "
+                        android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/etDebut"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="68dp"
                         android:hint="enter time"
-                        android:layout_marginEnd="48dp"
+                        android:inputType="time"
                         android:padding="4dp"
-                         />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/txtRJFin"
-                        android:text="Heure de Fin"
-                        android:layout_marginEnd="18dp"/>
+                        android:layout_marginEnd="18dp"
+                        android:padding="4dp"
+                        android:text="Fin"
+                        android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/etFin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="enter time"
                         android:layout_marginEnd="48dp"
+                        android:hint="enter time"
+                        android:inputType="time"
                         android:padding="4dp"
-                        />
+                        android:textSize="16sp" />
                 </TableRow>
 
             </TableLayout>
-        </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlActivites"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/txtActivites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:background="@android:color/white"
+                android:elevation="1dp"
+                android:padding="4dp"
+                android:text="Activies"
+                android:textSize="18sp"
+                android:textStyle="italic|bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/frame"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:id="@+id/llPromotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                    <CheckBox
+                        android:id="@+id/promotion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Promotion" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLivraison"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                    <CheckBox
+                        android:id="@+id/cbLivraison"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Livraison" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRecouvrement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                    <CheckBox
+                        android:id="@+id/cbRecouvrement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recouvrement" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAutre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                    <CheckBox
+                        android:id="@+id/cbAutre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Autre" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/etRapport"
-            android:layout_width="360dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:background="#ffffff"
-            android:elevation="2dp"
             android:ems="10"
             android:gravity="start|top"
+            android:hint="Note"
             android:inputType="textMultiLine|textCapSentences"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/btnSubmitRapport"
-            android:layout_width="360dp"
+        <LinearLayout
+            android:id="@+id/llProduitPromotionne"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:background="#637a91"
-            android:text="Soumettre"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white" />
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnCancelRapport"
-            android:layout_width="360dp"
+            <TextView
+                android:id="@+id/txtProduitPromotionne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Produit Promotionné"
+                android:textColor="#3079ab"
+                android:textSize="20sp"
+                android:textStyle="italic|bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvProduitPromotionne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llButtonReport"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp"
-            android:background="@android:color/holo_red_light"
-            android:text="Annuler"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnSubmitRapport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="#7d669e"
+                android:text="Soumettre"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btnCancelRapport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="#e15258"
+                android:text="Annuler"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

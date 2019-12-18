@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
@@ -46,23 +45,31 @@ public class JoinContactGhSVAdapter extends RecyclerView.Adapter<JoinContactGhSV
                         ghJourContactListener.onGhJourContactClick(contactGhSV.getGh_id(), contactGhSV.getCon_id());
                 }
             });
-            if (contactGhSV.getGh_complete()) {
+            if (contactGhSV.getGh_complete() && !contactGhSV.getNom().equals("NON VISITE PLANIFIÉE")) {
                 viewHolder.checkBox.setChecked(true);
                 viewHolder.checkBox.setEnabled(false);
                 viewHolder.ibClear.setVisibility(View.GONE);
                 viewHolder.statutVisite.setText(contactGhSV.getNom());
-                if (contactGhSV.getNom().equals("VISITE PLANIFIÉE"))
-                    viewHolder.statutVisite.setTextColor(Color.parseColor("#39add1"));
-                else if (contactGhSV.getNom().equals("VISITE EFFECTUÉE"))
-                    viewHolder.statutVisite.setTextColor(Color.parseColor("#3079ab"));
-                else if (contactGhSV.getNom().equals("CONTACT ABSENT"))
-                    viewHolder.statutVisite.setTextColor(Color.parseColor("#c25975"));
-                else if (contactGhSV.getNom().equals("VISITE NON EFFECTUÉE"))
-                    viewHolder.statutVisite.setTextColor(Color.parseColor("#f9845b"));
-                else if (contactGhSV.getNom().equals("VISITE NON REALISÉE"))
-                    viewHolder.statutVisite.setTextColor(Color.parseColor("#838cc7"));
-                else
-                    viewHolder.statutVisite.setTextColor(Color.parseColor("#7d669e"));
+                switch (contactGhSV.getNom()) {
+                    case "VISITE PLANIFIÉE":
+                        viewHolder.statutVisite.setTextColor(Color.parseColor("#39add1"));
+                        break;
+                    case "VISITE EFFECTUÉE":
+                        viewHolder.statutVisite.setTextColor(Color.parseColor("#3079ab"));
+                        break;
+                    case "CONTACT ABSENT":
+                        viewHolder.statutVisite.setTextColor(Color.parseColor("#c25975"));
+                        break;
+                    case "VISITE NON EFFECTUÉE":
+                        viewHolder.statutVisite.setTextColor(Color.parseColor("#f9845b"));
+                        break;
+                    case "VISITE NON REALISÉE":
+                        viewHolder.statutVisite.setTextColor(Color.parseColor("#838cc7"));
+                        break;
+                    default:
+                        viewHolder.statutVisite.setTextColor(Color.parseColor("#7d669e"));
+                        break;
+                }
             } else {
                 viewHolder.checkBox.setVisibility(View.GONE);
                 viewHolder.ibClear.setVisibility(View.VISIBLE);
@@ -102,7 +109,7 @@ public class JoinContactGhSVAdapter extends RecyclerView.Adapter<JoinContactGhSV
                     int position = getAdapterPosition();
                     if (ghContactListener != null)
                         ghContactListener.onGhContactClick(joinContactGhSVS.get(position));
-                       // Toast.makeText(v.getContext(), "press", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(v.getContext(), "press", Toast.LENGTH_SHORT).show();
                 }
             });
         }

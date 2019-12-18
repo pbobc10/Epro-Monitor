@@ -62,12 +62,21 @@
     <string name="prompt_secteur">Secteur</string>
     <string name="prompt_specialite">Specialite</string>
     <string name="prompt_titre">Titre</string>
+    <string name="prompt_etablissement">ETABLISSEMENT</string>
+    <string name="prompt_statut_visite">STATUT VISITE </string>
+    <string name="prompt_produit_promotionne_caps">PRODUIT PROMOTIONNE</string>
+    <string name="prompt_produit_promotionne_min">Produit Promotionne</string>
+    <string name="promt_acceptabilite">ACCEPTABILITE</string>
 
     <string name="select_force">SELECTIONNER UNE FORCE...</string>
     <string name="select_nature">SELECTIONNER UNE NATURE...</string>
     <string name="select_secteur">SELECTIONNER UNE SECTEUR...</string>
     <string name="select_specialite">SELECTIONNER UNE SPECIALITE...</string>
     <string name="select_titre">SELECTIONNER UNE TITRE...</string>
+    <string name="select_etablissement">-- SELECTIONNER UN ETABLISSEMENT --</string>
+    <string name="select_statut_visite">-- SELECTIONNER STATUT VISITE --</string>
+    <string name="select_produit_promotionne">-- SELECTIONNER PRODUIT PROMOTIONNE --</string>
+    <string name="select_acceptabilite">-- SELECTIONNER ACCEPTABILITE --</string>
 
     <string name="back_slash">/</string>
 

@@ -9,21 +9,30 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.UserSessionPreferences;
+import com.example.cbpierre.epromonitor.adapters.ContactEtabSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.StatutVisiteSpinnerAdapter;
+import com.example.cbpierre.epromonitor.models.JoinContactEtablissementData;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
 import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
+import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
 import com.example.cbpierre.epromonitor.viewModels.StatutVisiteViewModel;
@@ -47,15 +56,19 @@ public class RapportFragment extends Fragment {
     private JoinContactGhSV contactGhSV;
     private StatutVisiteViewModel statutVisiteViewModel;
     private GHJourContactViewModel ghJourContactViewModel;
+    private ContactEtablissementViewModel contactEtablissementViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
-    private Spinner spStatutVisite;
+    private Spinner spStatutVisite, spEtabContact;
     private EditText etRapport;
     private Button btnSoumettre, btnAnnuler;
     private UserSessionPreferences userSessionPreferences;
     private String creePar, creeLe, modifiePar, modifieLe;
-    private TextView txtTitreRapport, txtRapportJourComplete, txtVisiteADrX;
-    private EditText etDebut, etFin;
+    private TextView txtTitreRapport, txtRapportJourComplete, txtVisiteADrX, txtProduitPromotionne;
+    private EditText etDebut, etFin, etAutreLieu;
+    private RelativeLayout rlHeures, rlActivities;
+    private LinearLayout llButtonReport,llProduitPromotionne;
 
+    private ContactEtabSpinnerAdapter contactEtabSpinnerAdapter;
     private TimePickerDialog pickerDialog;
 
 
@@ -68,6 +81,7 @@ public class RapportFragment extends Fragment {
         super.onCreate(savedInstanceState);
         statutVisiteViewModel = ViewModelProviders.of(this).get(StatutVisiteViewModel.class);
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
+        contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
         shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
         //SharePreference
         userSessionPreferences = new UserSessionPreferences(getContext());
@@ -99,6 +113,7 @@ public class RapportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spStatutVisite = view.findViewById(R.id.spStatutVisite);
+        spEtabContact = view.findViewById(R.id.spEtabContact);
         etRapport = view.findViewById(R.id.etRapport);
         btnSoumettre = view.findViewById(R.id.btnSubmitRapport);
         btnAnnuler = view.findViewById(R.id.btnCancelRapport);
@@ -107,10 +122,17 @@ public class RapportFragment extends Fragment {
         txtVisiteADrX = view.findViewById(R.id.txtVisiteADrX);
         etDebut = view.findViewById(R.id.etDebut);
         etFin = view.findViewById(R.id.etFin);
+        etAutreLieu = view.findViewById(R.id.etAutreLieu);
+        rlActivities = view.findViewById(R.id.rlActivites);
+        rlHeures = view.findViewById(R.id.rlHeure);
+        txtProduitPromotionne = view.findViewById(R.id.txtProduitPromotionne);
+        llButtonReport = view.findViewById(R.id.llButtonReport);
+        llProduitPromotionne=view.findViewById(R.id.llProduitPromotionne);
 
         etDebut.setInputType(InputType.TYPE_NULL);
         etFin.setInputType(InputType.TYPE_NULL);
         txtRapportJourComplete.setVisibility(View.GONE);
+        // etAutreLieu.setVisibility(View.GONE);
 
         shareJoinContactGhSV.getShareJoinContactGhSV().observe(this, new Observer<JoinContactGhSV>() {
             @Override
@@ -118,6 +140,9 @@ public class RapportFragment extends Fragment {
                 contactGhSV = joinContactGhSV;
                 etRapport.setText(joinContactGhSV.getNote());
                 txtTitreRapport.setText("Rapport à la date du " + date(joinContactGhSV.getJour()));
+
+                //get contact id for the etabs
+                contactEtablissementViewModel.setEtabsByContactId(joinContactGhSV.getCon_id());
 
                 if (joinContactGhSV.getRapport_complete())
                     txtRapportJourComplete.setVisibility(View.VISIBLE);
@@ -149,13 +174,14 @@ public class RapportFragment extends Fragment {
 
 
         populateSpinner();
+        getSpinnerItem();
+
 
         btnSoumettre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Get the selected item out a spinner using:
                 String codeStatutVisite = ((StatutVisiteRef) spStatutVisite.getSelectedItem()).getCode();
-
                 //insert rapport data
                 ghJourContactViewModel.updateGHJourContact(codeStatutVisite, etRapport.getText().toString(), creePar, creeLe, modifiePar, modifieLe, contactGhSV.getJour(), contactGhSV.getGh_id().toString(), contactGhSV.getCon_id().toString());
                 getActivity().onBackPressed();
@@ -165,7 +191,18 @@ public class RapportFragment extends Fragment {
         btnAnnuler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed();
+                //check time
+                checkTime(etDebut.getText().toString(), etFin.getText().toString());
+                // getActivity().onBackPressed();
+            }
+        });
+        txtProduitPromotionne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                DialogProduitPromotionne produitPromotionne=new DialogProduitPromotionne();
+                produitPromotionne.show(fragmentManager,"test");
+
             }
         });
     }
@@ -178,10 +215,19 @@ public class RapportFragment extends Fragment {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 // Toast.makeText(getContext(), hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
-                editText.setText(new StringBuilder().append(hourOfDay).append(":").append(minute).toString());
+                editText.setText(hourOfDay + ":" + minute);
             }
         }, hourOfDay, minute, true);
         pickerDialog.show();
+    }
+
+    public void checkTime(String debut, String fin) {
+        //float debH = 0f, finH = 0f;
+        float debH = debut.equals("") ? 0f : Float.parseFloat((debut.replace(':', '.')));
+        float finH = fin.equals("") ? 0f : Float.parseFloat((fin.replace(':', '.')));
+        if (debH > finH)
+            Toast.makeText(getContext(), "L'Heure de debut droit etre inferieur a l'heure de fin" + ":" + debH, Toast.LENGTH_LONG).show();
+
     }
 
     public void populateSpinner() {
@@ -189,6 +235,10 @@ public class RapportFragment extends Fragment {
         statutVisiteViewModel.getAllStatutVisite().observe(this, new Observer<List<StatutVisiteRef>>() {
             @Override
             public void onChanged(@Nullable List<StatutVisiteRef> statutVisiteRefs) {
+                //add new Statut Visite object
+                if (statutVisiteRefs != null) {
+                    statutVisiteRefs.add(0, new StatutVisiteRef("ST", "-- SELECTIONNER STATUT VISITE --", "N"));
+                }
                 StatutVisiteSpinnerAdapter statutVisiteSpinnerAdapter = new StatutVisiteSpinnerAdapter(getContext(), R.layout.spinner_item, statutVisiteRefs);
                 statutVisiteSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spStatutVisite.setAdapter(statutVisiteSpinnerAdapter);
@@ -201,6 +251,119 @@ public class RapportFragment extends Fragment {
                 }
             }
         });
+
+        //populate Spinner spEtabContact
+        contactEtablissementViewModel.getEtabsByContactId().observe(this, new Observer<List<JoinContactEtablissementData>>() {
+            @Override
+            public void onChanged(@Nullable List<JoinContactEtablissementData> contactEtablissementData) {
+                // add new etablissement object
+                if (contactEtablissementData != null) {
+                    contactEtablissementData.add(new JoinContactEtablissementData(null, null, "AUTRE", null, null, null, null));
+                    contactEtablissementData.add(0, (new JoinContactEtablissementData(null, null, "-- SELECTIONNER UN ETABLISSEMENT --", null, null, null, null)));
+                }
+                contactEtabSpinnerAdapter = new ContactEtabSpinnerAdapter(getContext(), R.layout.spinner_rows, contactEtablissementData);
+                contactEtabSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spEtabContact.setAdapter(contactEtabSpinnerAdapter);
+            }
+        });
+
+    }
+
+    public void getSpinnerItem() {
+        spStatutVisite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                StatutVisiteRef visiteRef = (StatutVisiteRef) parent.getItemAtPosition(position);
+                if (visiteRef.getNom().equals(getResources().getString(R.string.select_statut_visite))) {
+                    TextView textView = (TextView) view;
+                    textView.setTextColor(getResources().getColor(R.color.input_login_hint));
+                    spEtabContact.setVisibility(View.GONE);
+                    etAutreLieu.setVisibility(View.GONE);
+                    rlActivities.setVisibility(View.GONE);
+                    rlHeures.setVisibility(View.GONE);
+                    etRapport.setVisibility(View.GONE);
+                    llProduitPromotionne.setVisibility(View.GONE);
+                    llButtonReport.setVisibility(View.GONE);
+                } else if (visiteRef.getCode().equals("VNE") || visiteRef.getCode().equals("VNR")) {
+                    spEtabContact.setVisibility(View.GONE);
+                    etAutreLieu.setVisibility(View.GONE);
+                    rlActivities.setVisibility(View.GONE);
+                    rlHeures.setVisibility(View.GONE);
+                    etRapport.setVisibility(View.VISIBLE);
+                    llProduitPromotionne.setVisibility(View.GONE);
+                    llButtonReport.setVisibility(View.VISIBLE);
+                } else if (visiteRef.getCode().equals("ABS")) {
+                    spEtabContact.setVisibility(View.VISIBLE);
+                    etAutreLieu.setVisibility(View.GONE);
+                    rlActivities.setVisibility(View.GONE);
+                    rlHeures.setVisibility(View.GONE);
+                    etRapport.setVisibility(View.VISIBLE);
+                    llProduitPromotionne.setVisibility(View.GONE);
+                    llButtonReport.setVisibility(View.VISIBLE);
+                    resetEtabContactSpinner();
+                } else if (visiteRef.getCode().equals("CE")) {
+                    spEtabContact.setVisibility(View.VISIBLE);
+                    etAutreLieu.setVisibility(View.GONE);
+                    rlActivities.setVisibility(View.VISIBLE);
+                    rlHeures.setVisibility(View.VISIBLE);
+                    etRapport.setVisibility(View.VISIBLE);
+                    llProduitPromotionne.setVisibility(View.VISIBLE);
+                    llButtonReport.setVisibility(View.VISIBLE);
+                    resetEtabContactSpinner();
+                } else {
+                    spEtabContact.setVisibility(View.GONE);
+                    etAutreLieu.setVisibility(View.GONE);
+                    rlActivities.setVisibility(View.GONE);
+                    rlHeures.setVisibility(View.GONE);
+                    etRapport.setVisibility(View.VISIBLE);
+                    llProduitPromotionne.setVisibility(View.GONE);
+                    llButtonReport.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spEtabContact.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (view == null)
+                    return;
+
+                JoinContactEtablissementData contactEtablissementData = (JoinContactEtablissementData) parent.getItemAtPosition(position);
+
+                if (contactEtablissementData.getNom_Etablissement().equals(getResources().getString(R.string.select_etablissement))) {
+                    //change default item color
+                    TextView textView = (TextView) view;
+                    textView.setTextColor(getResources().getColor(R.color.input_login_hint));
+                    etAutreLieu.setVisibility(View.GONE);
+                } else if (contactEtablissementData.getNom_Etablissement().equals("AUTRE")) {
+                    //Toast.makeText(getContext(), "ok", Toast.LENGTH_LONG).show();
+                    etAutreLieu.setVisibility(View.VISIBLE);
+                } else {
+                    etAutreLieu.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void resetEtabContactSpinner() {
+        //set spinner to selectionner etablissement or reset spEtabContact spinner
+        for (int i = 0; i < contactEtabSpinnerAdapter.getCount(); i++) {
+            if (contactEtabSpinnerAdapter.getItem(i).getNom_Etablissement().equals("-- SELECTIONNER UN ETABLISSEMENT --")) {
+                spEtabContact.setSelection(i);
+                break;
+            }
+        }
     }
 
     public String date(String x) {

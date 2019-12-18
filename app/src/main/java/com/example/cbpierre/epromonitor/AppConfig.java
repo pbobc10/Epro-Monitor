@@ -54,7 +54,7 @@ public class AppConfig {
     //server STATUT_VISITE
     public static final String URL_STATUT_VISITE = "https://disprophar.net/webAPI/Visite/GetStatutVisite?cieId=";
     //server ACCEPTABILITE
-    public static final String URL_ACCEPTABILITE = "https://disprophar.net/webAPI/Visite/Acceptabilite";
+    public static final String URL_ACCEPTABILITE = "https://disprophar.net/webAPI/Visite/GetAcceptabilite";
     //server COMMUNE_LOCALITE_CONTACT
     public static final String URL_COMMUNE_LOCALITE_CONTACT = "https://disprophar.net/webAPI/Visite/GetCommuneLocaliteContact?cieId=";
     //Pour transférer la planification hebdomadaire complétée (GH, GH_JOUR et GH_JOUR_CONTACT)
