@@ -1,11 +1,13 @@
 package com.example.cbpierre.epromonitor.repositories;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.GHJourContactProduitDao;
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
+import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
 
 import java.util.List;
 
@@ -16,6 +18,10 @@ public class GHJourContactProduitRepository {
     public GHJourContactProduitRepository(Application application) {
         EproMonitorRoomDatabase database = EproMonitorRoomDatabase.getDatabase(application);
         ghJourContactProduitDao = database.ghJourContactProduitDao();
+    }
+
+    public LiveData<List<JoinProduitAcceptabliliteGHProduit>> getProduitAcceptabliliteGHProduit(int ghId, int conId, String jour) {
+        return ghJourContactProduitDao.getProduitAcceptabliliteGHProduit(ghId, conId, jour);
     }
 
     public void insertGHJourContactProduit(GHJourContactProduit ghJourContactProduit) {

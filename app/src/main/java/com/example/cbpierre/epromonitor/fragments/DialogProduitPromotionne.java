@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -17,9 +19,11 @@ import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.AcceptabiliteSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.ContactProduitSpinnerAdapter;
 import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
+import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
 import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.viewModels.AcceptabiliteViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHJourContactProduitViewModel;
 import com.example.cbpierre.epromonitor.viewModels.PaContactProduitViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
 
@@ -28,16 +32,23 @@ import java.util.List;
 public class DialogProduitPromotionne extends DialogFragment {
     private PaContactProduitViewModel paContactProduitViewModel;
     private AcceptabiliteViewModel acceptabiliteViewModel;
+    private GHJourContactProduitViewModel ghJourContactProduitViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
     private ContactProduitSpinnerAdapter contactProduitSpinnerAdapter;
     private AcceptabiliteSpinnerAdapter acceptabiliteSpinnerAdapter;
     private Spinner spProduitPromotionne, spAcceptabilite;
+    private Button submit, cancel;
+    private EditText etNoteProduitPromo;
+    private JoinContactGhSV contactGhSV;
+    private int produit_id;
+    private String acceptabiiteCode;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paContactProduitViewModel = ViewModelProviders.of(this).get(PaContactProduitViewModel.class);
         acceptabiliteViewModel = ViewModelProviders.of(this).get(AcceptabiliteViewModel.class);
+        ghJourContactProduitViewModel = ViewModelProviders.of(this).get(GHJourContactProduitViewModel.class);
         shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
     }
 
@@ -52,16 +63,34 @@ public class DialogProduitPromotionne extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         spProduitPromotionne = view.findViewById(R.id.spProduitPromotionne);
         spAcceptabilite = view.findViewById(R.id.spAcceptabilite);
+        submit = view.findViewById(R.id.btnSubmitProduit);
+        cancel = view.findViewById(R.id.btnCancelProduit);
+        etNoteProduitPromo = view.findViewById(R.id.etProduitPromotionneNote);
 
         shareJoinContactGhSV.getShareJoinContactGhSV().observe(this, new Observer<JoinContactGhSV>() {
             @Override
             public void onChanged(@Nullable JoinContactGhSV joinContactGhSV) {
-                if (joinContactGhSV != null)
+                if (joinContactGhSV != null) {
+                    contactGhSV = joinContactGhSV;
                     paContactProduitViewModel.setProduitByContactId(joinContactGhSV.getCon_id());
+                }
             }
         });
         getSelectedItem();
         populateSpinner();
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ghJourContactProduitViewModel.insertGHJourContactProduit(new GHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getJour(), contactGhSV.getCon_id(), produit_id, acceptabiiteCode, etNoteProduitPromo.getText().toString()));
+                dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     public void populateSpinner() {
@@ -100,6 +129,7 @@ public class DialogProduitPromotionne extends DialogFragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
+                    produit_id = produit.getProduitId();
                 }
             }
 
@@ -116,6 +146,7 @@ public class DialogProduitPromotionne extends DialogFragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                 } else {
+                    acceptabiiteCode = acceptabiliteRef.getCode();
                 }
             }
 

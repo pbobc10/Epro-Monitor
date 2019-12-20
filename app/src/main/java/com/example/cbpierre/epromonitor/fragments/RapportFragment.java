@@ -10,7 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -28,11 +29,14 @@ import android.widget.Toast;
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.adapters.ContactEtabSpinnerAdapter;
+import com.example.cbpierre.epromonitor.adapters.JoinProduitAcceptabliliteGHProduitAdapter;
 import com.example.cbpierre.epromonitor.adapters.StatutVisiteSpinnerAdapter;
 import com.example.cbpierre.epromonitor.models.JoinContactEtablissementData;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
+import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
 import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
+import com.example.cbpierre.epromonitor.viewModels.GHJourContactProduitViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ShareJoinContactGhSV;
 import com.example.cbpierre.epromonitor.viewModels.StatutVisiteViewModel;
@@ -57,19 +61,23 @@ public class RapportFragment extends Fragment {
     private StatutVisiteViewModel statutVisiteViewModel;
     private GHJourContactViewModel ghJourContactViewModel;
     private ContactEtablissementViewModel contactEtablissementViewModel;
+    private GHJourContactProduitViewModel ghJourContactProduitViewModel;
     private ShareJoinContactGhSV shareJoinContactGhSV;
     private Spinner spStatutVisite, spEtabContact;
     private EditText etRapport;
     private Button btnSoumettre, btnAnnuler;
     private UserSessionPreferences userSessionPreferences;
     private String creePar, creeLe, modifiePar, modifieLe;
-    private TextView txtTitreRapport, txtRapportJourComplete, txtVisiteADrX, txtProduitPromotionne;
+    private TextView txtTitreRapport, txtRapportJourComplete, txtVisiteADrX;
     private EditText etDebut, etFin, etAutreLieu;
-    private RelativeLayout rlHeures, rlActivities;
-    private LinearLayout llButtonReport,llProduitPromotionne;
+    private LinearLayout llHeures, llActivities;
+    private LinearLayout llButtonReport, llProduitPromotionne;
+    private Button btnProduitPromotionne;
 
     private ContactEtabSpinnerAdapter contactEtabSpinnerAdapter;
+    private JoinProduitAcceptabliliteGHProduitAdapter ghProduitAdapter;
     private TimePickerDialog pickerDialog;
+    private RecyclerView rvProduitPromotionne;
 
 
     public RapportFragment() {
@@ -82,6 +90,7 @@ public class RapportFragment extends Fragment {
         statutVisiteViewModel = ViewModelProviders.of(this).get(StatutVisiteViewModel.class);
         ghJourContactViewModel = ViewModelProviders.of(this).get(GHJourContactViewModel.class);
         contactEtablissementViewModel = ViewModelProviders.of(this).get(ContactEtablissementViewModel.class);
+        ghJourContactProduitViewModel = ViewModelProviders.of(this).get(GHJourContactProduitViewModel.class);
         shareJoinContactGhSV = ViewModelProviders.of(getActivity()).get(ShareJoinContactGhSV.class);
         //SharePreference
         userSessionPreferences = new UserSessionPreferences(getContext());
@@ -123,11 +132,12 @@ public class RapportFragment extends Fragment {
         etDebut = view.findViewById(R.id.etDebut);
         etFin = view.findViewById(R.id.etFin);
         etAutreLieu = view.findViewById(R.id.etAutreLieu);
-        rlActivities = view.findViewById(R.id.rlActivites);
-        rlHeures = view.findViewById(R.id.rlHeure);
-        txtProduitPromotionne = view.findViewById(R.id.txtProduitPromotionne);
+        llActivities = view.findViewById(R.id.llActivites);
+        llHeures = view.findViewById(R.id.llHeure);
+        btnProduitPromotionne = view.findViewById(R.id.btnProduitPromotionne);
         llButtonReport = view.findViewById(R.id.llButtonReport);
-        llProduitPromotionne=view.findViewById(R.id.llProduitPromotionne);
+        llProduitPromotionne = view.findViewById(R.id.llProduitPromotionne);
+        rvProduitPromotionne = view.findViewById(R.id.rvProduitPromotionne);
 
         etDebut.setInputType(InputType.TYPE_NULL);
         etFin.setInputType(InputType.TYPE_NULL);
@@ -143,6 +153,8 @@ public class RapportFragment extends Fragment {
 
                 //get contact id for the etabs
                 contactEtablissementViewModel.setEtabsByContactId(joinContactGhSV.getCon_id());
+                //get gh Jour Contact Produit Promotionne
+                ghJourContactProduitViewModel.setGhJouContactProduitParamMutable(joinContactGhSV.getGh_id(), joinContactGhSV.getCon_id(), joinContactGhSV.getJour());
 
                 if (joinContactGhSV.getRapport_complete())
                     txtRapportJourComplete.setVisibility(View.VISIBLE);
@@ -175,7 +187,17 @@ public class RapportFragment extends Fragment {
 
         populateSpinner();
         getSpinnerItem();
-
+        ghProduitAdapter = new JoinProduitAcceptabliliteGHProduitAdapter(getContext());
+        rvProduitPromotionne.setLayoutManager(new LinearLayoutManager(getContext()));
+        ghJourContactProduitViewModel.getJoinProduitAcceptabliliteGHProduitt().observe(this, new Observer<List<JoinProduitAcceptabliliteGHProduit>>() {
+            @Override
+            public void onChanged(@Nullable List<JoinProduitAcceptabliliteGHProduit> joinProduitAcceptabliliteGHProduits) {
+                ghProduitAdapter.setJoinProduitAcceptabliliteGHProduitList(joinProduitAcceptabliliteGHProduits);
+            }
+        });
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        rvProduitPromotionne.setAdapter(ghProduitAdapter);
+        rvProduitPromotionne.addItemDecoration(dividerItemDecoration);
 
         btnSoumettre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,12 +218,12 @@ public class RapportFragment extends Fragment {
                 // getActivity().onBackPressed();
             }
         });
-        txtProduitPromotionne.setOnClickListener(new View.OnClickListener() {
+        btnProduitPromotionne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                DialogProduitPromotionne produitPromotionne=new DialogProduitPromotionne();
-                produitPromotionne.show(fragmentManager,"test");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                DialogProduitPromotionne produitPromotionne = new DialogProduitPromotionne();
+                produitPromotionne.show(fragmentManager, "test");
 
             }
         });
@@ -279,24 +301,24 @@ public class RapportFragment extends Fragment {
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                     spEtabContact.setVisibility(View.GONE);
                     etAutreLieu.setVisibility(View.GONE);
-                    rlActivities.setVisibility(View.GONE);
-                    rlHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
+                    llHeures.setVisibility(View.GONE);
                     etRapport.setVisibility(View.GONE);
                     llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.GONE);
                 } else if (visiteRef.getCode().equals("VNE") || visiteRef.getCode().equals("VNR")) {
                     spEtabContact.setVisibility(View.GONE);
                     etAutreLieu.setVisibility(View.GONE);
-                    rlActivities.setVisibility(View.GONE);
-                    rlHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
+                    llHeures.setVisibility(View.GONE);
                     etRapport.setVisibility(View.VISIBLE);
                     llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.VISIBLE);
                 } else if (visiteRef.getCode().equals("ABS")) {
                     spEtabContact.setVisibility(View.VISIBLE);
                     etAutreLieu.setVisibility(View.GONE);
-                    rlActivities.setVisibility(View.GONE);
-                    rlHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
+                    llHeures.setVisibility(View.GONE);
                     etRapport.setVisibility(View.VISIBLE);
                     llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.VISIBLE);
@@ -304,8 +326,8 @@ public class RapportFragment extends Fragment {
                 } else if (visiteRef.getCode().equals("CE")) {
                     spEtabContact.setVisibility(View.VISIBLE);
                     etAutreLieu.setVisibility(View.GONE);
-                    rlActivities.setVisibility(View.VISIBLE);
-                    rlHeures.setVisibility(View.VISIBLE);
+                    llActivities.setVisibility(View.VISIBLE);
+                    llHeures.setVisibility(View.VISIBLE);
                     etRapport.setVisibility(View.VISIBLE);
                     llProduitPromotionne.setVisibility(View.VISIBLE);
                     llButtonReport.setVisibility(View.VISIBLE);
@@ -313,8 +335,8 @@ public class RapportFragment extends Fragment {
                 } else {
                     spEtabContact.setVisibility(View.GONE);
                     etAutreLieu.setVisibility(View.GONE);
-                    rlActivities.setVisibility(View.GONE);
-                    rlHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
+                    llHeures.setVisibility(View.GONE);
                     etRapport.setVisibility(View.VISIBLE);
                     llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.VISIBLE);

@@ -8,10 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/llHeader"
@@ -26,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:text="Rapport à la date du 9/19/2019"
                 android:textColor="#3079ab"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtRapportJourComplete"
@@ -42,16 +42,17 @@
             android:id="@+id/llVisite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="28dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtVisiteADrX"
                 android:layout_width="360dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="8dp"
                 android:text="Visite à Dr SAMBOURG Kéthia (0/3)"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -104,39 +105,41 @@
                 android:textStyle="normal" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rlHeure"
+        <LinearLayout
+            android:id="@+id/llHeure"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/frame"
+            android:orientation="horizontal"
+            android:weightSum="7">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:background="@android:color/white"
-                android:elevation="1dp"
-                android:padding="4dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingStart="8dp"
                 android:text="Heure"
-                android:textSize="18sp"
-                android:textStyle="bold|italic" />
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/frame"
-                android:gravity="center_vertical"
-                android:padding="16dp">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
 
-                <TableRow android:gravity="center_horizontal">
+                <TableRow android:gravity="left">
 
                     <TextView
                         android:id="@+id/txtRJDebut"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="18dp"
                         android:padding="4dp"
-                        android:text="Début "
-                        android:textSize="16sp" />
+                        android:text="Début :"
+                        android:textColor="#000" />
 
                     <EditText
                         android:id="@+id/etDebut"
@@ -152,14 +155,13 @@
                         android:id="@+id/txtRJFin"
                         android:layout_marginEnd="18dp"
                         android:padding="4dp"
-                        android:text="Fin"
-                        android:textSize="16sp" />
+                        android:text="Fin :"
+                        android:textColor="#000" />
 
                     <EditText
                         android:id="@+id/etFin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="48dp"
                         android:hint="enter time"
                         android:inputType="time"
                         android:padding="4dp"
@@ -167,34 +169,37 @@
                 </TableRow>
 
             </TableLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rlActivites"
+        <LinearLayout
+            android:id="@+id/llActivites"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/frame"
+            android:orientation="horizontal"
+            android:weightSum="7">
 
             <TextView
                 android:id="@+id/txtActivites"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:background="@android:color/white"
-                android:elevation="1dp"
-                android:padding="4dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingStart="8dp"
                 android:text="Activies"
-                android:textSize="18sp"
-                android:textStyle="italic|bold" />
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/frame"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:baselineAligned="false"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp"
                 android:weightSum="4">
 
                 <LinearLayout
@@ -203,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="2dp">
+                    android:padding="1dp">
 
                     <CheckBox
                         android:id="@+id/promotion"
@@ -222,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="2dp">
+                    android:padding="1dp">
 
                     <CheckBox
                         android:id="@+id/cbLivraison"
@@ -241,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="2dp">
+                    android:padding="1dp">
 
                     <CheckBox
                         android:id="@+id/cbRecouvrement"
@@ -260,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:padding="2dp">
+                    android:padding="1dp">
 
                     <CheckBox
                         android:id="@+id/cbAutre"
@@ -276,14 +281,14 @@
             </LinearLayout>
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <EditText
             android:id="@+id/etRapport"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="78dp"
             android:layout_marginTop="8dp"
-            android:background="#ffffff"
+            android:background="@drawable/frame"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Note"
@@ -294,32 +299,35 @@
         <LinearLayout
             android:id="@+id/llProduitPromotionne"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtProduitPromotionne"
+            <Button
+                android:id="@+id/btnProduitPromotionne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/frame"
                 android:text="Produit Promotionné"
                 android:textColor="#3079ab"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="italic|bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvProduitPromotionne"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/frame"
+                android:padding="8dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llButtonReport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
             android:weightSum="2">
 

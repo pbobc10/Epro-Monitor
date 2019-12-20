@@ -52,6 +52,15 @@ public class GHJourContactProduit {
     public GHJourContactProduit() {
     }
 
+    public GHJourContactProduit(@NonNull Integer ghId, @NonNull String jour, @NonNull Integer conId, @NonNull Integer produitId, @Nullable String accept, @Nullable String note) {
+        this.ghId = ghId;
+        this.jour = jour;
+        this.conId = conId;
+        this.produitId = produitId;
+        this.accept = accept;
+        this.note = note;
+    }
+
     public GHJourContactProduit(JSONObject jsonObject) {
         try {
             ghId = jsonObject.getInt("GHID");
