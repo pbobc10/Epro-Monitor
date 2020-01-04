@@ -8,6 +8,7 @@ import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.GHJourContactProduitDao;
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
+import com.example.cbpierre.epromonitor.models.Produit;
 
 import java.util.List;
 
@@ -32,8 +33,16 @@ public class GHJourContactProduitRepository {
         new DeleteGHJourContactProduit(ghJourContactProduitDao).execute();
     }
 
+    public void deleteGHJourContactProduitId(int ghId, int conId, String jour, int produitId) {
+        new DeleteGHJourContactProduitIdTask(ghJourContactProduitDao).execute(Integer.toString(ghId), Integer.toString(conId), jour, Integer.toString(produitId));
+    }
+
     public void getGHJourContactProduitList() {
         new GHJourContactProduitListTask(ghJourContactProduitDao).execute();
+    }
+
+    public LiveData<List<Produit>> getAllGhJourContactProduit(int ghId, String jour, int contactId) {
+        return ghJourContactProduitDao.allGhJourContactProduit(ghId, jour, contactId);
     }
 
     /**
@@ -63,6 +72,20 @@ public class GHJourContactProduitRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             ghJourContactProduitDao.deleteGHJourContactProduit();
+            return null;
+        }
+    }
+
+    private static class DeleteGHJourContactProduitIdTask extends AsyncTask<String, Void, Void> {
+        private GHJourContactProduitDao ghJourContactProduitDao;
+
+        public DeleteGHJourContactProduitIdTask(GHJourContactProduitDao ghJourContactProduitDao) {
+            this.ghJourContactProduitDao = ghJourContactProduitDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            ghJourContactProduitDao.deleteGHJourContactProduitId(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]), strings[2], Integer.parseInt(strings[3]));
             return null;
         }
     }

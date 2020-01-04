@@ -49,8 +49,8 @@ public class GHJourContactViewModel extends AndroidViewModel {
         ghJourContactRepository.deleteJourContact(ghId, conId);
     }
 
-    public void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, String ghId, String conId) {
-        ghJourContactRepository.updateGHJourContact(statut, note, creePar, creeLe, modifiePar, modifieLe, jour, ghId, conId);
+    public void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, String ghId, String conId, String promotion, String livraison, String recouvrement, String autre, String debut, String fin, String lieu, String autreLieu) {
+        ghJourContactRepository.updateGHJourContact(statut, note, creePar, creeLe, modifiePar, modifieLe, jour, ghId, conId, promotion, livraison, recouvrement, autre, debut, fin, lieu, autreLieu);
     }
 
     public void getGHJourContactList() {

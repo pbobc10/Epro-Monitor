@@ -36,8 +36,8 @@ public class GHJourContactRepository {
         new DeleteJourContactTask(ghJourContactDao).execute(ghId, conId);
     }
 
-    public void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, String ghId, String conId) {
-        new UpdateJourContactTask(ghJourContactDao).execute(statut, note, creePar, creeLe, modifiePar, modifieLe, jour, ghId, conId);
+    public void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, String ghId, String conId, String promotion, String livraison, String recouvrement, String autre, String debut, String fin, String lieu, String autreLieu) {
+        new UpdateJourContactTask(ghJourContactDao).execute(statut, note, creePar, creeLe, modifiePar, modifieLe, jour, ghId, conId, promotion, livraison, recouvrement, autre, debut, fin, lieu, autreLieu);
     }
 
     public void getGHJourContactList() {
@@ -99,7 +99,7 @@ public class GHJourContactRepository {
 
         @Override
         protected Void doInBackground(String... strings) {
-            ghJourContactDao.updateGHJourContact(strings[0], strings[1], strings[2], strings[3], strings[4], strings[5], strings[6], Integer.parseInt(strings[7]), Integer.parseInt(strings[8]));
+            ghJourContactDao.updateGHJourContact(strings[0], strings[1], strings[2], strings[3], strings[4], strings[5], strings[6], Integer.parseInt(strings[7]), Integer.parseInt(strings[8]), Boolean.parseBoolean(strings[9]), Boolean.parseBoolean(strings[10]), Boolean.parseBoolean(strings[11]), Boolean.parseBoolean(strings[12]), strings[13], strings[14], strings[15], strings[16]);
             return null;
         }
     }

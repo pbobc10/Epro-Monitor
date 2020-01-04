@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,11 +15,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -70,9 +74,9 @@ public class RapportFragment extends Fragment {
     private String creePar, creeLe, modifiePar, modifieLe;
     private TextView txtTitreRapport, txtRapportJourComplete, txtVisiteADrX;
     private EditText etDebut, etFin, etAutreLieu;
-    private LinearLayout llHeures, llActivities;
-    private LinearLayout llButtonReport, llProduitPromotionne;
+    private LinearLayout llHeures, llActivities, llButtonReport, llProduitPromotionne;
     private Button btnProduitPromotionne;
+    private CheckBox cbPromotion, cbLivraison, cbRecouvrement, cbAutre;
 
     private ContactEtabSpinnerAdapter contactEtabSpinnerAdapter;
     private JoinProduitAcceptabliliteGHProduitAdapter ghProduitAdapter;
@@ -138,11 +142,21 @@ public class RapportFragment extends Fragment {
         llButtonReport = view.findViewById(R.id.llButtonReport);
         llProduitPromotionne = view.findViewById(R.id.llProduitPromotionne);
         rvProduitPromotionne = view.findViewById(R.id.rvProduitPromotionne);
+        cbAutre = view.findViewById(R.id.cbAutre);
+        cbLivraison = view.findViewById(R.id.cbLivraison);
+        cbPromotion = view.findViewById(R.id.cbPromotion);
+        cbRecouvrement = view.findViewById(R.id.cbRecouvrement);
 
         etDebut.setInputType(InputType.TYPE_NULL);
         etFin.setInputType(InputType.TYPE_NULL);
         txtRapportJourComplete.setVisibility(View.GONE);
-        // etAutreLieu.setVisibility(View.GONE);
+        spEtabContact.setVisibility(View.GONE);
+        etAutreLieu.setVisibility(View.GONE);
+        llHeures.setVisibility(View.GONE);
+        llActivities.setVisibility(View.GONE);
+        etRapport.setVisibility(View.GONE);
+        llProduitPromotionne.setVisibility(View.GONE);
+        llButtonReport.setVisibility(View.GONE);
 
         shareJoinContactGhSV.getShareJoinContactGhSV().observe(this, new Observer<JoinContactGhSV>() {
             @Override
@@ -167,6 +181,17 @@ public class RapportFragment extends Fragment {
                 }
 
                 txtVisiteADrX.setText("Visite à " + joinContactGhSV.getNom_ratio());
+                //initialize autre lieu
+                etAutreLieu.setText(joinContactGhSV.getAutre_lieu());
+                //initialize  heure(time) frame
+                etDebut.setText(joinContactGhSV.getDebut());
+                etFin.setText(joinContactGhSV.getFin());
+                //initialize activities(activites)
+                cbAutre.setChecked(joinContactGhSV.isAutre());
+                cbLivraison.setChecked(joinContactGhSV.isLivraison());
+                cbPromotion.setChecked(joinContactGhSV.isPromotion());
+                cbRecouvrement.setChecked(joinContactGhSV.isRecouvrement());
+
             }
         });
 
@@ -183,7 +208,7 @@ public class RapportFragment extends Fragment {
                 timePicker(etFin);
             }
         });
-
+        activitiesChecked();
 
         populateSpinner();
         getSpinnerItem();
@@ -199,15 +224,29 @@ public class RapportFragment extends Fragment {
         rvProduitPromotionne.setAdapter(ghProduitAdapter);
         rvProduitPromotionne.addItemDecoration(dividerItemDecoration);
 
+        //delete gh jour contact Produit
+        ghProduitAdapter.setOndeleteGHJourContactProduit(new JoinProduitAcceptabliliteGHProduitAdapter.OndeleteGHJourContactProduit() {
+            @Override
+            public void onDeleteProduit(int ghId, int conId, String jour, int produitId) {
+                ghJourContactProduitViewModel.deleteGHJourContactProduitId(ghId, conId, jour, produitId);
+            }
+        });
+
         btnSoumettre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Get the selected item out a spinner using:
-                String codeStatutVisite = ((StatutVisiteRef) spStatutVisite.getSelectedItem()).getCode();
-                //insert rapport data
-                ghJourContactViewModel.updateGHJourContact(codeStatutVisite, etRapport.getText().toString(), creePar, creeLe, modifiePar, modifieLe, contactGhSV.getJour(), contactGhSV.getGh_id().toString(), contactGhSV.getCon_id().toString());
-                getActivity().onBackPressed();
+                if (isValidate()) {
+                    //Get the selected item out a spinner using:
+                    String codeStatutVisite = ((StatutVisiteRef) spStatutVisite.getSelectedItem()).getCode();
+                    String etab = ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getNom_Etablissement();
+                    //insert rapport data
+                    ghJourContactViewModel.updateGHJourContact(codeStatutVisite, etRapport.getText().toString(), creePar, creeLe, modifiePar, modifieLe, contactGhSV.getJour(), contactGhSV.getGh_id().toString(), contactGhSV.getCon_id().toString(), Boolean.toString(cbPromotion.isChecked()), Boolean.toString(cbLivraison.isChecked()), Boolean.toString(cbRecouvrement.isChecked()), Boolean.toString(cbAutre.isChecked()), etDebut.getText().toString(), etFin.getText().toString(), etab, etAutreLieu.getText().toString());
+                    getActivity().onBackPressed();
+                } else {
+                    Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
+                }
             }
+
         });
 
         btnAnnuler.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +254,7 @@ public class RapportFragment extends Fragment {
             public void onClick(View v) {
                 //check time
                 checkTime(etDebut.getText().toString(), etFin.getText().toString());
-                // getActivity().onBackPressed();
+                getActivity().onBackPressed();
             }
         });
         btnProduitPromotionne.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +264,20 @@ public class RapportFragment extends Fragment {
                 DialogProduitPromotionne produitPromotionne = new DialogProduitPromotionne();
                 produitPromotionne.show(fragmentManager, "test");
 
+            }
+        });
+    }
+
+    public void activitiesChecked() {
+        //promotion checked
+        cbPromotion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (cbPromotion.isChecked()) {
+                    llProduitPromotionne.setVisibility(View.VISIBLE);
+                } else {
+                    llProduitPromotionne.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -286,9 +339,15 @@ public class RapportFragment extends Fragment {
                 contactEtabSpinnerAdapter = new ContactEtabSpinnerAdapter(getContext(), R.layout.spinner_rows, contactEtablissementData);
                 contactEtabSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spEtabContact.setAdapter(contactEtabSpinnerAdapter);
+                //Setting spinner item based on value (rather than item position):
+                for (int i = 0; i < contactEtabSpinnerAdapter.getCount(); i++) {
+                    if (contactEtabSpinnerAdapter.getItem(i).getNom_Etablissement().equals(contactGhSV.getLieu())) {
+                        spEtabContact.setSelection(i);
+                        break;
+                    }
+                }
             }
         });
-
     }
 
     public void getSpinnerItem() {
@@ -296,50 +355,50 @@ public class RapportFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 StatutVisiteRef visiteRef = (StatutVisiteRef) parent.getItemAtPosition(position);
-                if (visiteRef.getNom().equals(getResources().getString(R.string.select_statut_visite))) {
+                if (visiteRef.getNom().equals(getResources().getString(R.string.select_statut_visite)) || visiteRef.getCode().equals("VNP") || visiteRef.getCode().equals("VP")) {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                     spEtabContact.setVisibility(View.GONE);
                     etAutreLieu.setVisibility(View.GONE);
-                    llActivities.setVisibility(View.GONE);
                     llHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
                     etRapport.setVisibility(View.GONE);
-                    llProduitPromotionne.setVisibility(View.GONE);
+                    //  llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.GONE);
                 } else if (visiteRef.getCode().equals("VNE") || visiteRef.getCode().equals("VNR")) {
                     spEtabContact.setVisibility(View.GONE);
                     etAutreLieu.setVisibility(View.GONE);
-                    llActivities.setVisibility(View.GONE);
                     llHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
                     etRapport.setVisibility(View.VISIBLE);
-                    llProduitPromotionne.setVisibility(View.GONE);
+                    //  llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.VISIBLE);
                 } else if (visiteRef.getCode().equals("ABS")) {
                     spEtabContact.setVisibility(View.VISIBLE);
                     etAutreLieu.setVisibility(View.GONE);
-                    llActivities.setVisibility(View.GONE);
                     llHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
                     etRapport.setVisibility(View.VISIBLE);
-                    llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.VISIBLE);
-                    resetEtabContactSpinner();
+                    //  llProduitPromotionne.setVisibility(View.GONE);
+                    //  resetEtabContactSpinner();
                 } else if (visiteRef.getCode().equals("CE")) {
                     spEtabContact.setVisibility(View.VISIBLE);
                     etAutreLieu.setVisibility(View.GONE);
-                    llActivities.setVisibility(View.VISIBLE);
                     llHeures.setVisibility(View.VISIBLE);
+                    llActivities.setVisibility(View.VISIBLE);
                     etRapport.setVisibility(View.VISIBLE);
-                    llProduitPromotionne.setVisibility(View.VISIBLE);
                     llButtonReport.setVisibility(View.VISIBLE);
-                    resetEtabContactSpinner();
+                    // llProduitPromotionne.setVisibility(View.VISIBLE);
+                    //  resetEtabContactSpinner();
                 } else {
                     spEtabContact.setVisibility(View.GONE);
                     etAutreLieu.setVisibility(View.GONE);
-                    llActivities.setVisibility(View.GONE);
                     llHeures.setVisibility(View.GONE);
+                    llActivities.setVisibility(View.GONE);
                     etRapport.setVisibility(View.VISIBLE);
-                    llProduitPromotionne.setVisibility(View.GONE);
                     llButtonReport.setVisibility(View.VISIBLE);
+                    // llProduitPromotionne.setVisibility(View.GONE);
                 }
 
             }
@@ -378,16 +437,38 @@ public class RapportFragment extends Fragment {
         });
     }
 
-    public void resetEtabContactSpinner() {
-        //set spinner to selectionner etablissement or reset spEtabContact spinner
-        for (int i = 0; i < contactEtabSpinnerAdapter.getCount(); i++) {
-            if (contactEtabSpinnerAdapter.getItem(i).getNom_Etablissement().equals("-- SELECTIONNER UN ETABLISSEMENT --")) {
-                spEtabContact.setSelection(i);
-                break;
-            }
+    // item validation
+    public boolean isValidate() {
+        boolean valid = true;
+        String etabli = ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getNom_Etablissement();
+        if (etabli.equals("-- SELECTIONNER UN ETABLISSEMENT --")) {
+            TextView errorText = (TextView) spEtabContact.getSelectedView();
+            errorText.setError("");
+            errorText.setText("Le fileur de l'Etablissement est vide!");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            valid = false;
+        } else if (etAutreLieu.getVisibility() == View.VISIBLE && etAutreLieu.getText().toString().equals("")) {
+            etAutreLieu.setError("Lieu Obligatoire!");
+            etAutreLieu.setTextColor(Color.RED);
+            valid = false;
+        } else if (TextUtils.isEmpty(etRapport.getText().toString()) || (etRapport.getText().toString().equals(""))) {
+            etRapport.setError("Note Obligatoire!");
+            etRapport.setTextColor(Color.RED);
+            valid = false;
         }
+        return valid;
     }
 
+    /*   public void resetEtabContactSpinner() {
+           //set spinner to selectionner etablissement or reset spEtabContact spinner
+           for (int i = 0; i < contactEtabSpinnerAdapter.getCount(); i++) {
+               if (contactEtabSpinnerAdapter.getItem(i).getNom_Etablissement().equals("-- SELECTIONNER UN ETABLISSEMENT --")) {
+                   spEtabContact.setSelection(i);
+                   break;
+               }
+           }
+       }
+   */
     public String date(String x) {
         //2019-09-27T00:00:00
         Date dat = null;

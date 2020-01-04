@@ -45,7 +45,7 @@ public class JoinContactGhSVAdapter extends RecyclerView.Adapter<JoinContactGhSV
                         ghJourContactListener.onGhJourContactClick(contactGhSV.getGh_id(), contactGhSV.getCon_id());
                 }
             });
-            if (contactGhSV.getGh_complete() && !contactGhSV.getNom().equals("NON VISITE PLANIFIÉE")) {
+            if (contactGhSV.getGh_complete() && !contactGhSV.getNom().equals("VISITE NON PLANIFIÉE")) {
                 viewHolder.checkBox.setChecked(true);
                 viewHolder.checkBox.setEnabled(false);
                 viewHolder.ibClear.setVisibility(View.GONE);

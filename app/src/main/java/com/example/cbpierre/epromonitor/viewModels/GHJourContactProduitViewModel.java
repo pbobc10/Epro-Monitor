@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
+import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.repositories.GHJourContactProduitRepository;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public class GHJourContactProduitViewModel extends AndroidViewModel {
 
     public void deleteGHJourContactProduit() {
         ghJourContactProduitRepository.deleteGHJourContactProduit();
+    }
+
+    public void deleteGHJourContactProduitId(int ghId, int conId, String jour, int produitId) {
+        ghJourContactProduitRepository.deleteGHJourContactProduitId(ghId, conId, jour, produitId);
     }
 
     public void getGHJourContactProduit() {
@@ -55,11 +60,20 @@ public class GHJourContactProduitViewModel extends AndroidViewModel {
         });
     }
 
-    static class GHJouContactProduitParam {
+    public LiveData<List<Produit>> getAllGhJourContactProduit() {
+        return Transformations.switchMap(ghJouContactProduitParamMutable, new Function<GHJouContactProduitParam, LiveData<List<Produit>>>() {
+            @Override
+            public LiveData<List<Produit>> apply(GHJouContactProduitParam input) {
+                return ghJourContactProduitRepository.getAllGhJourContactProduit(input.ghId, input.jour, input.conId);
+            }
+        });
+    }
+
+   private static class GHJouContactProduitParam {
         private final int ghId, conId;
         private final String jour;
 
-        public GHJouContactProduitParam(int ghId, int conId, String jour) {
+        private GHJouContactProduitParam(int ghId, int conId, String jour) {
             this.ghId = ghId;
             this.conId = conId;
             this.jour = jour;

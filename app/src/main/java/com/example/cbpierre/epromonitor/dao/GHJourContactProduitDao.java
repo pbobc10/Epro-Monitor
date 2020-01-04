@@ -8,6 +8,7 @@ import android.arch.persistence.room.Query;
 
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
+import com.example.cbpierre.epromonitor.models.Produit;
 
 import java.util.List;
 
@@ -28,4 +29,17 @@ public interface GHJourContactProduitDao {
             "            and ghp.gh_id=:ghId and ghp.con_id=:conId and ghp.jour=:jour   ")
     LiveData<List<JoinProduitAcceptabliliteGHProduit>> getProduitAcceptabliliteGHProduit(int ghId, int conId, String jour);
 
+    @Query("select produit.produit_id ,produit.nom_produit from  pa_contact_produit,produit,gh_jour_contact" +
+            " where pa_contact_produit.produit_id=produit.produit_id " +
+            " and pa_contact_produit.con_id=gh_jour_contact.con_id" +
+            " and pa_contact_produit.con_id=:contactId " +
+            " and produit.produit_id not in (" +
+            " select gh_jour_contact_produit.produit_id from gh_jour_contact_produit where gh_id=:ghId and con_id=:contactId and jour=:jour" +
+            ")" +
+            "order by pa_contact_produit.produit_id")
+    LiveData<List<Produit>> allGhJourContactProduit(Integer ghId, String jour, Integer contactId);
+
+
+    @Query("delete from gh_jour_contact_produit where gh_id=:ghId and jour=:jour and con_id=:conId and produit_id=:produit_id")
+    void deleteGHJourContactProduitId(int ghId, int conId, String jour, int produit_id);
 }

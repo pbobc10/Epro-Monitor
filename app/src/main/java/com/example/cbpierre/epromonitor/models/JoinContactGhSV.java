@@ -14,6 +14,14 @@ public class JoinContactGhSV {
     private String statut;
     private String note;
     private String jour;
+    private boolean promotion;
+    private boolean livraison;
+    private boolean recouvrement;
+    private boolean autre;
+    private String debut;
+    private String fin;
+    private String lieu;
+    private String autre_lieu;
 
     public JoinContactGhSV() {
     }
@@ -121,5 +129,69 @@ public class JoinContactGhSV {
 
     public void setJour(String jour) {
         this.jour = jour;
+    }
+
+    public boolean isPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(boolean promotion) {
+        this.promotion = promotion;
+    }
+
+    public boolean isLivraison() {
+        return livraison;
+    }
+
+    public void setLivraison(boolean livraison) {
+        this.livraison = livraison;
+    }
+
+    public boolean isRecouvrement() {
+        return recouvrement;
+    }
+
+    public void setRecouvrement(boolean recouvrement) {
+        this.recouvrement = recouvrement;
+    }
+
+    public boolean isAutre() {
+        return autre;
+    }
+
+    public void setAutre(boolean autre) {
+        this.autre = autre;
+    }
+
+    public String getDebut() {
+        return debut;
+    }
+
+    public void setDebut(String debut) {
+        this.debut = debut;
+    }
+
+    public String getFin() {
+        return fin;
+    }
+
+    public void setFin(String fin) {
+        this.fin = fin;
+    }
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
+
+    public String getAutre_lieu() {
+        return autre_lieu;
+    }
+
+    public void setAutre_lieu(String autre_lieu) {
+        this.autre_lieu = autre_lieu;
     }
 }

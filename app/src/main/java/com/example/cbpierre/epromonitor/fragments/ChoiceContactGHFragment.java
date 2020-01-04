@@ -171,7 +171,7 @@ public class ChoiceContactGHFragment extends Fragment {
                 if (ghJourContactArrayList != null && ghJourContactArrayList.size() > 0) {
                     for (Integer conId : ghJourContactArrayList) {
                         // Insert Contact Jour
-                        ghJourContactViewModel.insertGHJourContact(new GHJourContact(jourStatutRef.getGh_id(), jourStatutRef.getJour(), conId, jourStatutRef.getGh_complete()?"NVP":"VP", false, false, false, false, null, null, null, null, null, null, null, creePar, creeLe, modifiePar, modifieLe, false, null, null, null));
+                        ghJourContactViewModel.insertGHJourContact(new GHJourContact(jourStatutRef.getGh_id(), jourStatutRef.getJour(), conId, jourStatutRef.getGh_complete()?"VNP":"VP", false, false, false, false, null, null, null, null, null, null, null, creePar, creeLe, modifiePar, modifieLe, false, null, null, null));
                     }
                     // update GH apres ajout
                     ghViewModel.updateGH(jourStatutRef.getGh_id().toString(), modifiePar, modifieLe);

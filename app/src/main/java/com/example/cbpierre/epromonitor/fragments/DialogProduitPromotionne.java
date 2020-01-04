@@ -21,6 +21,7 @@ import com.example.cbpierre.epromonitor.adapters.ContactProduitSpinnerAdapter;
 import com.example.cbpierre.epromonitor.models.AcceptabiliteRef;
 import com.example.cbpierre.epromonitor.models.GHJourContactProduit;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
+import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
 import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.viewModels.AcceptabiliteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourContactProduitViewModel;
@@ -42,6 +43,8 @@ public class DialogProduitPromotionne extends DialogFragment {
     private JoinContactGhSV contactGhSV;
     private int produit_id;
     private String acceptabiiteCode;
+
+    private OnSubmitProduitPromotionneLister produitPromotionneLister;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +75,8 @@ public class DialogProduitPromotionne extends DialogFragment {
             public void onChanged(@Nullable JoinContactGhSV joinContactGhSV) {
                 if (joinContactGhSV != null) {
                     contactGhSV = joinContactGhSV;
-                    paContactProduitViewModel.setProduitByContactId(joinContactGhSV.getCon_id());
+                    //get gh Jour Contact Produit Promotionne
+                    ghJourContactProduitViewModel.setGhJouContactProduitParamMutable(joinContactGhSV.getGh_id(), joinContactGhSV.getCon_id(), joinContactGhSV.getJour());
                 }
             }
         });
@@ -95,7 +99,7 @@ public class DialogProduitPromotionne extends DialogFragment {
 
     public void populateSpinner() {
         //spinner Observer
-        paContactProduitViewModel.getProduitByContactId().observe(this, new Observer<List<Produit>>() {
+        ghJourContactProduitViewModel.getAllGhJourContactProduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onChanged(@Nullable List<Produit> produits) {
                 if (produits != null) {
@@ -104,7 +108,6 @@ public class DialogProduitPromotionne extends DialogFragment {
                 }
                 contactProduitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spProduitPromotionne.setAdapter(contactProduitSpinnerAdapter);
-
             }
         });
         acceptabiliteViewModel.getAllAcceptabiliteRef().observe(this, new Observer<List<AcceptabiliteRef>>() {
@@ -155,6 +158,14 @@ public class DialogProduitPromotionne extends DialogFragment {
 
             }
         });
+    }
+
+    public interface OnSubmitProduitPromotionneLister {
+        List<JoinProduitAcceptabliliteGHProduit> onSubmitproduit();
+    }
+
+    public void setProduitPromotionneLister(OnSubmitProduitPromotionneLister produitPromotionneLister) {
+        this.produitPromotionneLister = produitPromotionneLister;
     }
 }
 
