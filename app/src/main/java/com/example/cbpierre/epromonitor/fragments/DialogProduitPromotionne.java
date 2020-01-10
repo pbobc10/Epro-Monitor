@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.AcceptabiliteSpinnerAdapter;
@@ -43,6 +46,7 @@ public class DialogProduitPromotionne extends DialogFragment {
     private JoinContactGhSV contactGhSV;
     private int produit_id;
     private String acceptabiiteCode;
+    private LinearLayout llAcceptabilite;
 
     private OnSubmitProduitPromotionneLister produitPromotionneLister;
 
@@ -69,6 +73,10 @@ public class DialogProduitPromotionne extends DialogFragment {
         submit = view.findViewById(R.id.btnSubmitProduit);
         cancel = view.findViewById(R.id.btnCancelProduit);
         etNoteProduitPromo = view.findViewById(R.id.etProduitPromotionneNote);
+        llAcceptabilite = view.findViewById(R.id.llAcceptabilite);
+
+        llAcceptabilite.setVisibility(View.GONE);
+        etNoteProduitPromo.setVisibility(View.GONE);
 
         shareJoinContactGhSV.getShareJoinContactGhSV().observe(this, new Observer<JoinContactGhSV>() {
             @Override
@@ -85,8 +93,13 @@ public class DialogProduitPromotionne extends DialogFragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ghJourContactProduitViewModel.insertGHJourContactProduit(new GHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getJour(), contactGhSV.getCon_id(), produit_id, acceptabiiteCode, etNoteProduitPromo.getText().toString()));
-                dismiss();
+                if (llAcceptabilite.getVisibility() == View.VISIBLE) {
+                    if (isValidate()) {
+                        ghJourContactProduitViewModel.insertGHJourContactProduit(new GHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getJour(), contactGhSV.getCon_id(), produit_id, acceptabiiteCode, etNoteProduitPromo.getText().toString()));
+                        dismiss();
+                    }
+                } else
+                    Toast.makeText(getContext(), "aucun produit sélectionné", Toast.LENGTH_LONG).show();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +116,8 @@ public class DialogProduitPromotionne extends DialogFragment {
             @Override
             public void onChanged(@Nullable List<Produit> produits) {
                 if (produits != null) {
-                    produits.add(0, new Produit(null, getResources().getString(R.string.select_produit_promotionne)));
+                    if (!produits.contains(new Produit(null, getResources().getString(R.string.select_produit_promotionne))))
+                        produits.add(0, new Produit(null, getResources().getString(R.string.select_produit_promotionne)));
                     contactProduitSpinnerAdapter = new ContactProduitSpinnerAdapter(getContext(), R.layout.spinner_rows, produits);
                 }
                 contactProduitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -131,7 +145,11 @@ public class DialogProduitPromotionne extends DialogFragment {
                 if (produit.getNomProduit().equals("-- SELECTIONNER PRODUIT PROMOTIONNE --")) {
                     TextView textView = (TextView) view;
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
+                    llAcceptabilite.setVisibility(View.GONE);
+                    etNoteProduitPromo.setVisibility(View.GONE);
                 } else {
+                    llAcceptabilite.setVisibility(View.VISIBLE);
+                    etNoteProduitPromo.setVisibility(View.VISIBLE);
                     produit_id = produit.getProduitId();
                 }
             }
@@ -158,6 +176,19 @@ public class DialogProduitPromotionne extends DialogFragment {
 
             }
         });
+    }
+
+    public boolean isValidate() {
+        boolean validate = true;
+        String statutVisite = ((AcceptabiliteRef) spAcceptabilite.getSelectedItem()).getNom();
+        if (statutVisite.equals("-- SELECTIONNER ACCEPTABILITE --")) {
+            TextView errorTV = (TextView) spAcceptabilite.getSelectedView();
+            errorTV.setError("");
+            errorTV.setText("aucun Acceptabilite sélectionné");
+            errorTV.setTextColor(Color.RED);
+            validate = false;
+        }
+        return validate;
     }
 
     public interface OnSubmitProduitPromotionneLister {

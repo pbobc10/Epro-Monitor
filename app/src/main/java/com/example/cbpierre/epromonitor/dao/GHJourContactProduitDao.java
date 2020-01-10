@@ -42,4 +42,7 @@ public interface GHJourContactProduitDao {
 
     @Query("delete from gh_jour_contact_produit where gh_id=:ghId and jour=:jour and con_id=:conId and produit_id=:produit_id")
     void deleteGHJourContactProduitId(int ghId, int conId, String jour, int produit_id);
+
+    @Query("delete from gh_jour_contact_produit where gh_id=:ghId and jour=:jour and con_id=:conId")
+    void deleteGHJourContactProduit(int ghId, int conId, String jour);
 }

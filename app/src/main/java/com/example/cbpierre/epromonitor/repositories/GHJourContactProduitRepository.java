@@ -37,6 +37,10 @@ public class GHJourContactProduitRepository {
         new DeleteGHJourContactProduitIdTask(ghJourContactProduitDao).execute(Integer.toString(ghId), Integer.toString(conId), jour, Integer.toString(produitId));
     }
 
+    public void deleteGHJourContactProduit(int ghId, int conId, String jour) {
+        new DeleteGHJourContactProduitByJourTask(ghJourContactProduitDao).execute(Integer.toString(ghId), Integer.toString(conId), jour);
+    }
+
     public void getGHJourContactProduitList() {
         new GHJourContactProduitListTask(ghJourContactProduitDao).execute();
     }
@@ -86,6 +90,20 @@ public class GHJourContactProduitRepository {
         @Override
         protected Void doInBackground(String... strings) {
             ghJourContactProduitDao.deleteGHJourContactProduitId(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]), strings[2], Integer.parseInt(strings[3]));
+            return null;
+        }
+    }
+
+    private static class DeleteGHJourContactProduitByJourTask extends AsyncTask<String, Void, Void> {
+        private GHJourContactProduitDao ghJourContactProduitDao;
+
+        public DeleteGHJourContactProduitByJourTask(GHJourContactProduitDao ghJourContactProduitDao) {
+            this.ghJourContactProduitDao = ghJourContactProduitDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            ghJourContactProduitDao.deleteGHJourContactProduit(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]), strings[2]);
             return null;
         }
     }

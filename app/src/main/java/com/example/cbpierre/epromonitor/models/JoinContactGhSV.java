@@ -22,6 +22,7 @@ public class JoinContactGhSV {
     private String fin;
     private String lieu;
     private String autre_lieu;
+    private String statut_temporel;
 
     public JoinContactGhSV() {
     }
@@ -193,5 +194,13 @@ public class JoinContactGhSV {
 
     public void setAutre_lieu(String autre_lieu) {
         this.autre_lieu = autre_lieu;
+    }
+
+    public String getStatut_temporel() {
+        return statut_temporel;
+    }
+
+    public void setStatut_temporel(String statut_temporel) {
+        this.statut_temporel = statut_temporel;
     }
 }

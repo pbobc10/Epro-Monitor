@@ -26,7 +26,7 @@ public interface GHJourContactDao {
     void updateGHJourContact(String statut, String note, String creePar, String creeLe, String modifiePar, String modifieLe, String jour, Integer ghId, Integer conId,
                              boolean promotion, boolean livraison, boolean recouvrement, boolean autre, String debut, String fin, String lieu, String autreLieu);
 
-    @Query("select gh_jour_contact.gh_id,gh_jour_contact.con_id,contact_visite.nom_ratio,statut_visite_ref.nom,gh_jour_contact.statut,gh_jour_contact.cree_par ,gh_jour_contact.cree_le,gh_jour_contact.modifie_par,gh_jour_contact.modifie_le,gh_jour.rapport_complete,gh.gh_complete ,gh_jour_contact.note,gh_jour_contact.jour,gh_jour_contact.promotion,gh_jour_contact.livraison,gh_jour_contact.recouvrement,gh_jour_contact.autre,gh_jour_contact.debut,gh_jour_contact.fin,gh_jour_contact.lieu,gh_jour_contact.autre_lieu from gh_jour_contact,statut_visite_ref,contact_visite,gh_jour,gh" +
+    @Query("select gh_jour_contact.gh_id,gh_jour_contact.con_id,contact_visite.nom_ratio,statut_visite_ref.nom,gh_jour_contact.statut,gh_jour_contact.cree_par ,gh_jour_contact.cree_le,gh_jour_contact.modifie_par,gh_jour_contact.modifie_le,gh_jour.rapport_complete,gh.gh_complete ,gh_jour_contact.note,gh_jour_contact.jour,gh_jour_contact.promotion,gh_jour_contact.livraison,gh_jour_contact.recouvrement,gh_jour_contact.autre,gh_jour_contact.debut,gh_jour_contact.fin,gh_jour_contact.lieu,gh_jour_contact.autre_lieu,gh.statut_temporel from gh_jour_contact,statut_visite_ref,contact_visite,gh_jour,gh" +
             " where gh_jour_contact.con_id=contact_visite.con_id " +
             "and gh_jour_contact.statut=statut_visite_ref.code " +
             "and gh_jour_contact.gh_id=gh_jour.gh_id " +

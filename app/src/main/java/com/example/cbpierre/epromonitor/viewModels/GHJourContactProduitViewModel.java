@@ -33,6 +33,10 @@ public class GHJourContactProduitViewModel extends AndroidViewModel {
         ghJourContactProduitRepository.deleteGHJourContactProduit();
     }
 
+    public void deleteGHJourContactProduit(int ghId, int conId, String jour) {
+        ghJourContactProduitRepository.deleteGHJourContactProduit(ghId, conId, jour);
+    }
+
     public void deleteGHJourContactProduitId(int ghId, int conId, String jour, int produitId) {
         ghJourContactProduitRepository.deleteGHJourContactProduitId(ghId, conId, jour, produitId);
     }
@@ -69,7 +73,7 @@ public class GHJourContactProduitViewModel extends AndroidViewModel {
         });
     }
 
-   private static class GHJouContactProduitParam {
+    private static class GHJouContactProduitParam {
         private final int ghId, conId;
         private final String jour;
 

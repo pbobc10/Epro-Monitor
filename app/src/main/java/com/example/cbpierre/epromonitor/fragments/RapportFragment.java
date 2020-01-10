@@ -33,11 +33,13 @@ import android.widget.Toast;
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.UserSessionPreferences;
 import com.example.cbpierre.epromonitor.adapters.ContactEtabSpinnerAdapter;
+import com.example.cbpierre.epromonitor.adapters.ContactProduitSpinnerAdapter;
 import com.example.cbpierre.epromonitor.adapters.JoinProduitAcceptabliliteGHProduitAdapter;
 import com.example.cbpierre.epromonitor.adapters.StatutVisiteSpinnerAdapter;
 import com.example.cbpierre.epromonitor.models.JoinContactEtablissementData;
 import com.example.cbpierre.epromonitor.models.JoinContactGhSV;
 import com.example.cbpierre.epromonitor.models.JoinProduitAcceptabliliteGHProduit;
+import com.example.cbpierre.epromonitor.models.Produit;
 import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
 import com.example.cbpierre.epromonitor.viewModels.GHJourContactProduitViewModel;
@@ -79,6 +81,7 @@ public class RapportFragment extends Fragment {
     private CheckBox cbPromotion, cbLivraison, cbRecouvrement, cbAutre;
 
     private ContactEtabSpinnerAdapter contactEtabSpinnerAdapter;
+    private ContactProduitSpinnerAdapter contactProduitSpinnerAdapter;
     private JoinProduitAcceptabliliteGHProduitAdapter ghProduitAdapter;
     private TimePickerDialog pickerDialog;
     private RecyclerView rvProduitPromotionne;
@@ -238,9 +241,9 @@ public class RapportFragment extends Fragment {
                 if (isValidate()) {
                     //Get the selected item out a spinner using:
                     String codeStatutVisite = ((StatutVisiteRef) spStatutVisite.getSelectedItem()).getCode();
-                    String etab = ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getNom_Etablissement();
+                    String etab = ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getEtId().toString();
                     //insert rapport data
-                    ghJourContactViewModel.updateGHJourContact(codeStatutVisite, etRapport.getText().toString(), creePar, creeLe, modifiePar, modifieLe, contactGhSV.getJour(), contactGhSV.getGh_id().toString(), contactGhSV.getCon_id().toString(), Boolean.toString(cbPromotion.isChecked()), Boolean.toString(cbLivraison.isChecked()), Boolean.toString(cbRecouvrement.isChecked()), Boolean.toString(cbAutre.isChecked()), etDebut.getText().toString(), etFin.getText().toString(), etab, etAutreLieu.getText().toString());
+                    ghJourContactViewModel.updateGHJourContact(codeStatutVisite, etRapport.getText().toString(), creePar, creeLe, modifiePar, modifieLe, contactGhSV.getJour(), contactGhSV.getGh_id().toString(), contactGhSV.getCon_id().toString(), Boolean.toString(cbPromotion.isChecked()), Boolean.toString(cbLivraison.isChecked()), Boolean.toString(cbRecouvrement.isChecked()), Boolean.toString(cbAutre.isChecked()), etDebut.getText().toString(), etFin.getText().toString(), etab, (etAutreLieu.getVisibility() == View.VISIBLE) ? etAutreLieu.getText().toString() : null);
                     getActivity().onBackPressed();
                 } else {
                     Toast.makeText(getContext(), "l'enregistrement a échoué!!!", Toast.LENGTH_LONG).show();
@@ -252,18 +255,19 @@ public class RapportFragment extends Fragment {
         btnAnnuler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //check time
-                checkTime(etDebut.getText().toString(), etFin.getText().toString());
                 getActivity().onBackPressed();
             }
         });
         btnProduitPromotionne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                DialogProduitPromotionne produitPromotionne = new DialogProduitPromotionne();
-                produitPromotionne.show(fragmentManager, "test");
-
+                if (contactEtabSpinnerAdapter.getCount() == ghProduitAdapter.getItemCount()) {
+                    Toast.makeText(getContext(), "aucun produit a sélectionner", Toast.LENGTH_LONG).show();
+                } else {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    DialogProduitPromotionne produitPromotionne = new DialogProduitPromotionne();
+                    produitPromotionne.show(fragmentManager, "test");
+                }
             }
         });
     }
@@ -277,6 +281,7 @@ public class RapportFragment extends Fragment {
                     llProduitPromotionne.setVisibility(View.VISIBLE);
                 } else {
                     llProduitPromotionne.setVisibility(View.GONE);
+                    ghJourContactProduitViewModel.deleteGHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getCon_id(), contactGhSV.getJour());
                 }
             }
         });
@@ -296,13 +301,27 @@ public class RapportFragment extends Fragment {
         pickerDialog.show();
     }
 
-    public void checkTime(String debut, String fin) {
+    public Boolean checkTime() {
         //float debH = 0f, finH = 0f;
-        float debH = debut.equals("") ? 0f : Float.parseFloat((debut.replace(':', '.')));
-        float finH = fin.equals("") ? 0f : Float.parseFloat((fin.replace(':', '.')));
-        if (debH > finH)
-            Toast.makeText(getContext(), "L'Heure de debut droit etre inferieur a l'heure de fin" + ":" + debH, Toast.LENGTH_LONG).show();
-
+        boolean ok = true;
+        float debH = etDebut.getText().toString().equals("") ? 0f : Float.parseFloat((etDebut.getText().toString().replace(':', '.')));
+        float finH = etFin.getText().toString().equals("") ? 0f : Float.parseFloat((etFin.getText().toString().replace(':', '.')));
+        if (debH > finH) {
+            //Toast.makeText(getContext(), "L'Heure de debut droit etre inferieur a l'heure de fin" + ":" + debH, Toast.LENGTH_LONG).show();
+            etFin.setError("L'Heure de fin droit etre superieur a l'heure de debut");
+            ok = false;
+        } else if (debH == 0f && finH == 0f) {
+            etDebut.setError("Heure  de debut obligatoire");
+            etFin.setError("Heure de fin obligatoire");
+            ok = false;
+        } else if (debH > 0f && finH == 0f) {
+            etFin.setError("heure de fin obligatoire");
+            ok = false;
+        } else if (finH > 0f && debH == 0f) {
+            etDebut.setError("heure de fin obligatoire");
+            ok = false;
+        }
+        return ok;
     }
 
     public void populateSpinner() {
@@ -333,18 +352,27 @@ public class RapportFragment extends Fragment {
             public void onChanged(@Nullable List<JoinContactEtablissementData> contactEtablissementData) {
                 // add new etablissement object
                 if (contactEtablissementData != null) {
-                    contactEtablissementData.add(new JoinContactEtablissementData(null, null, "AUTRE", null, null, null, null));
-                    contactEtablissementData.add(0, (new JoinContactEtablissementData(null, null, "-- SELECTIONNER UN ETABLISSEMENT --", null, null, null, null)));
+                    contactEtablissementData.add(new JoinContactEtablissementData(123456789, 123456789, "AUTRE", null, null, null, null));
+                    contactEtablissementData.add(0, (new JoinContactEtablissementData(1234567890, 1234567890, "-- SELECTIONNER UN ETABLISSEMENT --", null, null, null, null)));
                 }
                 contactEtabSpinnerAdapter = new ContactEtabSpinnerAdapter(getContext(), R.layout.spinner_rows, contactEtablissementData);
                 contactEtabSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spEtabContact.setAdapter(contactEtabSpinnerAdapter);
                 //Setting spinner item based on value (rather than item position):
                 for (int i = 0; i < contactEtabSpinnerAdapter.getCount(); i++) {
-                    if (contactEtabSpinnerAdapter.getItem(i).getNom_Etablissement().equals(contactGhSV.getLieu())) {
+                    if (contactEtabSpinnerAdapter.getItem(i).getEtId().toString().equals(contactGhSV.getLieu())) {
                         spEtabContact.setSelection(i);
                         break;
                     }
+                }
+            }
+        });
+        // only to check if contactProduitSpinnerAdapter is empty, not for populate database item
+        ghJourContactProduitViewModel.getAllGhJourContactProduit().observe(this, new Observer<List<Produit>>() {
+            @Override
+            public void onChanged(@Nullable List<Produit> produits) {
+                if (produits != null) {
+                    contactProduitSpinnerAdapter = new ContactProduitSpinnerAdapter(getContext(), R.layout.spinner_rows, produits);
                 }
             }
         });
@@ -440,7 +468,8 @@ public class RapportFragment extends Fragment {
     // item validation
     public boolean isValidate() {
         boolean valid = true;
-        String etabli = ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getNom_Etablissement();
+        String codeStatutVisite = ((StatutVisiteRef) spStatutVisite.getSelectedItem()).getCode();
+        String etabli = (spEtabContact.getVisibility() == View.VISIBLE) ? ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getNom_Etablissement() : "";
         if (etabli.equals("-- SELECTIONNER UN ETABLISSEMENT --")) {
             TextView errorText = (TextView) spEtabContact.getSelectedView();
             errorText.setError("");
@@ -448,12 +477,14 @@ public class RapportFragment extends Fragment {
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             valid = false;
         } else if (etAutreLieu.getVisibility() == View.VISIBLE && etAutreLieu.getText().toString().equals("")) {
-            etAutreLieu.setError("Lieu Obligatoire!");
-            etAutreLieu.setTextColor(Color.RED);
+            etAutreLieu.setError("Lieu obligatoire!");
+            // etAutreLieu.setTextColor(Color.RED);
             valid = false;
-        } else if (TextUtils.isEmpty(etRapport.getText().toString()) || (etRapport.getText().toString().equals(""))) {
-            etRapport.setError("Note Obligatoire!");
-            etRapport.setTextColor(Color.RED);
+        } else if (llHeures.getVisibility() == View.VISIBLE && !checkTime()) {
+            valid = false;
+        } else if ( codeStatutVisite.equals("VNE") && (TextUtils.isEmpty(etRapport.getText().toString()) || (etRapport.getText().toString().equals("")))) {
+            etRapport.setError("Note obligatoire!");
+            // etRapport.setTextColor(Color.RED);
             valid = false;
         }
         return valid;

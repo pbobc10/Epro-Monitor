@@ -148,8 +148,12 @@ public class MardiGHFragment extends Fragment {
         joinContactGhSVAdapter.setOnGhContactListener(new JoinContactGhSVAdapter.OnGHContactListener() {
             @Override
             public void onGhContactClick(JoinContactGhSV joinContactGhSV) {
-                shareJoinContactGhSV.setJoinContactGhSVMutableLiveData(joinContactGhSV);
-                replaceFragment(new RapportFragment());
+                if (!joinContactGhSV.getStatut_temporel().equals("PROCHAIN")) {
+                    shareJoinContactGhSV.setJoinContactGhSVMutableLiveData(joinContactGhSV);
+                    replaceFragment(new RapportFragment());
+                } else {
+                    Toast.makeText(getContext(), "Pas de rapport pour le GH Prochain!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

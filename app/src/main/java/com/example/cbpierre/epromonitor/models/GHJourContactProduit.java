@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -11,7 +12,12 @@ import com.google.gson.annotations.SerializedName;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Entity(tableName = "gh_jour_contact_produit", primaryKeys = {"gh_id", "jour", "con_id", "produit_id"})
+@Entity(tableName = "gh_jour_contact_produit", primaryKeys = {"gh_id", "jour", "con_id", "produit_id"},
+        indices = {
+                @Index(value = {"gh_id", "jour", "con_id"}, name = "ghJourContactProduit_index", unique = false),
+                @Index(value = {"jour", "jour", "con_id", "produit_id"}, name = "ghJourContactProduit_produit_index", unique = false)
+        }
+)
 public class GHJourContactProduit {
     @Expose
     @SerializedName("GHID")
