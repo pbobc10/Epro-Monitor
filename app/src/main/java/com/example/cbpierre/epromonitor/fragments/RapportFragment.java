@@ -180,7 +180,15 @@ public class RapportFragment extends Fragment {
                     spStatutVisite.setEnabled(false);
                     etRapport.setEnabled(false);
                     btnSoumettre.setEnabled(false);
-                    btnAnnuler.setEnabled(false);
+                    etDebut.setEnabled(false);
+                    etFin.setEnabled(false);
+                    cbRecouvrement.setEnabled(false);
+                    cbPromotion.setEnabled(false);
+                    cbLivraison.setEnabled(false);
+                    cbAutre.setEnabled(false);
+                    btnProduitPromotionne.setEnabled(false);
+                    spEtabContact.setEnabled(false);
+                    etAutreLieu.setEnabled(false);
                 }
 
                 txtVisiteADrX.setText("Visite à " + joinContactGhSV.getNom_ratio());
@@ -352,7 +360,7 @@ public class RapportFragment extends Fragment {
             public void onChanged(@Nullable List<JoinContactEtablissementData> contactEtablissementData) {
                 // add new etablissement object
                 if (contactEtablissementData != null) {
-                    contactEtablissementData.add(new JoinContactEtablissementData(123456789, 123456789, "AUTRE", null, null, null, null));
+                    contactEtablissementData.add(new JoinContactEtablissementData(0, 0, "AUTRE", null, null, null, null));
                     contactEtablissementData.add(0, (new JoinContactEtablissementData(1234567890, 1234567890, "-- SELECTIONNER UN ETABLISSEMENT --", null, null, null, null)));
                 }
                 contactEtabSpinnerAdapter = new ContactEtabSpinnerAdapter(getContext(), R.layout.spinner_rows, contactEtablissementData);
