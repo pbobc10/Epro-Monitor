@@ -2,6 +2,7 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "zone_table")
+@Entity(tableName = "zone_table", indices = @Index(value = "zone_ht_id", name = "zone_index", unique = true))
 public class Zone {
     @PrimaryKey
     @NonNull

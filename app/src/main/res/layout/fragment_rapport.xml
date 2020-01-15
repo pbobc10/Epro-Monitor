@@ -99,7 +99,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/frame"
                 android:hint="Autre Lieu"
-                android:inputType="text|textCapSentences"
+                android:inputType="text|textCapWords"
                 android:padding="8dp"
                 android:textSize="16sp"
                 android:textStyle="normal" />

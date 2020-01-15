@@ -41,7 +41,7 @@ public interface ContactDao {
             "and TITRE_TABLE.tid=CONTACT_TABLE.titre " +
             "and ((contact_table.nom like '%'||:nom ||'%')" +
             "or (contact_table.prenom like '%'|| :nom ||'%'))" +
-            "order by contact_table.nom")
+            "order by contact_table.modifie_le desc")
     LiveData<List<CompleteContact>> getContactByNom(String nom);
 
 
@@ -51,16 +51,17 @@ public interface ContactDao {
             "and SECTEUR_TABLE.secId=CONTACT_TABLE.secteur " +
             "and SPECIALITE_TABLE.spId=CONTACT_TABLE.specialite   " +
             "and TITRE_TABLE.tid=CONTACT_TABLE.titre " +
-            "order by contact_table.nom")
+            "order by contact_table.modifie_le desc")
     LiveData<List<CompleteContact>> getAllCompleteContacts();
 
     /**
      * PA
      */
-    @Query("Select contact_visite.nom_ratio,nature_table.nomNature,specialite_table.nomSpecialite,pa_contact.force,pa_contact.quota,pa_contact.con_id from pa_contact,contact_visite , NATURE_TABLE,SPECIALITE_TABLE " +
-            "where  SPECIALITE_TABLE.spId=contact_visite.specialite " +
-            " and pa_contact.con_id=contact_visite.con_id " +
-            "and NATURE_TABLE.natId=contact_visite.nom_nature " +
-            "order by contact_visite.nom_ratio")
+    @Query("Select contact_visite.nom_ratio,nature_table.nomNature,specialite_table.nomSpecialite,pa_contact.force,pa_contact.quota,pa_contact.con_id from pa_contact,contact_visite , NATURE_TABLE,SPECIALITE_TABLE  \n" +
+            "            where  SPECIALITE_TABLE.spId=contact_visite.specialite  \n" +
+            "             and pa_contact.con_id=contact_visite.con_id  \n" +
+            "            and NATURE_TABLE.natId=contact_visite.nom_nature  \n" +
+            "            and pa_contact.quota<>'-1' \n" +
+            "            order by contact_visite.nom_ratio")
     LiveData<List<JoinContactPaContact>> getAllContactPA();
 }

@@ -247,9 +247,15 @@ public class RapportFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isValidate()) {
+                    // test check box
+                    if (!cbPromotion.isChecked()) {
+                        ghJourContactProduitViewModel.deleteGHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getCon_id(), contactGhSV.getJour());
+                    }
+
                     //Get the selected item out a spinner using:
                     String codeStatutVisite = ((StatutVisiteRef) spStatutVisite.getSelectedItem()).getCode();
                     String etab = ((JoinContactEtablissementData) spEtabContact.getSelectedItem()).getEtId().toString();
+
                     //insert rapport data
                     ghJourContactViewModel.updateGHJourContact(codeStatutVisite, etRapport.getText().toString(), creePar, creeLe, modifiePar, modifieLe, contactGhSV.getJour(), contactGhSV.getGh_id().toString(), contactGhSV.getCon_id().toString(), Boolean.toString(cbPromotion.isChecked()), Boolean.toString(cbLivraison.isChecked()), Boolean.toString(cbRecouvrement.isChecked()), Boolean.toString(cbAutre.isChecked()), etDebut.getText().toString(), etFin.getText().toString(), etab, (etAutreLieu.getVisibility() == View.VISIBLE) ? etAutreLieu.getText().toString() : null);
                     getActivity().onBackPressed();
@@ -269,13 +275,16 @@ public class RapportFragment extends Fragment {
         btnProduitPromotionne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contactEtabSpinnerAdapter.getCount() == ghProduitAdapter.getItemCount()) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                DialogProduitPromotionne produitPromotionne = new DialogProduitPromotionne();
+                produitPromotionne.show(fragmentManager, "test");
+               /* if ( rvProduitPromotionne.getChildCount() == ghProduitAdapter.getItemCount()) {
                     Toast.makeText(getContext(), "aucun produit a sélectionner", Toast.LENGTH_LONG).show();
                 } else {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     DialogProduitPromotionne produitPromotionne = new DialogProduitPromotionne();
                     produitPromotionne.show(fragmentManager, "test");
-                }
+                }*/
             }
         });
     }
@@ -289,7 +298,7 @@ public class RapportFragment extends Fragment {
                     llProduitPromotionne.setVisibility(View.VISIBLE);
                 } else {
                     llProduitPromotionne.setVisibility(View.GONE);
-                    ghJourContactProduitViewModel.deleteGHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getCon_id(), contactGhSV.getJour());
+                    // ghJourContactProduitViewModel.deleteGHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getCon_id(), contactGhSV.getJour());
                 }
             }
         });
@@ -310,25 +319,38 @@ public class RapportFragment extends Fragment {
     }
 
     public Boolean checkTime() {
-        //float debH = 0f, finH = 0f;
         boolean ok = true;
-        float debH = etDebut.getText().toString().equals("") ? 0f : Float.parseFloat((etDebut.getText().toString().replace(':', '.')));
-        float finH = etFin.getText().toString().equals("") ? 0f : Float.parseFloat((etFin.getText().toString().replace(':', '.')));
-        if (debH > finH) {
-            //Toast.makeText(getContext(), "L'Heure de debut droit etre inferieur a l'heure de fin" + ":" + debH, Toast.LENGTH_LONG).show();
-            etFin.setError("L'Heure de fin droit etre superieur a l'heure de debut");
-            ok = false;
-        } else if (debH == 0f && finH == 0f) {
+        String[] debH = etDebut.getText().toString().split(":");
+        String[] finH = etFin.getText().toString().split(":");
+
+        if (!debH[0].equals("") && !finH[0].equals("")) {
+            if ((Integer.parseInt(debH[0]) == Integer.parseInt(finH[0]))) {
+                if (Integer.parseInt(debH[1]) == Integer.parseInt(finH[1])) {
+                    etDebut.setError("L'Heure de debut droit etre inferieur a l'heure de fin");
+                    ok = false;
+                } else if ((Integer.parseInt(debH[1]) > Integer.parseInt(finH[1]))) {
+                    etFin.setError("L'Heure de fin droit etre superieur a l'heure de debut");
+                    ok = false;
+                }
+            } else if ((Integer.parseInt(debH[0]) != Integer.parseInt(finH[0]))) {
+                if (Integer.parseInt(debH[0]) > Integer.parseInt(finH[0])) {
+                    etFin.setError("L'Heure de fin droit etre superieur a l'heure de debut");
+                    ok = false;
+                }
+            }
+        } else if (debH[0].equals("") && finH[0].equals("")) {
             etDebut.setError("Heure  de debut obligatoire");
-            etFin.setError("Heure de fin obligatoire");
+            etFin.setError("Heure  de fin obligatoire");
             ok = false;
-        } else if (debH > 0f && finH == 0f) {
-            etFin.setError("heure de fin obligatoire");
+        } else if (!debH[0].equals("") && finH[0].equals("")) {
+            etFin.setError("Heure  de fin obligatoire");
             ok = false;
-        } else if (finH > 0f && debH == 0f) {
-            etDebut.setError("heure de fin obligatoire");
+        } else if (debH[0].equals("") && !finH[0].equals("")) {
+            etDebut.setError("Heure  de fin obligatoire");
             ok = false;
         }
+
+
         return ok;
     }
 
@@ -490,7 +512,7 @@ public class RapportFragment extends Fragment {
             valid = false;
         } else if (llHeures.getVisibility() == View.VISIBLE && !checkTime()) {
             valid = false;
-        } else if ( codeStatutVisite.equals("VNE") && (TextUtils.isEmpty(etRapport.getText().toString()) || (etRapport.getText().toString().equals("")))) {
+        } else if (codeStatutVisite.equals("VNE") && (TextUtils.isEmpty(etRapport.getText().toString()) || (etRapport.getText().toString().equals("")))) {
             etRapport.setError("Note obligatoire!");
             // etRapport.setTextColor(Color.RED);
             valid = false;

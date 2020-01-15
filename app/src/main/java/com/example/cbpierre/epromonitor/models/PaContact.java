@@ -2,12 +2,17 @@ package com.example.cbpierre.epromonitor.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.support.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Entity(tableName = "pa_contact", primaryKeys = {"pa_id", "con_id"})
+@Entity(tableName = "pa_contact", primaryKeys = {"pa_id", "con_id"}
+        , indices = {@Index(value = {"pa_id", "con_id"}, name = "pa_contact_index1", unique = false)
+        , @Index(value = "con_id", name = "pa_contact_index2", unique = false)
+}
+)
 public class PaContact {
     @NonNull
     @ColumnInfo(name = "pa_id")
