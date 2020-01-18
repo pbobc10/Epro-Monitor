@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -105,6 +106,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -298,6 +300,9 @@ public class TelechargementFragment extends Fragment {
 
                 zoneRequest(AppConfig.URL_ZONE);
                 etablissementRequest(AppConfig.URL_ETABLISSEMENT);
+                //test download PA
+                produitRequest(AppConfig.URL_PRODUIT_REF);
+                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
 
             }
         });
@@ -316,8 +321,8 @@ public class TelechargementFragment extends Fragment {
                 showDialog();
 
                 planActionRequest(AppConfig.URL_PA);
-                produitRequest(AppConfig.URL_PRODUIT_REF);
-                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
+                /*produitRequest(AppConfig.URL_PRODUIT_REF);
+                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);*/
             }
         });
 
@@ -485,9 +490,16 @@ public class TelechargementFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t ZONE", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t ZONE", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), "Connection or the socket timed out \n\t\t\t\t ZONE", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -535,20 +547,29 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Téléchargement ETABLISSEMENT terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t ETABLISSEMENT", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t ETABLISSEMENT", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), "Connection or the socket timed out \n\t\t\t\t ETABLISSEMENT", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
-
+    /**
+     * All PA
+     */
     public void planActionRequest(String url) {
         CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
             @Override
@@ -570,16 +591,24 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Téléchargement PA terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t PA", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t PA", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), "Connection or the socket timed out \n\t\t\t\t PA", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+        //customArrayRequest.setShouldCache(false);
+        customArrayRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(30), DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
 
@@ -596,14 +625,20 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Téléchargement PRODUIT terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t PRODUIT", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t PRODUIT", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), "Connection or the socket timed out \n\t\t\t\t PRODUIT", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
@@ -622,14 +657,20 @@ public class TelechargementFragment extends Fragment {
                 }
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Téléchargement CONTACT VISITE terminé", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t CONTACT VISITE", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t CONTACT VISITE", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), "Connection or the socket timed out  \n\t\t\t\t CONTACT VISITE", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
@@ -676,7 +717,13 @@ public class TelechargementFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //dismiss dialog
                 hideDialog();
-                Toast.makeText(getContext(), "Téléchargement du GH annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t GH", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t GH", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getContext(), "Connection or the socket timed out \n\t\t\t\t GH", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
