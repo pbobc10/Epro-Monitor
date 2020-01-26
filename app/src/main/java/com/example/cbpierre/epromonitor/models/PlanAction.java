@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "plan_action", indices = @Index(value = "pa_id", name = "plan_action_index", unique = false))
+@Entity(tableName = "plan_action")
 public class PlanAction {
     @NonNull
     @PrimaryKey

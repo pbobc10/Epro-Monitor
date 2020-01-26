@@ -66,6 +66,8 @@ import com.example.cbpierre.epromonitor.repositories.GHJourContactProduitReposit
 import com.example.cbpierre.epromonitor.repositories.GHJourContactRepository;
 import com.example.cbpierre.epromonitor.repositories.GHJourRepository;
 import com.example.cbpierre.epromonitor.repositories.GHRepository;
+import com.example.cbpierre.epromonitor.repositories.PaContactRepository;
+import com.example.cbpierre.epromonitor.repositories.ProduitRepository;
 import com.example.cbpierre.epromonitor.viewModels.AcceptabiliteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.CommuneLocaliteContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
@@ -152,6 +154,8 @@ public class TelechargementFragment extends Fragment {
     private ArrayList<GHJour> ghJours;
     private ArrayList<GHJourContact> ghJourContacts;
     private ArrayList<GHJourContactProduit> ghJourContactProduitList;
+    private ArrayList<PaContact> paContactArrayList;
+    private ArrayList<Integer> produitArrayList;
 
     UserSessionPreferences userSessionPreferences;
 
@@ -300,10 +304,6 @@ public class TelechargementFragment extends Fragment {
 
                 zoneRequest(AppConfig.URL_ZONE);
                 etablissementRequest(AppConfig.URL_ETABLISSEMENT);
-                //test download PA
-                produitRequest(AppConfig.URL_PRODUIT_REF);
-                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
-
             }
         });
 
@@ -321,8 +321,8 @@ public class TelechargementFragment extends Fragment {
                 showDialog();
 
                 planActionRequest(AppConfig.URL_PA);
-                /*produitRequest(AppConfig.URL_PRODUIT_REF);
-                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);*/
+                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
+                produitRequest(AppConfig.URL_PRODUIT_REF);
             }
         });
 
@@ -359,6 +359,37 @@ public class TelechargementFragment extends Fragment {
          */
         fromAsyncReposeCreateJsonString();
         fromGHAsyncTask();
+    }
+
+    public void insertPA(JSONArray response) {
+        paContactArrayList = new ArrayList<>();
+        paContactArrayList.clear();
+
+        //inserer les PA
+        for (PlanAction pa : PlanAction.fromJson(response)) {
+            planActionViewModel.insertPlanAction(pa);
+        }
+        //inserer les PA Contact
+        for (PaContact paC : PlanAction.fromJsonPAContact(response)) {
+            paContactViewModel.insertPaContact(paC);
+            paContactArrayList.add(paC);
+        }
+        //inserer les PA Contact Produit
+        for (PaContactProduit paCP : PlanAction.fromJsonPaContactProduit(response)) {
+            paContactProduitViewModel.insertPaContactProduit(paCP);
+        }
+
+        Log.d("sizetest_paContact", "" +paContactArrayList.size());
+        Log.d("sizetest_prouduit", "" + produitArrayList.size());
+
+        // insert Contact produit not really in PA
+        for (int i = 0; i < paContactArrayList.size(); i++) {
+            for (int j = 0; j < produitArrayList.size(); j++) {
+                if (paContactArrayList.get(i).getQuota().trim().equals("-1")) {
+                    paContactProduitViewModel.insertPaContactProduit(new PaContactProduit(paContactArrayList.get(i).getPaId(), paContactArrayList.get(i).getConId(), produitArrayList.get(j)));
+                }
+            }
+        }
     }
 
     public void forceRequest(String url) {
@@ -567,6 +598,7 @@ public class TelechargementFragment extends Fragment {
 
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
+
     /**
      * All PA
      */
@@ -579,16 +611,9 @@ public class TelechargementFragment extends Fragment {
                 paContactViewModel.deletePaContact();
                 paContactProduitViewModel.deletePaContactProduit();
 
-                //telecharger les PA
-                for (PlanAction pa : PlanAction.fromJson(response)) {
-                    planActionViewModel.insertPlanAction(pa);
-                }
-                for (PaContact paC : PlanAction.fromJsonPAContact(response)) {
-                    paContactViewModel.insertPaContact(paC);
-                }
-                for (PaContactProduit paCP : PlanAction.fromJsonPaContactProduit(response)) {
-                    paContactProduitViewModel.insertPaContactProduit(paCP);
-                }
+                //inserer  PA
+                insertPA(response);
+
                 //dismiss dialog
                 hideDialog();
                 Toast.makeText(getContext(), "Téléchargement PA terminé", Toast.LENGTH_SHORT).show();
@@ -596,19 +621,23 @@ public class TelechargementFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //dismiss dialog
-                hideDialog();
                 if (error instanceof NetworkError) {
                     Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net \n\t\t\t\t PA", Toast.LENGTH_SHORT).show();
+                    //dismiss dialog
+                    hideDialog();
                 } else if (error instanceof ServerError) {
                     Toast.makeText(getContext(), "https://disprophar.net responded with an error response \n\t\t\t\t PA", Toast.LENGTH_SHORT).show();
+                    //dismiss dialog
+                    hideDialog();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getContext(), "Connection or the socket timed out \n\t\t\t\t PA", Toast.LENGTH_SHORT).show();
+                    //dismiss dialog
+                    hideDialog();
                 }
             }
         });
         //customArrayRequest.setShouldCache(false);
-        customArrayRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(30), DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+       //0 customArrayRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(10), DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
 
@@ -619,10 +648,16 @@ public class TelechargementFragment extends Fragment {
                 //delete produit
                 produitViewModel.deleteProduit();
 
+                produitArrayList = new ArrayList<>();
+                // if (produitArrayList.size() > 0)
+                produitArrayList.clear();
+
                 //telecharger produit
                 for (Produit pro : Produit.fromJson(response)) {
                     produitViewModel.insertProduit(pro);
+                    produitArrayList.add(pro.getProduitId());
                 }
+
                 //dismiss dialog
                 hideDialog();
                 Toast.makeText(getContext(), "Téléchargement PRODUIT terminé", Toast.LENGTH_SHORT).show();
@@ -844,6 +879,25 @@ public class TelechargementFragment extends Fragment {
         if (pDialog.isShowing()) {
             pDialog.dismiss();
         }
+    }
+
+    public void fromAsyncPaListData() {
+        paContactViewModel.setPacontactListListener(new PaContactRepository.AllPacontactListListener() {
+            @Override
+            public void onPaContactClick(List<PaContact> paContactList) {
+                paContactArrayList = new ArrayList<>();
+                if (paContactList != null)
+                    paContactArrayList.addAll(paContactList);
+            }
+        });
+        produitViewModel.setProduiIdListener(new ProduitRepository.ProduiIdListener() {
+            @Override
+            public void onProduitIdClick(List<Integer> produitIdList) {
+                produitArrayList = new ArrayList<>();
+                if (produitIdList != null)
+                    produitArrayList.addAll(produitIdList);
+            }
+        });
     }
 
     ///////////////////////////////////////////////////   Send  Contact Etablissement    ///////////////////////////////////////////////////////////////

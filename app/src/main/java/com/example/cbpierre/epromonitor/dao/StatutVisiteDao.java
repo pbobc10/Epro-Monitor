@@ -18,6 +18,6 @@ public interface StatutVisiteDao {
     @Query("delete from statut_visite_ref")
     void deleteStatutVisite();
 
-    @Query("select * from statut_visite_ref where code not in('VNP','VP') order by statut_visite_ref.nom")
+    @Query("select * from statut_visite_ref where code not in('VNP','VP','VNR') order by statut_visite_ref.nom")
     LiveData<List<StatutVisiteRef>> getAllStatutVisite();
 }

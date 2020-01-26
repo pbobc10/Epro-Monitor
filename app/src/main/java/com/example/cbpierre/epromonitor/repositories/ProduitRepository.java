@@ -32,6 +32,10 @@ public class ProduitRepository {
         new DeleteProduitTask(produitDao).execute();
     }
 
+    public void produitIdList() {
+        new ProduitIdListTask(produitDao).execute();
+    }
+
     /**
      * Async Task
      */
@@ -61,5 +65,39 @@ public class ProduitRepository {
             produitDao.deletePrduit();
             return null;
         }
+    }
+
+    public static class ProduitIdListTask extends AsyncTask<Void, Void, List<Integer>> {
+        private ProduitDao produitDao;
+
+        public ProduitIdListTask(ProduitDao produitDao) {
+            this.produitDao = produitDao;
+        }
+
+        @Override
+        protected List<Integer> doInBackground(Void... voids) {
+            return produitDao.allProduitId();
+        }
+
+        @Override
+        protected void onPostExecute(List<Integer> integers) {
+            super.onPostExecute(integers);
+            if (produiIdListener != null)
+                produiIdListener.onProduitIdClick(integers);
+
+        }
+    }
+
+    /**
+     * Interface
+     */
+    private static ProduiIdListener produiIdListener;
+
+    public interface ProduiIdListener {
+        void onProduitIdClick(List<Integer> produitIdList);
+    }
+
+    public void setProduiIdListener(ProduiIdListener produiIdListener) {
+        ProduitRepository.produiIdListener = produiIdListener;
     }
 }

@@ -250,6 +250,8 @@ public class RapportFragment extends Fragment {
                     // test check box
                     if (!cbPromotion.isChecked()) {
                         ghJourContactProduitViewModel.deleteGHJourContactProduit(contactGhSV.getGh_id(), contactGhSV.getCon_id(), contactGhSV.getJour());
+                    } else if (0 == rvProduitPromotionne.getChildCount()) {
+                        cbPromotion.setChecked(false);
                     }
 
                     //Get the selected item out a spinner using:

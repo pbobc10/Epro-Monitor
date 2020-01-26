@@ -33,10 +33,12 @@ public interface GHJourContactProduitDao {
             " where pa_contact_produit.produit_id=produit.produit_id " +
             " and pa_contact_produit.con_id=gh_jour_contact.con_id" +
             " and pa_contact_produit.con_id=:contactId " +
+            " and gh_jour_contact.jour=:jour " +
+            " and gh_jour_contact.gh_id=:ghId " +
             " and produit.produit_id not in (" +
             " select gh_jour_contact_produit.produit_id from gh_jour_contact_produit where gh_id=:ghId and con_id=:contactId and jour=:jour" +
             ")" +
-            "order by pa_contact_produit.produit_id")
+            "order by produit.nom_produit")
     LiveData<List<Produit>> allGhJourContactProduit(Integer ghId, String jour, Integer contactId);
 
 

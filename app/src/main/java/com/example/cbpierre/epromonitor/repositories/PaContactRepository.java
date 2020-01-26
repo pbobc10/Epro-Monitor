@@ -32,6 +32,10 @@ public class PaContactRepository {
         new DeletePaContactTask(paContactDao).execute();
     }
 
+    public void allPacontactList() {
+        new AllPaContactListTask(paContactDao).execute();
+    }
+
     /**
      * Async Task
      */
@@ -62,5 +66,39 @@ public class PaContactRepository {
             paContactDao.deleteAllPaContact();
             return null;
         }
+    }
+
+    public static class AllPaContactListTask extends AsyncTask<Void, Void, List<PaContact>> {
+        private PaContactDao paContactDao;
+
+        public AllPaContactListTask(PaContactDao paContactDao) {
+            this.paContactDao = paContactDao;
+        }
+
+        @Override
+        protected List<PaContact> doInBackground(Void... voids) {
+            return paContactDao.allPaContactList();
+
+        }
+
+        @Override
+        protected void onPostExecute(List<PaContact> paContactList) {
+            super.onPostExecute(paContactList);
+            if (pacontactListListener != null)
+                pacontactListListener.onPaContactClick(paContactList);
+        }
+    }
+
+    /**
+     * Interface
+     */
+    private static AllPacontactListListener pacontactListListener;
+
+    public interface AllPacontactListListener {
+        void onPaContactClick(List<PaContact> paContactList);
+    }
+
+    public void setPacontactListListener(AllPacontactListListener pacontactListListener) {
+        PaContactRepository.pacontactListListener = pacontactListListener;
     }
 }

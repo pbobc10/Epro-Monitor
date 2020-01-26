@@ -116,8 +116,8 @@ public class DialogProduitPromotionne extends DialogFragment {
             @Override
             public void onChanged(@Nullable List<Produit> produits) {
                 if (produits != null) {
-                    if (!produits.contains(new Produit(null, getResources().getString(R.string.select_produit_promotionne))))
-                        produits.add(0, new Produit(null, getResources().getString(R.string.select_produit_promotionne)));
+                    if (!produits.contains(new Produit(0, getResources().getString(R.string.select_produit_promotionne))))
+                        produits.add(0, new Produit(0, getResources().getString(R.string.select_produit_promotionne)));
                     contactProduitSpinnerAdapter = new ContactProduitSpinnerAdapter(getContext(), R.layout.spinner_rows, produits);
                 }
                 contactProduitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -144,6 +144,7 @@ public class DialogProduitPromotionne extends DialogFragment {
                 Produit produit = (Produit) parent.getItemAtPosition(position);
                 if (produit.getNomProduit().equals("-- SELECTIONNER PRODUIT PROMOTIONNE --")) {
                     TextView textView = (TextView) view;
+                    //   if (textView != null)
                     textView.setTextColor(getResources().getColor(R.color.input_login_hint));
                     llAcceptabilite.setVisibility(View.GONE);
                     etNoteProduitPromo.setVisibility(View.GONE);

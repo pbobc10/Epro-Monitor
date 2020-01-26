@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ProduitViewModel extends AndroidViewModel {
     private ProduitRepository produitRepository;
+    private ProduitRepository.ProduiIdListener produiIdListener;
     private LiveData<List<Produit>> allProduit;
 
     public ProduitViewModel(@NonNull Application application) {
@@ -26,5 +27,14 @@ public class ProduitViewModel extends AndroidViewModel {
 
     public void deleteProduit() {
         produitRepository.deleteProduit();
+    }
+
+    public void produitIdList() {
+        produitRepository.setProduiIdListener(produiIdListener);
+        produitRepository.produitIdList();
+    }
+
+    public void setProduiIdListener(ProduitRepository.ProduiIdListener produiIdListener) {
+        this.produiIdListener = produiIdListener;
     }
 }

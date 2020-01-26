@@ -18,6 +18,9 @@ public interface PaContactDao {
     @Query("select * from pa_contact order by pa_contact.con_id")
     LiveData<List<PaContact>> allPaContact();
 
+    @Query("select * from pa_contact where pa_contact.quota ='-1' ")
+    List<PaContact> allPaContactList();
+
     @Query("delete from pa_contact")
     void deleteAllPaContact();
 }

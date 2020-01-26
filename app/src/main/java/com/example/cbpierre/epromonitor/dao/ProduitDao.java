@@ -18,6 +18,9 @@ public interface ProduitDao {
     @Query("select * from produit")
     LiveData<List<Produit>> allProduit();
 
+    @Query("select produit_id from produit")
+    List<Integer> allProduitId();
+
     @Query("delete from produit")
     void deletePrduit();
 }

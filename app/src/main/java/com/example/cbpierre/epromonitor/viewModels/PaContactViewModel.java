@@ -12,6 +12,7 @@ import java.util.List;
 
 public class PaContactViewModel extends AndroidViewModel {
     private PaContactRepository paContactRepository;
+    private PaContactRepository.AllPacontactListListener pacontactListListener;
     private LiveData<List<PaContact>> allPaContact;
 
     public PaContactViewModel(@NonNull Application application) {
@@ -26,5 +27,14 @@ public class PaContactViewModel extends AndroidViewModel {
 
     public void deletePaContact() {
         paContactRepository.deletePaContact();
+    }
+
+    public void allPaContactList() {
+        paContactRepository.setPacontactListListener(pacontactListListener);
+        paContactRepository.allPacontactList();
+    }
+
+    public void setPacontactListListener(PaContactRepository.AllPacontactListListener pacontactListListener) {
+        this.pacontactListListener = pacontactListListener;
     }
 }

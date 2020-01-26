@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Entity(tableName = "pa_contact_produit", primaryKeys = {"pa_id", "con_id", "produit_id"}, indices = {@Index(value = {"pa_id", "con_id", "produit_id"}, name = "pa_contact_produit_index1", unique = false), @Index(value = "con_id", name = "pa_contact_produit_index2", unique = false)})
+@Entity(tableName = "pa_contact_produit", primaryKeys = {"pa_id", "con_id", "produit_id"}, indices = { @Index(value = {"pa_id", "con_id", "produit_id"}, name = "pa_contact_produit_index2", unique = true)})
 public class PaContactProduit {
     @NonNull
     @ColumnInfo(name = "pa_id")
@@ -23,6 +23,12 @@ public class PaContactProduit {
     private Integer produitId;
 
     public PaContactProduit() {
+    }
+
+    public PaContactProduit(@NonNull Integer paId, @NonNull Integer conId, @NonNull Integer produitId) {
+        this.paId = paId;
+        this.conId = conId;
+        this.produitId = produitId;
     }
 
     public PaContactProduit(JSONObject jsonObject) {
