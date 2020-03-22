@@ -10,7 +10,7 @@ import com.example.cbpierre.epromonitor.models.StatutJourRef;
 @Dao
 public interface StatutJourDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertStatutJour(StatutJourRef statutJourRef);
+    void insertStatutJour(StatutJourRef... statutJourRef);
 
     @Query("delete from statut_jour_ref")
     void deleteStatutJour();

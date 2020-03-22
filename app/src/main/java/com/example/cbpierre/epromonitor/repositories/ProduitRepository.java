@@ -24,7 +24,7 @@ public class ProduitRepository {
         return allProduit;
     }
 
-    public void insertProduit(Produit produit) {
+    public void insertProduit(Produit... produit) {
         new InsertProduitTask(produitDao).execute(produit);
     }
 
@@ -48,7 +48,7 @@ public class ProduitRepository {
 
         @Override
         protected Void doInBackground(Produit... produits) {
-            produitDao.insert(produits[0]);
+            produitDao.insert(produits);
             return null;
         }
     }

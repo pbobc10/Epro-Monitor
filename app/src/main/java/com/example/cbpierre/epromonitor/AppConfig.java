@@ -32,6 +32,7 @@ public class AppConfig {
     //Server Etablissement url
     public static final String URL_ETABLISSEMENT = "https://disprophar.net/webAPI/Prospection/GetEtablissement?date=1/1/2018";
 
+
     /**
      * Plan d'Action PA
      **/
@@ -59,4 +60,12 @@ public class AppConfig {
     public static final String URL_COMMUNE_LOCALITE_CONTACT = "https://disprophar.net/webAPI/Visite/GetCommuneLocaliteContact?cieId=";
     //Pour transférer la planification hebdomadaire complétée (GH, GH_JOUR et GH_JOUR_CONTACT)
     public static final String URL_TRANSFERT_GH = "https://disprophar.net/webAPI/Visite/PostGH";
+
+    /**
+     * Recommandation
+     */
+
+    //Server Recommandation
+    public static final String URL_RECOMMANDATION = "https://disprophar.net/WebAPI/Visite/GetRecommandation?cieId=";
+    public static final String URL_RECOMAMADATION_POST = "https://disprophar.net/WebAPI/Visite/PostRecommandation";
 }

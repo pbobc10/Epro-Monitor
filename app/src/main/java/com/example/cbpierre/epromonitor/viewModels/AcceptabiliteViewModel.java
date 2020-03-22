@@ -22,7 +22,7 @@ public class AcceptabiliteViewModel extends AndroidViewModel {
         return acceptabiliteRepository.getAllAcceptabiliteRef();
     }
 
-    public void incertAcceptabilite(AcceptabiliteRef acceptabiliteRef) {
+    public void incertAcceptabilite(AcceptabiliteRef... acceptabiliteRef) {
         acceptabiliteRepository.insertAcceptabilite(acceptabiliteRef);
     }
 

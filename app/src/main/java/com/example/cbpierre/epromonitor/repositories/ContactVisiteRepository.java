@@ -33,7 +33,7 @@ public class ContactVisiteRepository {
     }
 
 
-    public void insetContactVisite(ContactVisite contactVisite) {
+    public void insetContactVisite(ContactVisite... contactVisite) {
         new InsertContactVisite(contactVisiteDao).execute(contactVisite);
     }
 
@@ -51,7 +51,7 @@ public class ContactVisiteRepository {
 
         @Override
         protected Void doInBackground(ContactVisite... contactVisites) {
-            contactVisiteDao.insertContactVisite(contactVisites[0]);
+            contactVisiteDao.insertContactVisite(contactVisites);
             return null;
         }
     }

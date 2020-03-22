@@ -20,7 +20,7 @@ public class GHJourContactRepository {
         ghJourContactDao = database.ghJourContactDao();
     }
 
-    public void insertGHJourContact(GHJourContact ghJourContact) {
+    public void insertGHJourContact(GHJourContact... ghJourContact) {
         new InsertGHJourContactTask(ghJourContactDao).execute(ghJourContact);
     }
 
@@ -57,7 +57,7 @@ public class GHJourContactRepository {
 
         @Override
         protected Void doInBackground(GHJourContact... ghJourContacts) {
-            ghJourContactDao.insertGHJOurContact(ghJourContacts[0]);
+            ghJourContactDao.insertGHJOurContact(ghJourContacts);
             return null;
         }
     }

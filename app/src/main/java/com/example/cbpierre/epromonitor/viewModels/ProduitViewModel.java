@@ -21,7 +21,7 @@ public class ProduitViewModel extends AndroidViewModel {
         allProduit = produitRepository.getAllProduit();
     }
 
-    public void insertProduit(Produit produit) {
+    public void insertProduit(Produit... produit) {
         produitRepository.insertProduit(produit);
     }
 

@@ -23,7 +23,7 @@ public class ContactVisiteViewModel extends AndroidViewModel {
         contactVisiteRepository = new ContactVisiteRepository(application);
     }
 
-    public void insertContactVisite(ContactVisite contactVisite) {
+    public void insertContactVisite(ContactVisite... contactVisite) {
         contactVisiteRepository.insetContactVisite(contactVisite);
     }
 

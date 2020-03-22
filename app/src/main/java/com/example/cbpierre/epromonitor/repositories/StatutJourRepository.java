@@ -15,7 +15,7 @@ public class StatutJourRepository {
         statutJourDao = database.statutJourDao();
     }
 
-    public void insertStatutJour(StatutJourRef statutJourRef) {
+    public void insertStatutJour(StatutJourRef... statutJourRef) {
         new InsertStatutJourTask(statutJourDao).execute(statutJourRef);
     }
 
@@ -35,7 +35,7 @@ public class StatutJourRepository {
 
         @Override
         protected Void doInBackground(StatutJourRef... statutJourRefs) {
-            statutJourDao.insertStatutJour(statutJourRefs[0]);
+            statutJourDao.insertStatutJour(statutJourRefs);
             return null;
         }
     }

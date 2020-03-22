@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-@Entity(tableName = "commune_localite_contact", primaryKeys = {"con_id"})
+@Entity(tableName = "commune_localite_contact", primaryKeys = {"con_id","zone_ht_id"})
 public class CommuneLocaliteContact {
     @NonNull
     @ColumnInfo(name = "con_id")

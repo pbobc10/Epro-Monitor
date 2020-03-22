@@ -22,7 +22,7 @@ public class AcceptabiliteRepository {
         return acceptabiliteDao.getAllAcceptabiliteRef();
     }
 
-    public void insertAcceptabilite(AcceptabiliteRef acceptabiliteRef) {
+    public void insertAcceptabilite(AcceptabiliteRef... acceptabiliteRef) {
         new InsertAcceptabiliteTask(acceptabiliteDao).execute(acceptabiliteRef);
     }
 
@@ -42,7 +42,7 @@ public class AcceptabiliteRepository {
 
         @Override
         protected Void doInBackground(AcceptabiliteRef... acceptabiliteRefs) {
-            acceptabiliteDao.insertAcceptabilite(acceptabiliteRefs[0]);
+            acceptabiliteDao.insertAcceptabilite(acceptabiliteRefs);
             return null;
         }
     }

@@ -25,7 +25,7 @@ public class GHJourContactProduitRepository {
         return ghJourContactProduitDao.getProduitAcceptabliliteGHProduit(ghId, conId, jour);
     }
 
-    public void insertGHJourContactProduit(GHJourContactProduit ghJourContactProduit) {
+    public void insertGHJourContactProduit(GHJourContactProduit... ghJourContactProduit) {
         new InsertGHJourContactProduit(ghJourContactProduitDao).execute(ghJourContactProduit);
     }
 
@@ -61,7 +61,7 @@ public class GHJourContactProduitRepository {
 
         @Override
         protected Void doInBackground(GHJourContactProduit... ghJourContactProduits) {
-            ghJourContactProduitDao.insertGHJourContactProduit(ghJourContactProduits[0]);
+            ghJourContactProduitDao.insertGHJourContactProduit(ghJourContactProduits);
             return null;
         }
     }

@@ -27,7 +27,7 @@ public class PlanActionViewModel extends AndroidViewModel {
         planActionRepository.deletePlanAction();
     }
 
-    public void insertPlanAction(PlanAction planAction) {
+    public void insertPlanAction(PlanAction... planAction) {
         planActionRepository.insertPlanAction(planAction);
     }
 

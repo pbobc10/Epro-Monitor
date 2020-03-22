@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface CommuneLocaliteContactDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCommuneLocaliteContact(CommuneLocaliteContact communeLocaliteContact);
+    void insertCommuneLocaliteContact(CommuneLocaliteContact... communeLocaliteContact);
 
     @Query("delete from commune_localite_contact")
     void deleteCommuneLocaliteContact();

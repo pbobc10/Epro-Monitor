@@ -24,7 +24,7 @@ public class PaContactRepository {
         return allPacontact;
     }
 
-    public void insertPaContact(PaContact paContact) {
+    public void insertPaContact(PaContact... paContact) {
         new InsertAlPaContactTask(paContactDao).execute(paContact);
     }
 
@@ -49,7 +49,7 @@ public class PaContactRepository {
 
         @Override
         protected Void doInBackground(PaContact... paContacts) {
-            paContactDao.insertPaContact(paContacts[0]);
+            paContactDao.insertPaContact(paContacts);
             return null;
         }
     }

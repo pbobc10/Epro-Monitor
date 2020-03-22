@@ -224,6 +224,7 @@ public class ChoiceContactGHFragment extends Fragment {
     }
 
     public void getSpinnerItem() {
+        //spSpecialite
         spSpecialite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -24,7 +24,7 @@ public class StatutVisiteRepository {
         return allStatVisite;
     }
 
-    public void insertStatutVisite(StatutVisiteRef statutVisiteRef) {
+    public void insertStatutVisite(StatutVisiteRef... statutVisiteRef) {
         new InsertStatutVisiteTask(statutVisiteDao).execute(statutVisiteRef);
     }
 
@@ -44,7 +44,7 @@ public class StatutVisiteRepository {
 
         @Override
         protected Void doInBackground(StatutVisiteRef... statutVisiteRefs) {
-            statutVisiteDao.insertStatutVisite(statutVisiteRefs[0]);
+            statutVisiteDao.insertStatutVisite(statutVisiteRefs);
             return null;
         }
     }

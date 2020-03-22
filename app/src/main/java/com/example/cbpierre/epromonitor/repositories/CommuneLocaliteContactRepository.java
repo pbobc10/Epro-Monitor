@@ -28,7 +28,7 @@ public class CommuneLocaliteContactRepository {
         return communeLocaliteContactDao.allLocaliteGH(localite);
     }
 
-    public void insertCommuneLocaliteContact(CommuneLocaliteContact communeLocaliteContact) {
+    public void insertCommuneLocaliteContact(CommuneLocaliteContact... communeLocaliteContact) {
         new InsertCommuneLocaliteContact(communeLocaliteContactDao).execute(communeLocaliteContact);
     }
 
@@ -48,7 +48,7 @@ public class CommuneLocaliteContactRepository {
 
         @Override
         protected Void doInBackground(CommuneLocaliteContact... communeLocaliteContacts) {
-            communeLocaliteContactDao.insertCommuneLocaliteContact(communeLocaliteContacts[0]);
+            communeLocaliteContactDao.insertCommuneLocaliteContact(communeLocaliteContacts);
             return null;
         }
     }

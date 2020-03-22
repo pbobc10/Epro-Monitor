@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface ContactVisiteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertContactVisite(ContactVisite contactVisite);
+    void insertContactVisite(ContactVisite... contactVisite);
 
     @Query("delete from contact_visite")
     void deleteContatVisite();

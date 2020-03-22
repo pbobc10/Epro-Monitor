@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface PaContactDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPaContact(PaContact paContact);
+    void insertPaContact(PaContact... paContact);
 
     @Query("select * from pa_contact order by pa_contact.con_id")
     LiveData<List<PaContact>> allPaContact();

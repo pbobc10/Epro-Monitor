@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface GHDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertGH(GH gh);
+    void insertGH(GH... gh);
 
     @Query("delete from gh")
     void deleteGH();

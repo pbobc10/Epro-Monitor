@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface GHJourContactProduitDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertGHJourContactProduit(GHJourContactProduit ghJourContactProduit);
+    void insertGHJourContactProduit(GHJourContactProduit... ghJourContactProduit);
 
     @Query("delete from gh_jour_contact_produit")
     void deleteGHJourContactProduit();

@@ -29,6 +29,7 @@ import com.example.cbpierre.epromonitor.dao.PaContactProduitDao;
 import com.example.cbpierre.epromonitor.dao.PlanActionDao;
 import com.example.cbpierre.epromonitor.dao.PostLoginDao;
 import com.example.cbpierre.epromonitor.dao.ProduitDao;
+import com.example.cbpierre.epromonitor.dao.RecommandationDao;
 import com.example.cbpierre.epromonitor.dao.SecteurDao;
 import com.example.cbpierre.epromonitor.dao.SpecialiteDao;
 import com.example.cbpierre.epromonitor.dao.StatutJourDao;
@@ -54,6 +55,7 @@ import com.example.cbpierre.epromonitor.models.PaContactProduit;
 import com.example.cbpierre.epromonitor.models.PlanAction;
 import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.models.Produit;
+import com.example.cbpierre.epromonitor.models.Recommandation;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.Specialite;
 import com.example.cbpierre.epromonitor.models.StatutJourRef;
@@ -62,7 +64,7 @@ import com.example.cbpierre.epromonitor.models.Titre;
 import com.example.cbpierre.epromonitor.models.Zone;
 
 
-@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class, ContactVisite.class, GH.class, GHJour.class, GHJourContact.class, GHJourContactProduit.class, StatutVisiteRef.class, StatutJourRef.class, AcceptabiliteRef.class, CommuneLocaliteContact.class}, version = 1)
+@Database(entities = {Login.class, Contact.class, PostLogin.class, Titre.class, Nature.class, Secteur.class, Force.class, Specialite.class, Zone.class, Etablissement.class, ContactEtablissement.class, NewContactETab.class,/*Plan D'action PA*/ PlanAction.class, PaContact.class, PaContactProduit.class, Produit.class, ContactVisite.class, GH.class, GHJour.class, GHJourContact.class, GHJourContactProduit.class, StatutVisiteRef.class, StatutJourRef.class, AcceptabiliteRef.class, CommuneLocaliteContact.class, Recommandation.class}, version = 1)
 @TypeConverters({DateTypeConverter.class})
 public abstract class EproMonitorRoomDatabase extends RoomDatabase {
 
@@ -118,6 +120,8 @@ public abstract class EproMonitorRoomDatabase extends RoomDatabase {
     public abstract ContactEtablissementDao contactEtablissementDao();
 
     public abstract NewContactEtabDao newContactEtabDao();
+
+    public abstract RecommandationDao recommandationDao();
 
     // To repopulate the database whenever the app is started
 

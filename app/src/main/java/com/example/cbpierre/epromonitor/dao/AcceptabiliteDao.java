@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface AcceptabiliteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAcceptabilite(AcceptabiliteRef acceptabiliteRef);
+    void insertAcceptabilite(AcceptabiliteRef... acceptabiliteRef);
 
     @Query("delete from acceptabilite_ref")
     void delteAcceptabilite();

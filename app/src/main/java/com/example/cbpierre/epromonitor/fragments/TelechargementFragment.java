@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -52,9 +51,11 @@ import com.example.cbpierre.epromonitor.models.PaContactProduit;
 import com.example.cbpierre.epromonitor.models.PlanAction;
 import com.example.cbpierre.epromonitor.models.PostLogin;
 import com.example.cbpierre.epromonitor.models.Produit;
+import com.example.cbpierre.epromonitor.models.Recommandation;
 import com.example.cbpierre.epromonitor.models.Secteur;
 import com.example.cbpierre.epromonitor.models.SendGH;
 import com.example.cbpierre.epromonitor.models.SendNewContactEtabs;
+import com.example.cbpierre.epromonitor.models.SendRecommandation;
 import com.example.cbpierre.epromonitor.models.Specialite;
 import com.example.cbpierre.epromonitor.models.StatutJourRef;
 import com.example.cbpierre.epromonitor.models.StatutVisiteRef;
@@ -66,8 +67,6 @@ import com.example.cbpierre.epromonitor.repositories.GHJourContactProduitReposit
 import com.example.cbpierre.epromonitor.repositories.GHJourContactRepository;
 import com.example.cbpierre.epromonitor.repositories.GHJourRepository;
 import com.example.cbpierre.epromonitor.repositories.GHRepository;
-import com.example.cbpierre.epromonitor.repositories.PaContactRepository;
-import com.example.cbpierre.epromonitor.repositories.ProduitRepository;
 import com.example.cbpierre.epromonitor.viewModels.AcceptabiliteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.CommuneLocaliteContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ContactEtablissementViewModel;
@@ -86,6 +85,7 @@ import com.example.cbpierre.epromonitor.viewModels.PaContactViewModel;
 import com.example.cbpierre.epromonitor.viewModels.PlanActionViewModel;
 import com.example.cbpierre.epromonitor.viewModels.PostViewModel;
 import com.example.cbpierre.epromonitor.viewModels.ProduitViewModel;
+import com.example.cbpierre.epromonitor.viewModels.RecommandationViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SecteurViewModel;
 import com.example.cbpierre.epromonitor.viewModels.SpecialiteViewModel;
 import com.example.cbpierre.epromonitor.viewModels.StatutJourViewModel;
@@ -108,7 +108,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,11 +138,12 @@ public class TelechargementFragment extends Fragment {
     private StatutVisiteViewModel statutVisiteViewModel;
     private AcceptabiliteViewModel acceptabiliteViewModel;
     private CommuneLocaliteContactViewModel communeLocaliteContactViewModel;
+    private RecommandationViewModel recommandationViewModel;
 
     private ArrayList<OldEtablissement> oldEtabs;
     private ArrayList<JoinNewEtabNewContact> newEtab;
 
-    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtabData, btnDownloadPaData, btnSyncPaData, btnDownloadGHData, btnSyncGHData;
+    private Button btnDownloadContact, btnSyncContact, btnDownloadEtablissement, btnSyncEtabData, btnDownloadPaData, btnSyncPaData, btnDownloadGHData, btnSyncGHData, btnDownloadRecommandation, btnSyncDataRecommandation;
     private List<SendNewContactEtabs> sendContactEtabList;
     private SendNewContactEtabs sendNewContactEtabs;
     private ProgressDialog pDialog;
@@ -156,6 +156,7 @@ public class TelechargementFragment extends Fragment {
     private ArrayList<GHJourContactProduit> ghJourContactProduitList;
     private ArrayList<PaContact> paContactArrayList;
     private ArrayList<Integer> produitArrayList;
+    private ArrayList<SendRecommandation> sendRecommandationArrayList;
 
     UserSessionPreferences userSessionPreferences;
 
@@ -197,6 +198,7 @@ public class TelechargementFragment extends Fragment {
         statutVisiteViewModel = ViewModelProviders.of(this).get(StatutVisiteViewModel.class);
         acceptabiliteViewModel = ViewModelProviders.of(this).get(AcceptabiliteViewModel.class);
         communeLocaliteContactViewModel = ViewModelProviders.of(this).get(CommuneLocaliteContactViewModel.class);
+        recommandationViewModel = ViewModelProviders.of(this).get(RecommandationViewModel.class);
         //Date
         String parttern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
@@ -231,9 +233,12 @@ public class TelechargementFragment extends Fragment {
         btnSyncPaData = view.findViewById(R.id.btnSyncPAData);
         btnDownloadGHData = view.findViewById(R.id.btnDownloadGHData);
         btnSyncGHData = view.findViewById(R.id.btnSyncGHData);
+        btnDownloadRecommandation = view.findViewById(R.id.btnDownloadRecommandationData);
+        btnSyncDataRecommandation = view.findViewById(R.id.btnSyncRecommandationData);
 
         btnSyncEtabData.setVisibility(View.INVISIBLE);
         btnSyncPaData.setVisibility(View.INVISIBLE);
+        btnSyncDataRecommandation.setVisibility(View.INVISIBLE);
 
         postViewModel.getAllPostLOgin().observe(this, new Observer<List<PostLogin>>() {
             @Override
@@ -262,6 +267,8 @@ public class TelechargementFragment extends Fragment {
                 specialiteRequest(AppConfig.URL_SPECIALITE);
                 titreRequest(AppConfig.URL_TITRE);
                 contactRequest(AppConfig.URL_CONTACT);
+                //
+                recommandationRequest(AppConfig.URL_RECOMMANDATION);
 
             }
         });
@@ -343,6 +350,7 @@ public class TelechargementFragment extends Fragment {
                 statutVisiteRequest(AppConfig.URL_STATUT_VISITE);
                 acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
                 communeLocaliteContactRequest(AppConfig.URL_COMMUNE_LOCALITE_CONTACT);
+                contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
             }
         });
 
@@ -351,6 +359,20 @@ public class TelechargementFragment extends Fragment {
             public void onClick(View v) {
                 alertDialog();
 
+            }
+        });
+
+        btnDownloadRecommandation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set title of the dialog
+                pDialog.setTitle("Téléchargement des recommandations ...");
+                //set message of the dialog
+                pDialog.setMessage("S'il vous plaît, attendez ...");
+                //show dialog
+                showDialog();
+                //
+                recommandationRequest(AppConfig.URL_RECOMMANDATION);
             }
         });
 
@@ -366,21 +388,14 @@ public class TelechargementFragment extends Fragment {
         paContactArrayList.clear();
 
         //inserer les PA
-        for (PlanAction pa : PlanAction.fromJson(response)) {
-            planActionViewModel.insertPlanAction(pa);
-        }
+        planActionViewModel.insertPlanAction(PlanAction.fromJson(response).toArray(new PlanAction[0]));
         //inserer les PA Contact
-        for (PaContact paC : PlanAction.fromJsonPAContact(response)) {
-            paContactViewModel.insertPaContact(paC);
-            paContactArrayList.add(paC);
-        }
+        paContactViewModel.insertPaContact(PlanAction.fromJsonPAContact(response).toArray(new PaContact[0]));
+        paContactArrayList.addAll(PlanAction.fromJsonPAContact(response));
         //inserer les PA Contact Produit
         for (PaContactProduit paCP : PlanAction.fromJsonPaContactProduit(response)) {
             paContactProduitViewModel.insertPaContactProduit(paCP);
         }
-
-        Log.d("sizetest_paContact", "" +paContactArrayList.size());
-        Log.d("sizetest_prouduit", "" + produitArrayList.size());
 
         // insert Contact produit not really in PA
         for (int i = 0; i < paContactArrayList.size(); i++) {
@@ -599,6 +614,39 @@ public class TelechargementFragment extends Fragment {
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
 
+    public void recommandationRequest(String url) {
+        CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                recommandationViewModel.insertRecommandation(Recommandation.fromJsonArray(response).toArray(new Recommandation[0]));
+                // construct List to resend recommandation to the server
+                sendRecommandationArrayList = new ArrayList<>();
+                for (Recommandation rc : Recommandation.fromJsonArray(response)) {
+                    SendRecommandation sendReco = new SendRecommandation();
+                    sendReco.setCieId(paramCieID);
+                    sendReco.setGhId(rc.getGhId());
+                    sendReco.setJour(rc.getJour());
+                    sendRecommandationArrayList.add(sendReco);
+                }
+                Log.d("recommandation", toJSON(sendRecommandationArrayList));
+
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement RECOMMANDATION terminé", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //dismiss dialog
+                hideDialog();
+                Toast.makeText(getContext(), "Téléchargement annulé en raison d'une erreur", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
+    }
+
     /**
      * All PA
      */
@@ -637,7 +685,7 @@ public class TelechargementFragment extends Fragment {
             }
         });
         //customArrayRequest.setShouldCache(false);
-       //0 customArrayRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(10), DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //0 customArrayRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(10), DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppVolleySingleton.getInstance(getContext()).addToRequestQueue(customArrayRequest);
     }
 
@@ -653,8 +701,8 @@ public class TelechargementFragment extends Fragment {
                 produitArrayList.clear();
 
                 //telecharger produit
+                produitViewModel.insertProduit(Produit.fromJson(response).toArray(new Produit[0]));
                 for (Produit pro : Produit.fromJson(response)) {
-                    produitViewModel.insertProduit(pro);
                     produitArrayList.add(pro.getProduitId());
                 }
 
@@ -687,9 +735,7 @@ public class TelechargementFragment extends Fragment {
                 contactVisiteViewModel.deleteContactVisite();
 
                 //telechager contact visite
-                for (ContactVisite contactVisite : ContactVisite.fromJson(response)) {
-                    contactVisiteViewModel.insertContactVisite(contactVisite);
-                }
+                contactVisiteViewModel.insertContactVisite(ContactVisite.fromJson(response).toArray(new ContactVisite[0]));
                 //dismiss dialog
                 hideDialog();
                 Toast.makeText(getContext(), "Téléchargement CONTACT VISITE terminé", Toast.LENGTH_SHORT).show();
@@ -725,21 +771,11 @@ public class TelechargementFragment extends Fragment {
                 ghJourContactProduitViewModel.deleteGHJourContactProduit();
 
                 //download
-                for (GH gh : GH.fromJSONGH(response)) {
-                    ghViewModel.insertGH(gh);
-                }
-
-                for (GHJour ghJour : GH.fromJSONGhJour(response)) {
-                    ghJourViewModel.insertGHJour(ghJour);
-                }
+                ghViewModel.insertGH(GH.fromJSONGH(response).toArray(new GH[0]));
+                ghJourViewModel.insertGHJour(GH.fromJSONGhJour(response).toArray(new GHJour[0]));
                 try {
-                    for (GHJourContact ghJourContact : GH.fromJSONGHJourContact(response)) {
-                        ghJourContactViewModel.insertGHJourContact(ghJourContact);
-                    }
-
-                    for (GHJourContactProduit ghJourContactProduit : GH.fromJSONGHJourContactProduit(response)) {
-                        ghJourContactProduitViewModel.insertGHJourContactProduit(ghJourContactProduit);
-                    }
+                    ghJourContactViewModel.insertGHJourContact(GH.fromJSONGHJourContact(response).toArray(new GHJourContact[0]));
+                    ghJourContactProduitViewModel.insertGHJourContactProduit(GH.fromJSONGHJourContactProduit(response).toArray(new GHJourContactProduit[0]));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -772,9 +808,7 @@ public class TelechargementFragment extends Fragment {
                 statutJourViewModel.deleteStatutJour();
 
                 //download
-                for (StatutJourRef statutJourRef : StatutJourRef.fromJSON(response)) {
-                    statutJourViewModel.insertStatutJour(statutJourRef);
-                }
+                statutJourViewModel.insertStatutJour(StatutJourRef.fromJSON(response).toArray(new StatutJourRef[0]));
                 //dismiss dialog
                 hideDialog();
                 Toast.makeText(getContext(), "Téléchargement SJ terminé", Toast.LENGTH_SHORT).show();
@@ -824,9 +858,7 @@ public class TelechargementFragment extends Fragment {
                 acceptabiliteViewModel.deleteAcceptabilite();
 
                 //download
-                for (AcceptabiliteRef acceptabiliteRef : AcceptabiliteRef.fromJSON(response)) {
-                    acceptabiliteViewModel.incertAcceptabilite(acceptabiliteRef);
-                }
+                acceptabiliteViewModel.incertAcceptabilite(AcceptabiliteRef.fromJSON(response).toArray(new AcceptabiliteRef[0]));
                 //dismiss dialog
                 hideDialog();
                 Toast.makeText(getContext(), "Téléchargement terminé", Toast.LENGTH_SHORT).show();
@@ -850,9 +882,7 @@ public class TelechargementFragment extends Fragment {
                 communeLocaliteContactViewModel.deleteCommuneLocaliteContact();
 
                 //download
-                for (CommuneLocaliteContact communeLocaliteContact : CommuneLocaliteContact.fromJSON(response)) {
-                    communeLocaliteContactViewModel.insertCommuneLocaliteContact(communeLocaliteContact);
-                }
+                communeLocaliteContactViewModel.insertCommuneLocaliteContact(CommuneLocaliteContact.fromJSON(response).toArray(new CommuneLocaliteContact[0]));
                 //dismiss dialog
                 hideDialog();
                 Toast.makeText(getContext(), "Téléchargement CLC terminé", Toast.LENGTH_SHORT).show();
@@ -881,24 +911,6 @@ public class TelechargementFragment extends Fragment {
         }
     }
 
-    public void fromAsyncPaListData() {
-        paContactViewModel.setPacontactListListener(new PaContactRepository.AllPacontactListListener() {
-            @Override
-            public void onPaContactClick(List<PaContact> paContactList) {
-                paContactArrayList = new ArrayList<>();
-                if (paContactList != null)
-                    paContactArrayList.addAll(paContactList);
-            }
-        });
-        produitViewModel.setProduiIdListener(new ProduitRepository.ProduiIdListener() {
-            @Override
-            public void onProduitIdClick(List<Integer> produitIdList) {
-                produitArrayList = new ArrayList<>();
-                if (produitIdList != null)
-                    produitArrayList.addAll(produitIdList);
-            }
-        });
-    }
 
     ///////////////////////////////////////////////////   Send  Contact Etablissement    ///////////////////////////////////////////////////////////////
     public void fromAsyncReposeCreateJsonString() {
@@ -1304,34 +1316,24 @@ public class TelechargementFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("----volley", response);
                         // Do something with the response
-                        if (response.equals("Succès")) {
-                            // update after sync "Succès"*/
-
-                            //delete GH
-                            communeLocaliteContactViewModel.deleteCommuneLocaliteContact();
-                            ghJourContactProduitViewModel.deleteGHJourContactProduit();
-                            ghJourContactViewModel.deleteGHJourContact();
-                            ghJourViewModel.deleteGHJour();
-                            ghViewModel.deleteGH();
-
+                        if (response.replace('"', ' ').trim().equals("OK")) {
                             //download GH
                             ghRequest(AppConfig.URL_GH);
                             statutJourRequest(AppConfig.URL_STATUT_JOUR);
                             statutVisiteRequest(AppConfig.URL_STATUT_VISITE);
-                            //  acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
+                            acceptabiliteRequest(AppConfig.URL_ACCEPTABILITE);
                             communeLocaliteContactRequest(AppConfig.URL_COMMUNE_LOCALITE_CONTACT);
+                            contactVisiteRequest(AppConfig.URL_CONTACT_VISITE);
 
                             hideDialog();
-                            Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
                             Log.d("----volleyOK", response);
                         } else {
                             hideDialog();
                             // Toast.makeText(getContext(), "L'enregistrement a échoué!", Toast.LENGTH_SHORT).show();
                             Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
                             Log.d("volley fail", response);
-                            Log.d("volley fail", response.replace("\"", ""));
                         }
                     }
                 },
@@ -1388,7 +1390,7 @@ public class TelechargementFragment extends Fragment {
         final CharSequence[] sequences = {"Courant", "Prochain"};
         final boolean[] choiceInitial = {false, false};
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext())
-                .setTitle("Test")
+                .setTitle("GH à Compléter ")
                 .setNegativeButton("Cancel", null)
                 .setMultiChoiceItems(sequences, choiceInitial, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -1444,5 +1446,66 @@ public class TelechargementFragment extends Fragment {
         alertDialogBuilder.show();
     }
 
+    /**
+     * resend recommandation data to  the server
+     */
+    private void resendRecommandation(final String requestBody) {
+        // Formulate the request and handle the response.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_RECOMAMADATION_POST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Do something with the response
+                        Log.d("----Recommandation OK", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                        if (error instanceof AuthFailureError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Username or Password  or Code Mobile incorrect :", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof NetworkError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Network Error! Can't reach https://disprophar.net", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ParseError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "JSON Parse Error!", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ServerError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "https://disprophar.net responded with an error response", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof TimeoutError) {
+                            //dismiss dialog
+                            hideDialog();
+                            Toast.makeText(getContext(), "Connection or the socket timed out", Toast.LENGTH_SHORT).show();
+                        } else {
+                            hideDialog();
+                            Toast.makeText(getContext(), "Volley Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                            Log.e("Volley Error", error.toString());
+                        }
+                    }
+                }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException exception) {
+                    Log.e("ERROR", "exception", exception);
+                    return null;
+                }
+            }
+        };
+        AppVolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
 
 }

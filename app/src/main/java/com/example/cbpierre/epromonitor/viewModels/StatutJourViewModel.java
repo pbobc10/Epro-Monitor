@@ -15,7 +15,7 @@ public class StatutJourViewModel extends AndroidViewModel {
         statutJourRepository = new StatutJourRepository(application);
     }
 
-    public void insertStatutJour(StatutJourRef statutJourRef) {
+    public void insertStatutJour(StatutJourRef... statutJourRef) {
         statutJourRepository.insertStatutJour(statutJourRef);
     }
 

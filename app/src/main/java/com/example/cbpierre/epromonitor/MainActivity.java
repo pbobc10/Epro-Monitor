@@ -30,6 +30,7 @@ import com.example.cbpierre.epromonitor.fragments.PaContactFragment;
 import com.example.cbpierre.epromonitor.fragments.PlanActionFragment;
 import com.example.cbpierre.epromonitor.fragments.PostDetailFragment;
 import com.example.cbpierre.epromonitor.fragments.RapportFragment;
+import com.example.cbpierre.epromonitor.fragments.RecommandationFragment;
 import com.example.cbpierre.epromonitor.fragments.SamediFragment;
 import com.example.cbpierre.epromonitor.fragments.SignInFragment;
 import com.example.cbpierre.epromonitor.fragments.TelechargementFragment;
@@ -112,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.On
                 break;
             case R.id.nav_gh_fragment:
                 fragmentClass = GHFragment.class;
+                break;
+            case R.id.nav_recommandation_fragment:
+                fragmentClass = RecommandationFragment.class;
                 break;
 
             case R.id.nav_user_fragment:

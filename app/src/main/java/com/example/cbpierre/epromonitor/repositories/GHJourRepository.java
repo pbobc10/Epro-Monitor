@@ -24,7 +24,7 @@ public class GHJourRepository {
         return ghJourDao.allJour(ghId);
     }
 
-    public void insertGHJour(GHJour ghJour) {
+    public void insertGHJour(GHJour... ghJour) {
         new InsertGHJourTask(ghJourDao).execute(ghJour);
     }
 
@@ -49,7 +49,7 @@ public class GHJourRepository {
 
         @Override
         protected Void doInBackground(GHJour... ghJours) {
-            ghJourDao.insertGHJour(ghJours[0]);
+            ghJourDao.insertGHJour(ghJours);
             return null;
         }
     }

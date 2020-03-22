@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface GHJourDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertGHJour(GHJour ghJour);
+    void insertGHJour(GHJour... ghJour);
 
     @Query("delete from gh_jour")
     void deleteGHJour();

@@ -24,7 +24,7 @@ public class GHJourContactViewModel extends AndroidViewModel {
         ghJourContactRepository = new GHJourContactRepository(application);
     }
 
-    public void insertGHJourContact(GHJourContact ghJourContact) {
+    public void insertGHJourContact(GHJourContact... ghJourContact) {
         ghJourContactRepository.insertGHJourContact(ghJourContact);
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface PlanActionDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPlanAction(PlanAction planAction);
+    void insertPlanAction(PlanAction... planAction);
 
     @Query("select * from plan_action order by plan_action.debut")
     LiveData<List<PlanAction>> allPlanAction();

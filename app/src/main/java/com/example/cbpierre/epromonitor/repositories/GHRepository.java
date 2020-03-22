@@ -25,7 +25,7 @@ public class GHRepository {
         return gh;
     }
 
-    public void insertGH(GH gh) {
+    public void insertGH(GH... gh) {
         new InsertGHTask(ghDao).execute(gh);
     }
 
@@ -54,7 +54,7 @@ public class GHRepository {
 
         @Override
         protected Void doInBackground(GH... ghs) {
-            ghDao.insertGH(ghs[0]);
+            ghDao.insertGH(ghs);
             return null;
         }
     }

@@ -23,7 +23,7 @@ public class GHViewModel extends AndroidViewModel {
         return ghRepository.getAllGH();
     }
 
-    public void insertGH(GH gh) {
+    public void insertGH(GH... gh) {
         ghRepository.insertGH(gh);
     }
 

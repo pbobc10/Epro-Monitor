@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface StatutVisiteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertStatutVisite(StatutVisiteRef statutVisiteRef);
+    void insertStatutVisite(StatutVisiteRef... statutVisiteRef);
 
     @Query("delete from statut_visite_ref")
     void deleteStatutVisite();

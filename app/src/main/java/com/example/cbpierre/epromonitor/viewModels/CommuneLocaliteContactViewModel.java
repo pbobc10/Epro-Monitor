@@ -24,7 +24,7 @@ public class CommuneLocaliteContactViewModel extends AndroidViewModel {
         communeLocaliteContactRepository = new CommuneLocaliteContactRepository(application);
     }
 
-    public void insertCommuneLocaliteContact(CommuneLocaliteContact communeLocaliteContact) {
+    public void insertCommuneLocaliteContact(CommuneLocaliteContact... communeLocaliteContact) {
         communeLocaliteContactRepository.insertCommuneLocaliteContact(communeLocaliteContact);
     }
 

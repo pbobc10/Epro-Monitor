@@ -24,7 +24,7 @@ public class PlanActionRepository {
         return allPlanAction;
     }
 
-    public void insertPlanAction(PlanAction planAction) {
+    public void insertPlanAction(PlanAction... planAction) {
         new InsertPlanActionTask(planActionDao).execute(planAction);
     }
 
@@ -44,7 +44,7 @@ public class PlanActionRepository {
 
         @Override
         protected Void doInBackground(PlanAction... planActions) {
-            planActionDao.insertPlanAction(planActions[0]);
+            planActionDao.insertPlanAction(planActions);
             return null;
         }
     }

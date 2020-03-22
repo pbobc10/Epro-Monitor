@@ -22,7 +22,7 @@ public class StatutVisiteViewModel extends AndroidViewModel {
         return statutVisiteRepository.getAllStatutVisite();
     }
 
-    public void insertStatutVisite(StatutVisiteRef statutVisiteRef) {
+    public void insertStatutVisite(StatutVisiteRef... statutVisiteRef) {
         statutVisiteRepository.insertStatutVisite(statutVisiteRef);
     }
 

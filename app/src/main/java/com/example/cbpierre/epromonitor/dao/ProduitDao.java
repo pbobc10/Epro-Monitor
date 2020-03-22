@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface ProduitDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Produit produit);
+    void insert(Produit... produit);
 
     @Query("select * from produit")
     LiveData<List<Produit>> allProduit();

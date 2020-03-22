@@ -37,7 +37,7 @@ public class GHJourViewModel extends AndroidViewModel {
         ghId.setValue(mGhId);
     }
 
-    public void insertGHJour(GHJour ghJour) {
+    public void insertGHJour(GHJour... ghJour) {
         ghJourRepository.insertGHJour(ghJour);
     }
 
