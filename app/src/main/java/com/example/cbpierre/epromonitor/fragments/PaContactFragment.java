@@ -10,12 +10,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -82,6 +87,8 @@ public class PaContactFragment extends Fragment {
         //ViewModelProviders
         contactViewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
         shareProduitContactViewModel = ViewModelProviders.of(getActivity()).get(ShareProduitContactViewModel.class);
+        //tell the activity that the fragment want to have menu
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -99,7 +106,9 @@ public class PaContactFragment extends Fragment {
         rvPaContact = view.findViewById(R.id.rvPaContact);
         // Create adapter passing in the sample user data
         paContactAdapter = new JoinContactPaContactAdapter(getContext());
-        Log.d("pa_contact", "test1" );
+        Log.d("pa_contact", "test1");
+        // set PA Contact by nom
+        contactViewModel.setPaContactByNom(null);
         // Initialize PaContacts
         contactViewModel.getAllContactPA().observe(this, new Observer<List<JoinContactPaContact>>() {
             @Override
@@ -112,7 +121,7 @@ public class PaContactFragment extends Fragment {
         rvPaContact.setAdapter(paContactAdapter);
         // Set layout manager to position the items
         rvPaContact.setLayoutManager(new LinearLayoutManager(getContext()));
-        Log.d("pa_contact", "test2" );
+        Log.d("pa_contact", "test2");
         paContactAdapter.setPaClickLIstener(new JoinContactPaContactAdapter.OnContactPaClickLIstener() {
             @Override
             public void onClickPaContact(JoinContactPaContact paContact) {
@@ -123,8 +132,51 @@ public class PaContactFragment extends Fragment {
         });
         //call onBackPress/ back arrow
         backArrow();
-        Log.d("pa_contact", "test3" );
+        Log.d("pa_contact", "test3");
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_pa, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("Recherche par nom, pourcentage,spécialité médicale");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                // perform query here
+                contactViewModel.setPaContactByNom(s);
+                // Reset SearchView
+                searchView.clearFocus();
+                // searchView.setIconified(true);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // perform query here
+                contactViewModel.setPaContactByNom(null);
+                return true;
+            }
+        });
+    }
+
+    /**
+     * menu
+     */
+
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

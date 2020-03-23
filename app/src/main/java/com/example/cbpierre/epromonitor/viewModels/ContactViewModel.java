@@ -19,9 +19,11 @@ public class ContactViewModel extends AndroidViewModel {
     private ContactRepository contactRepository;
     private LiveData<List<Contact>> mAllContact;
     private MutableLiveData<String> contactByNom = new MutableLiveData<>();
+    private MutableLiveData<String> paContactByNom = new MutableLiveData<>();
     //private LiveData<List<Contact>> mNewContactById;
     private MutableLiveData<Integer> newContactById = new MutableLiveData<>();
     private LiveData<List<CompleteContact>> completeContact;
+    private LiveData<List<JoinContactPaContact>> completePaContact;
     private ContactRepository.OnNewcontactListener contactListener;
 
 
@@ -91,7 +93,20 @@ public class ContactViewModel extends AndroidViewModel {
      * PA
      */
     public LiveData<List<JoinContactPaContact>> getAllContactPA() {
-        return contactRepository.getAllPaContact();
+        return completePaContact = Transformations.switchMap(paContactByNom, new Function<String, LiveData<List<JoinContactPaContact>>>() {
+            @Override
+            public LiveData<List<JoinContactPaContact>> apply(String input) {
+                if (input == null || input.equals(""))
+                    return contactRepository.getAllPaContact();
+                else
+                    return contactRepository.getAllPaContact(input);
+            }
+        });
     }
+
+    public void setPaContactByNom(String nom) {
+        paContactByNom.setValue(nom);
+    }
+
 }
 

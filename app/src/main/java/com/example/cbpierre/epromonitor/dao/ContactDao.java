@@ -63,6 +63,16 @@ public interface ContactDao {
             "             and pa_contact.con_id=contact_visite.con_id  \n" +
             "            and NATURE_TABLE.natId=contact_visite.nom_nature  \n" +
             "            and pa_contact.quota<>'-1' \n" +
+            "            and ((contact_visite.nom_ratio like '%'||:nom ||'%')" +
+            "            or (SPECIALITE_TABLE.nomSpecialite like '%'|| :nom||'%'))" +
+            "            order by contact_visite.nom_ratio")
+    LiveData<List<JoinContactPaContact>> getAllContactPA(String nom);
+
+    @Query("Select contact_visite.nom_ratio,nature_table.nomNature,specialite_table.nomSpecialite,pa_contact.force,pa_contact.quota,pa_contact.con_id from pa_contact,contact_visite , NATURE_TABLE,SPECIALITE_TABLE  \n" +
+            "            where  SPECIALITE_TABLE.spId=contact_visite.specialite  \n" +
+            "             and pa_contact.con_id=contact_visite.con_id  \n" +
+            "            and NATURE_TABLE.natId=contact_visite.nom_nature  \n" +
+            "            and pa_contact.quota<>'-1' \n" +
             "            order by contact_visite.nom_ratio")
     LiveData<List<JoinContactPaContact>> getAllContactPA();
 }

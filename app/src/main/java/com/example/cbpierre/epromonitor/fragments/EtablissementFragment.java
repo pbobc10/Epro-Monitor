@@ -19,13 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.CompleteEtablissementAdapter;
-import com.example.cbpierre.epromonitor.adapters.EtablissementAdapter;
 import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
-import com.example.cbpierre.epromonitor.models.Etablissement;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
 
 import java.util.List;
@@ -96,7 +93,7 @@ public class EtablissementFragment extends Fragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_etab_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Search by Nom");
+        searchView.setQueryHint("Recherche par nom,commune");
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

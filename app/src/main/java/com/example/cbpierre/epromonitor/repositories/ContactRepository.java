@@ -38,8 +38,12 @@ public class ContactRepository {
         return completeContact;
     }
 
+    public LiveData<List<JoinContactPaContact>> getAllPaContact(String nom) {
+        return allPaContact = contactDao.getAllContactPA(nom);
+    }
+
     public LiveData<List<JoinContactPaContact>> getAllPaContact() {
-        return allPaContact;
+        return contactDao.getAllContactPA();
     }
 
     public LiveData<List<CompleteContact>> getContactNomRepo(String nom) {
