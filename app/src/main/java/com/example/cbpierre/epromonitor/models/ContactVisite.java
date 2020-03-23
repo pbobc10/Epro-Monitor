@@ -36,6 +36,10 @@ public class ContactVisite {
     @ColumnInfo(name = "nom_nature")
     private String nomNature;
 
+    @NonNull
+    @ColumnInfo(name = "quota")
+    private int quota;
+
     public ContactVisite() {
     }
 
@@ -45,6 +49,7 @@ public class ContactVisite {
             nomRatio = jsonObject.getString("NOM_RATIO");
             specialite = jsonObject.getString("SPECIALITE");
             nomNature = jsonObject.getString("NATURE");
+            quota = jsonObject.getInt("QUOTA");
         } catch (JSONException e) {
         }
     }
@@ -104,5 +109,13 @@ public class ContactVisite {
 
     public void setNomNature(@NonNull String nomNature) {
         this.nomNature = nomNature;
+    }
+
+    public int getQuota() {
+        return quota;
+    }
+
+    public void setQuota(int quota) {
+        this.quota = quota;
     }
 }

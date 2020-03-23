@@ -152,7 +152,7 @@ public class ContactFragment extends Fragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Search by nom, prenom");
+        searchView.setQueryHint("Search by nom, prénom, spécialité");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

@@ -23,16 +23,18 @@ public interface ContactVisiteDao {
             "where contact_visite.con_id =commune_localite_contact.con_id\n" +
             "and contact_visite.specialite=:specialite\n" +
             "and contact_visite.con_id not in (select gh_jour_contact.con_id from gh_jour_contact where gh_jour_contact.gh_id=:ghId and gh_jour_contact.jour=:jour )" +
+            "and contact_visite.quota=:quota " +
             "order by contact_visite.nom_ratio")
-    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite,Integer ghId,String jour);
+    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, Integer ghId, String jour, int quota);
 
     @Query("select contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
             "where contact_visite.con_id =commune_localite_contact.con_id\n" +
             "and contact_visite.specialite=:specialite \n" +
             "and commune_localite_contact.commune like :commune||'%'\n" +
             "and contact_visite.con_id not in (select gh_jour_contact.con_id from gh_jour_contact where gh_jour_contact.gh_id=:ghId and gh_jour_contact.jour=:jour )" +
+            "and contact_visite.quota=:quota " +
             "order by contact_visite.nom_ratio")
-    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune,Integer ghId,String jour);
+    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, Integer ghId, String jour, int quota);
 
     @Query("select contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
             "where contact_visite.con_id =commune_localite_contact.con_id\n" +
@@ -40,8 +42,9 @@ public interface ContactVisiteDao {
             "and commune_localite_contact.commune like :commune||'%'\n" +
             "and commune_localite_contact.localite like :localite||'%' \n" +
             "and contact_visite.con_id not in (select gh_jour_contact.con_id from gh_jour_contact where gh_jour_contact.gh_id=:ghId and gh_jour_contact.jour=:jour )" +
+            "and contact_visite.quota=:quota " +
             "order by contact_visite.nom_ratio")
-    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, String localite,Integer ghId,String jour);
+    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, String localite, Integer ghId, String jour, int quota);
 }
 /*
 

@@ -40,7 +40,8 @@ public interface ContactDao {
             "and SPECIALITE_TABLE.spId=CONTACT_TABLE.specialite   " +
             "and TITRE_TABLE.tid=CONTACT_TABLE.titre " +
             "and ((contact_table.nom like '%'||:nom ||'%')" +
-            "or (contact_table.prenom like '%'|| :nom ||'%'))" +
+            "or (contact_table.prenom like '%'|| :nom ||'%')" +
+            "or (SPECIALITE_TABLE.nomSpecialite like '%'|| :nom||'%'))" +
             "order by contact_table.modifie_le desc")
     LiveData<List<CompleteContact>> getContactByNom(String nom);
 

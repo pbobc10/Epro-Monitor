@@ -12,6 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -73,6 +76,7 @@ public class ChoiceContactGHFragment extends Fragment {
     private JoinGHJourStatutRef jourStatutRef;
 
     private OnFragmentInteractionListener mListener;
+    private int allPa;
 
     public ChoiceContactGHFragment() {
         // Required empty public constructor
@@ -81,6 +85,9 @@ public class ChoiceContactGHFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //tell android that fragment want to add iten to action bar
+        setHasOptionsMenu(true);
+
         ghViewModel = ViewModelProviders.of(this).get(GHViewModel.class);
         contactVisiteViewModel = ViewModelProviders.of(this).get(ContactVisiteViewModel.class);
         specialiteViewModel = ViewModelProviders.of(this).get(SpecialiteViewModel.class);
@@ -171,7 +178,7 @@ public class ChoiceContactGHFragment extends Fragment {
                 if (ghJourContactArrayList != null && ghJourContactArrayList.size() > 0) {
                     for (Integer conId : ghJourContactArrayList) {
                         // Insert Contact Jour
-                        ghJourContactViewModel.insertGHJourContact(new GHJourContact(jourStatutRef.getGh_id(), jourStatutRef.getJour(), conId, jourStatutRef.getGh_complete()?"VNP":"VP", false, false, false, false, null, null, null, null, null, null, null, creePar, creeLe, modifiePar, modifieLe, false, null, null, null));
+                        ghJourContactViewModel.insertGHJourContact(new GHJourContact(jourStatutRef.getGh_id(), jourStatutRef.getJour(), conId, jourStatutRef.getGh_complete() ? "VNP" : "VP", false, false, false, false, null, null, null, null, null, null, null, creePar, creeLe, modifiePar, modifieLe, false, null, null, null));
                     }
                     // update GH apres ajout
                     ghViewModel.updateGH(jourStatutRef.getGh_id().toString(), modifiePar, modifieLe);
@@ -183,6 +190,35 @@ public class ChoiceContactGHFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar.
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.choice_contact_menu, menu);
+        menu.findItem(R.id.in_PA).setChecked(true);
+        allPa = 1;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.in_PA:
+                item.setChecked(true);
+                allPa = 1;
+                Toast.makeText(getContext(), "In PA", Toast.LENGTH_SHORT).show();
+                contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+                return true;
+            case R.id.not_in_PA:
+                item.setChecked(true);
+                allPa = -1;
+                Toast.makeText(getContext(), "Not in PA", Toast.LENGTH_SHORT).show();
+                contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void populateSpinner() {
@@ -234,7 +270,7 @@ public class ChoiceContactGHFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(Color.GRAY);
                 } else {
-                    contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour());
+                    contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
                     spCommune.setVisibility(View.VISIBLE);
                     ghJourContactArrayList.clear();
                 }
@@ -255,7 +291,7 @@ public class ChoiceContactGHFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(Color.GRAY);
                 } else {
-                    contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), communeGH.getCommune(), null, jourStatutRef.getGh_id(), jourStatutRef.getJour());
+                    contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), communeGH.getCommune(), null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
                     communeLocaliteContactViewModel.setLocaliteGHMutable(communeGH.getCommune());
                     spLocalite.setVisibility(View.VISIBLE);
                     ghJourContactArrayList.clear();
@@ -277,7 +313,7 @@ public class ChoiceContactGHFragment extends Fragment {
                     TextView textView = (TextView) view;
                     textView.setTextColor(Color.GRAY);
                 } else {
-                    contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), communeGH.getCommune(), localiteGH.getLocalite(), jourStatutRef.getGh_id(), jourStatutRef.getJour());
+                    contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), communeGH.getCommune(), localiteGH.getLocalite(), jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
                     ghJourContactArrayList.clear();
                 }
             }

@@ -267,8 +267,7 @@ public class TelechargementFragment extends Fragment {
                 specialiteRequest(AppConfig.URL_SPECIALITE);
                 titreRequest(AppConfig.URL_TITRE);
                 contactRequest(AppConfig.URL_CONTACT);
-                //
-                recommandationRequest(AppConfig.URL_RECOMMANDATION);
+
 
             }
         });
@@ -628,7 +627,9 @@ public class TelechargementFragment extends Fragment {
                     sendReco.setJour(rc.getJour());
                     sendRecommandationArrayList.add(sendReco);
                 }
-                Log.d("recommandation", toJSON(sendRecommandationArrayList));
+                // Log.d("recommandation", toJSON(sendRecommandationArrayList));
+                //resend recommandation
+                resendRecommandation(toJSON(sendRecommandationArrayList));
 
                 //dismiss dialog
                 hideDialog();
