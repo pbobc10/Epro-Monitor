@@ -19,32 +19,32 @@ public interface ContactVisiteDao {
     @Query("delete from contact_visite")
     void deleteContatVisite();
 
-    @Query("select contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
+    @Query("select distinct contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
             "where contact_visite.con_id =commune_localite_contact.con_id\n" +
             "and contact_visite.specialite=:specialite\n" +
             "and contact_visite.con_id not in (select gh_jour_contact.con_id from gh_jour_contact where gh_jour_contact.gh_id=:ghId and gh_jour_contact.jour=:jour )" +
-            "and contact_visite.quota=:quota " +
+            "and contact_visite.dpa=:dpa " +
             "order by contact_visite.nom_ratio")
-    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, Integer ghId, String jour, int quota);
+    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, Integer ghId, String jour, int dpa);
 
-    @Query("select contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
+    @Query("select distinct contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
             "where contact_visite.con_id =commune_localite_contact.con_id\n" +
             "and contact_visite.specialite=:specialite \n" +
             "and commune_localite_contact.commune like :commune||'%'\n" +
             "and contact_visite.con_id not in (select gh_jour_contact.con_id from gh_jour_contact where gh_jour_contact.gh_id=:ghId and gh_jour_contact.jour=:jour )" +
-            "and contact_visite.quota=:quota " +
+            "and contact_visite.dpa=:dpa " +
             "order by contact_visite.nom_ratio")
-    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, Integer ghId, String jour, int quota);
+    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, Integer ghId, String jour, int dpa);
 
-    @Query("select contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
+    @Query("select distinct contact_visite.nom_ratio,contact_visite.con_id,0 isChecked from contact_visite,commune_localite_contact\n" +
             "where contact_visite.con_id =commune_localite_contact.con_id\n" +
             "and contact_visite.specialite=:specialite \n" +
             "and commune_localite_contact.commune like :commune||'%'\n" +
             "and commune_localite_contact.localite like :localite||'%' \n" +
             "and contact_visite.con_id not in (select gh_jour_contact.con_id from gh_jour_contact where gh_jour_contact.gh_id=:ghId and gh_jour_contact.jour=:jour )" +
-            "and contact_visite.quota=:quota " +
+            "and contact_visite.dpa=:dpa " +
             "order by contact_visite.nom_ratio")
-    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, String localite, Integer ghId, String jour, int quota);
+    LiveData<List<ChoiceContactGH>> allChoiceContactGH(String specialite, String commune, String localite, Integer ghId, String jour, int dpa);
 }
 /*
 

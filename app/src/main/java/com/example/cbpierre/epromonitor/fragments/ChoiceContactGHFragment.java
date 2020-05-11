@@ -69,6 +69,7 @@ public class ChoiceContactGHFragment extends Fragment {
 
     private SpecialiteGH specialiteGH;
     private CommuneGH communeGH;
+    private LocaliteGH localiteGH;
 
     private UserSessionPreferences userSessionPreferences;
     private String creePar, modifiePar, creeLe, modifieLe;
@@ -207,14 +208,14 @@ public class ChoiceContactGHFragment extends Fragment {
             case R.id.in_PA:
                 item.setChecked(true);
                 allPa = 1;
-                Toast.makeText(getContext(), "In PA", Toast.LENGTH_SHORT).show();
-                contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+                Toast.makeText(getContext(), "Dans PA", Toast.LENGTH_SHORT).show();
+                parametrePA();
                 return true;
             case R.id.not_in_PA:
                 item.setChecked(true);
                 allPa = -1;
-                Toast.makeText(getContext(), "Not in PA", Toast.LENGTH_SHORT).show();
-                contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+                Toast.makeText(getContext(), "Hors PA", Toast.LENGTH_SHORT).show();
+                parametrePA();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -259,6 +260,15 @@ public class ChoiceContactGHFragment extends Fragment {
         });
     }
 
+    public void parametrePA() {
+        if (spSpecialite.getSelectedItemPosition() != 0 && spCommune.getSelectedItemPosition() == 0)
+            contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), null, null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+        else if (spSpecialite.getSelectedItemPosition() != 0 && spCommune.getSelectedItemPosition() != 0)
+            contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), communeGH.getCommune(), null, jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+        else
+            contactVisiteViewModel.setContactGhParam(specialiteGH.getSpId(), communeGH.getCommune(), localiteGH.getLocalite(), jourStatutRef.getGh_id(), jourStatutRef.getJour(), allPa);
+    }
+
     public void getSpinnerItem() {
         //spSpecialite
         spSpecialite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -278,7 +288,6 @@ public class ChoiceContactGHFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -300,7 +309,6 @@ public class ChoiceContactGHFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -308,7 +316,7 @@ public class ChoiceContactGHFragment extends Fragment {
         spLocalite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LocaliteGH localiteGH = (LocaliteGH) parent.getItemAtPosition(position);
+                localiteGH = (LocaliteGH) parent.getItemAtPosition(position);
                 if (localiteGH.getLocalite().equals("--- SELECTIONNER UNE LOCALITE ---")) {
                     TextView textView = (TextView) view;
                     textView.setTextColor(Color.GRAY);

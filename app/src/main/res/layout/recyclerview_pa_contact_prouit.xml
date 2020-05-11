@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
     card_view:cardCornerRadius="5dp"
@@ -13,20 +13,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="start"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp">
 
             <TextView
                 android:id="@+id/txtNomProduit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:textAlignment="textStart"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="556 - BRIMONI DT gouttes 5ml Brimonidine Dorzolamide Timolol"

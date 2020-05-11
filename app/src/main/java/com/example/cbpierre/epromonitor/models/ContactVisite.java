@@ -37,8 +37,8 @@ public class ContactVisite {
     private String nomNature;
 
     @NonNull
-    @ColumnInfo(name = "quota")
-    private int quota;
+    @ColumnInfo(name = "dpa")
+    private int dpa;
 
     public ContactVisite() {
     }
@@ -49,7 +49,7 @@ public class ContactVisite {
             nomRatio = jsonObject.getString("NOM_RATIO");
             specialite = jsonObject.getString("SPECIALITE");
             nomNature = jsonObject.getString("NATURE");
-            quota = jsonObject.getInt("QUOTA");
+            dpa = jsonObject.getInt("DPA");
         } catch (JSONException e) {
         }
     }
@@ -111,11 +111,11 @@ public class ContactVisite {
         this.nomNature = nomNature;
     }
 
-    public int getQuota() {
-        return quota;
+    public int getDpa() {
+        return dpa;
     }
 
-    public void setQuota(int quota) {
-        this.quota = quota;
+    public void setDpa(int dpa) {
+        this.dpa = dpa;
     }
 }

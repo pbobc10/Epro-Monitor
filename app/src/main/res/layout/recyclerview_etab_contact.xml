@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/txtNomEtabContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dr. Salomon Jean"
+        android:textAlignment="textStart"
+        android:textColor="@color/input_register_bg"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtSpecialiteEtabContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Medecine Generale"
+        android:textAlignment="textStart"
+        android:textColor="@color/secondaryText"
+        android:textSize="16dp"
+        android:textStyle="italic" />
+
+</LinearLayout>

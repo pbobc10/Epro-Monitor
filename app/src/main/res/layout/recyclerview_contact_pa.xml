@@ -18,7 +18,8 @@
         <RelativeLayout
             android:id="@+id/rlColorPa"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
             android:background="@android:color/holo_orange_light">
 
             <TextView
@@ -26,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="45dp"
-                android:layout_marginTop="15dp"
                 android:fontFamily="sans-serif-condensed"
                 android:maxLines="2"
                 android:text="Dr. Pierre Bob Charlemagne "
@@ -56,7 +56,7 @@
                 android:id="@+id/txtNaturePa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="45dp"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="end"

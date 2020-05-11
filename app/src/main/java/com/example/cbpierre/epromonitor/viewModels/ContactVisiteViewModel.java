@@ -34,20 +34,20 @@ public class ContactVisiteViewModel extends AndroidViewModel {
     static class ChoiceContactGhParam {
         final String specialite, commune, localite, jour;
         final Integer ghId;
-        final int quota;
+        final int dpa;
 
-        public ChoiceContactGhParam(String specialite, String commune, String localite, Integer ghId, String jour,int quota) {
+        public ChoiceContactGhParam(String specialite, String commune, String localite, Integer ghId, String jour, int dpa) {
             this.specialite = specialite;
             this.commune = commune;
             this.localite = localite;
             this.jour = jour;
             this.ghId = ghId;
-            this.quota=quota;
+            this.dpa = dpa;
         }
     }
 
-    public void setContactGhParam(String specialite, String commune, String localite, Integer ghId, String jour,int quota) {
-        ChoiceContactGhParam choiceContactGhParam = new ChoiceContactGhParam(specialite, commune, localite, ghId, jour,quota);
+    public void setContactGhParam(String specialite, String commune, String localite, Integer ghId, String jour, int dpa) {
+        ChoiceContactGhParam choiceContactGhParam = new ChoiceContactGhParam(specialite, commune, localite, ghId, jour, dpa);
         contactGhParamMutableLiveData.setValue(choiceContactGhParam);
     }
 
@@ -56,11 +56,11 @@ public class ContactVisiteViewModel extends AndroidViewModel {
             @Override
             public LiveData<List<ChoiceContactGH>> apply(ChoiceContactGhParam input) {
                 if (input.specialite != null && input.commune == null && input.localite == null && input.ghId != null && input.jour != null)
-                    return contactVisiteRepository.getAllChoiceContactGH(input.specialite, input.ghId, input.jour,input.quota);
+                    return contactVisiteRepository.getAllChoiceContactGH(input.specialite, input.ghId, input.jour, input.dpa);
                 else if (input.specialite != null && input.commune != null && input.localite == null && input.ghId != null && input.jour != null)
-                    return contactVisiteRepository.getAllChoiceContactGH(input.specialite, input.commune, input.ghId, input.jour,input.quota);
+                    return contactVisiteRepository.getAllChoiceContactGH(input.specialite, input.commune, input.ghId, input.jour, input.dpa);
                 else // (input.specialite != null && input.commune != null && input.localite != null)
-                    return contactVisiteRepository.getAllChoiceContactGH(input.specialite, input.commune, input.localite, input.ghId, input.jour,input.quota);
+                    return contactVisiteRepository.getAllChoiceContactGH(input.specialite, input.commune, input.localite, input.ghId, input.jour, input.dpa);
             }
         });
     }

@@ -24,6 +24,7 @@ import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.adapters.CompleteEtablissementAdapter;
 import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
 import com.example.cbpierre.epromonitor.viewModels.EtablissementViewModel;
+import com.example.cbpierre.epromonitor.viewModels.ShareEtabDetailViewModel;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class EtablissementFragment extends Fragment {
     private RecyclerView recyclerView;
     private CompleteEtablissementAdapter etablissementAdapter;
     private EtablissementViewModel etablissementViewModel;
+    private ShareEtabDetailViewModel shareEtabDetailViewModel;
 
     public EtablissementFragment() {
         // Required empty public constructor
@@ -43,6 +45,7 @@ public class EtablissementFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        shareEtabDetailViewModel = ViewModelProviders.of(getActivity()).get(ShareEtabDetailViewModel.class);
         etablissementViewModel = ViewModelProviders.of(this).get(EtablissementViewModel.class);
         etablissementViewModel.setCompleteEtabsByNom(null);
 
@@ -76,12 +79,9 @@ public class EtablissementFragment extends Fragment {
         etablissementAdapter.setOnCompleteEtablissementListener(new CompleteEtablissementAdapter.OnCompleteEtablissementListener() {
             @Override
             public void onContactClick(List<CompleteEtablissement> _completeEtablissement, int position) {
-                EtabsDetailFragment fragment = new EtabsDetailFragment();
                 CompleteEtablissement etablissement = _completeEtablissement.get(position);
-                Bundle arg = new Bundle();
-                arg.putSerializable("COMPLETE_ETAB", etablissement);
-                fragment.setArguments(arg);
-                replaceFragment(fragment);
+                shareEtabDetailViewModel.setEtabMutableLiveData(etablissement);
+                replaceFragment(new EtablissementPagerFragment());
             }
         });
     }
@@ -93,7 +93,7 @@ public class EtablissementFragment extends Fragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_etab_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Recherche par nom,commune");
+        searchView.setQueryHint("Recherche par Nom,Commune");
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

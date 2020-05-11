@@ -617,24 +617,29 @@ public class TelechargementFragment extends Fragment {
         CustomArrayRequest customArrayRequest = new CustomArrayRequest(Request.Method.GET, url + paramCieID, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                recommandationViewModel.insertRecommandation(Recommandation.fromJsonArray(response).toArray(new Recommandation[0]));
-                // construct List to resend recommandation to the server
-                sendRecommandationArrayList = new ArrayList<>();
-                for (Recommandation rc : Recommandation.fromJsonArray(response)) {
-                    SendRecommandation sendReco = new SendRecommandation();
-                    sendReco.setCieId(paramCieID);
-                    sendReco.setGhId(rc.getGhId());
-                    sendReco.setJour(rc.getJour());
-                    sendRecommandationArrayList.add(sendReco);
+                if (Recommandation.fromJsonArray(response).size() == 0) {
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "Pas de nouvelle recommandation", Toast.LENGTH_SHORT).show();
+                } else {
+                    recommandationViewModel.insertRecommandation(Recommandation.fromJsonArray(response).toArray(new Recommandation[0]));
+                    // construct List to resend recommandation to the server
+                    sendRecommandationArrayList = new ArrayList<>();
+                    for (Recommandation rc : Recommandation.fromJsonArray(response)) {
+                        SendRecommandation sendReco = new SendRecommandation();
+                        sendReco.setCieId(paramCieID);
+                        sendReco.setGhId(rc.getGhId());
+                        sendReco.setJour(rc.getJour());
+                        sendRecommandationArrayList.add(sendReco);
+                    }
+                    // Log.d("recommandation", toJSON(sendRecommandationArrayList));
+                    //resend recommandation
+                    resendRecommandation(toJSON(sendRecommandationArrayList));
+
+                    //dismiss dialog
+                    hideDialog();
+                    Toast.makeText(getContext(), "Téléchargement RECOMMANDATION terminé", Toast.LENGTH_SHORT).show();
                 }
-                // Log.d("recommandation", toJSON(sendRecommandationArrayList));
-                //resend recommandation
-                resendRecommandation(toJSON(sendRecommandationArrayList));
-
-                //dismiss dialog
-                hideDialog();
-                Toast.makeText(getContext(), "Téléchargement RECOMMANDATION terminé", Toast.LENGTH_SHORT).show();
-
             }
         }, new Response.ErrorListener() {
             @Override

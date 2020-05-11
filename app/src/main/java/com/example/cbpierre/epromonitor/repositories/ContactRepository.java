@@ -8,6 +8,7 @@ import com.example.cbpierre.epromonitor.EproMonitorRoomDatabase;
 import com.example.cbpierre.epromonitor.dao.ContactDao;
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.EtabContact;
 import com.example.cbpierre.epromonitor.models.JoinContactPaContact;
 
 import java.util.List;
@@ -44,6 +45,10 @@ public class ContactRepository {
 
     public LiveData<List<JoinContactPaContact>> getAllPaContact() {
         return contactDao.getAllContactPA();
+    }
+
+    public LiveData<List<EtabContact>> getAllEtabContact(int etId) {
+        return contactDao.getAllEtabContact(etId);
     }
 
     public LiveData<List<CompleteContact>> getContactNomRepo(String nom) {

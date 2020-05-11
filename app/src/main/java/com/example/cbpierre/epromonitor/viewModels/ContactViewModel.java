@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.example.cbpierre.epromonitor.models.CompleteContact;
 import com.example.cbpierre.epromonitor.models.Contact;
+import com.example.cbpierre.epromonitor.models.EtabContact;
 import com.example.cbpierre.epromonitor.models.JoinContactPaContact;
 import com.example.cbpierre.epromonitor.repositories.ContactRepository;
 
@@ -22,6 +23,7 @@ public class ContactViewModel extends AndroidViewModel {
     private MutableLiveData<String> paContactByNom = new MutableLiveData<>();
     //private LiveData<List<Contact>> mNewContactById;
     private MutableLiveData<Integer> newContactById = new MutableLiveData<>();
+    private MutableLiveData<Integer> etabContactbyId = new MutableLiveData<>();
     private LiveData<List<CompleteContact>> completeContact;
     private LiveData<List<JoinContactPaContact>> completePaContact;
     private ContactRepository.OnNewcontactListener contactListener;
@@ -88,6 +90,24 @@ public class ContactViewModel extends AndroidViewModel {
     public void updateNewContact(Contact contact) {
         contactRepository.updateNewContact(contact);
     }
+
+    /**
+     * etabContact
+     */
+
+    public void setEtabContactbyId(Integer etId) {
+        etabContactbyId.setValue(etId);
+    }
+
+    public LiveData<List<EtabContact>> getAllEtabContact() {
+        return Transformations.switchMap(etabContactbyId, new Function<Integer, LiveData<List<EtabContact>>>() {
+            @Override
+            public LiveData<List<EtabContact>> apply(Integer input) {
+                return contactRepository.getAllEtabContact(input);
+            }
+        });
+    }
+
 
     /**
      * PA

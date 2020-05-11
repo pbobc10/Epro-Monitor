@@ -1,5 +1,7 @@
 package com.example.cbpierre.epromonitor.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.cbpierre.epromonitor.R;
 import com.example.cbpierre.epromonitor.models.CompleteEtablissement;
+import com.example.cbpierre.epromonitor.viewModels.ShareEtabDetailViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +30,7 @@ public class EtabsDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private CompleteEtablissement etablissement;
     private TextView nom, adresse, localite, statut, commune, departement, modifiePar, modifieLe;
+    private ShareEtabDetailViewModel shareEtabDetailViewModel;
 
     public EtabsDetailFragment() {
         // Required empty public constructor
@@ -35,8 +39,7 @@ public class EtabsDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get back arguments
-        etablissement = (CompleteEtablissement) getArguments().getSerializable("COMPLETE_ETAB");
+        shareEtabDetailViewModel = ViewModelProviders.of(getActivity()).get(ShareEtabDetailViewModel.class);
     }
 
     @Override
@@ -66,8 +69,16 @@ public class EtabsDetailFragment extends Fragment {
         departement = view.findViewById(R.id.txtEtabDepartement);
         modifiePar = view.findViewById(R.id.txtEtabModifiePar);
         modifieLe = view.findViewById(R.id.txtEtabDate);
-        //populate etab
-        populate(etablissement);
+
+        //get shareEtablissmentViewModel
+        shareEtabDetailViewModel.getEtabMutableLiveData().observe(this, new Observer<CompleteEtablissement>() {
+            @Override
+            public void onChanged(@Nullable CompleteEtablissement completeEtablissement) {
+                //populate etab
+                populate(completeEtablissement);
+            }
+        });
+
 
         /////
         backArrow();

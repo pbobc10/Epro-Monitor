@@ -141,7 +141,7 @@ public class PaContactFragment extends Fragment {
         inflater.inflate(R.menu.menu_pa, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Recherche par nom, pourcentage,spécialité médicale");
+        searchView.setQueryHint("Recherche par Nom,Ratio,Spécialité");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
